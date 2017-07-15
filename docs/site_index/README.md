@@ -4,12 +4,14 @@ The index has a link for each article in the site, and the articles are categori
 One purpose of this repo is to host scripts which can be used to convert the text of the main Wordpress site into appropriate html text to use for the index panel.
 
 Here's an sample of the HTML in the index widget:
+(see view-source:https://cambridgemusicreviews.net/page/2/)
 ```
 <h2>Singles and EPs</h2>
 <br><a href="https://cambridgemusicreviews.net/2017/03/25/ricky-boom-boom-ep-released-march-2017/">Ricky Boom-Boom</a>
 ```
 
 and here's some of the source of the main site:
+(see view-source:https://cambridgemusicreviews.net/page/2/)
 ````
 <article id="post-1952" class="post-1952 post type-post status-publish format-standard hentry category-music tag-a-rum-old-do tag-cambridge tag-ep tag-review tag-ricky-boom-boom tag-tom-colborn">
 <header class="entry-header">
