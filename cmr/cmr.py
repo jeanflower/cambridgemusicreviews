@@ -2,14 +2,13 @@
 from urllib.request import urlopen
 #use beautifulsoup library to parse the html
 from bs4 import BeautifulSoup
+#for regular expressions
+import re
 
-#define a function which goes to the music reviews oage and extracts the
-#important information we need to process further; i.e. the text of the 
-#headings and the links which the headings go to
-def get_page_headings(page_number):    
-    #set up an empty list to hold data for each link
-    result_data = []
 
+#goes to the music reviews page and extracts the
+#important information we need to process further
+def get_httpresponse(page_number):
     #set the url based on the page number given
     url="https://cambridgemusicreviews.net/page/"+str(page_number)
     print(url)
@@ -17,6 +16,10 @@ def get_page_headings(page_number):
     #go to the given url and obtain the html 
     html = urlopen(url)
     #print(html)
+    return html
+
+#Use BeautifulSoup to parse the html
+def get_soup(html):
 
     #set up a beautifulsoup object to parse the html
     soup = BeautifulSoup(html, "lxml")
@@ -24,9 +27,20 @@ def get_page_headings(page_number):
     #check the soup got the expected text
     #print(soup.prettify())
 
+    return soup;
+#
+##Use lxml to parse the html
+#def get_tree(page_number):
+#    ??
+
+#Choose the headings which have class = tag
+def get_tagged_items(soup, type, tag):    
+    #set up an empty list to hold data for each link
+    result_data = []
+
     #the headings we're interested in all have class=entry-title
     #ask soup for a list of such headings
-    myH1s = soup.findAll("h1", { "class" : "entry-title" })
+    myH1s = soup.findAll(type, { "class" : tag })
     
     #iterate over these headings compiling data into result_data
     for h1 in myH1s: 
@@ -38,23 +52,22 @@ def get_page_headings(page_number):
         result_data.append(pair)
         #pass the results back to the calling code    
     return result_data
-#end of get_page_headings function
+
+
+html = get_httpresponse(1)
+soup = get_soup(html)
 
 #simple test for the get_page_headings function
-#print("------ page 1 ")
-#print(get_page_headings(1))
-#print("------ page 2 ")
-#print(get_page_headings(2))
+#print("------ page 1 entry_title headings")
+print(get_tagged_items(soup, "h1", "entry-title"))
+#print(get_tagged_items(soup, "article", re.compile(".*tag-wolf-girl.*")))
 
 
-list_from_page_1 = get_page_headings(1);
-print(list_from_page_1)
-
-import pickle
+#import pickle
 
 #test writing a list to file
-with open('html_links', 'wb') as fp:
-    pickle.dump(list_from_page_1, fp)
+#with open('html_links', 'wb') as fp:
+#    pickle.dump(list_from_page_1, fp)
 
 #test reading a list back from file
 #itemlist;
