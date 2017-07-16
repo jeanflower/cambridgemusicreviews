@@ -1,33 +1,7 @@
-#use urlopen to obtain html from a url
-from urllib.request import urlopen
-#use beautifulsoup library to parse the html
-from bs4 import BeautifulSoup
+from cmr_utilities import get_cmr_url, get_httpresponse, get_soup
 #for regular expressions
-import re
+#import re 
 
-
-#goes to the music reviews page and extracts the
-#important information we need to process further
-def get_httpresponse(page_number):
-    #set the url based on the page number given
-    url="https://cambridgemusicreviews.net/page/"+str(page_number)
-    print(url)
-
-    #go to the given url and obtain the html 
-    html = urlopen(url)
-    #print(html)
-    return html
-
-#Use BeautifulSoup to parse the html
-def get_soup(html):
-
-    #set up a beautifulsoup object to parse the html
-    soup = BeautifulSoup(html, "lxml")
-
-    #check the soup got the expected text
-    #print(soup.prettify())
-
-    return soup;
 #
 ##Use lxml to parse the html
 #def get_tree(page_number):
@@ -53,8 +27,10 @@ def get_tagged_items(soup, type, tag):
         #pass the results back to the calling code    
     return result_data
 
+page_number = 1
 
-html = get_httpresponse(1)
+url = get_cmr_url(page_number)
+html = get_httpresponse(url)
 soup = get_soup(html)
 
 #simple test for the get_page_headings function
