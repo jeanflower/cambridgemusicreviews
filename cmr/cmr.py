@@ -1,4 +1,5 @@
 from cmr_utilities import get_cmr_url, get_httpresponse, get_soup
+
 #for regular expressions
 #import re 
 
@@ -27,17 +28,26 @@ def get_tagged_items(soup, type, tag):
         #pass the results back to the calling code    
     return result_data
 
+
 page_number = 1
 
+#get url from cmr wordpress sitr
 url = get_cmr_url(page_number)
+# or ...
+#hard-code a path to the test data on jean's mac
+#url = "file:///Users/jeanflower/Documents/git/cambridgemusicreviews/"\
+#      "tests/captured_pages/page_text_"+str(page_number)+".html"
+#print(url)
+
 html = get_httpresponse(url)
+                        
 soup = get_soup(html)
+
 
 #simple test for the get_page_headings function
 #print("------ page 1 entry_title headings")
 print(get_tagged_items(soup, "h1", "entry-title"))
 #print(get_tagged_items(soup, "article", re.compile(".*tag-wolf-girl.*")))
-
 
 #import pickle
 
