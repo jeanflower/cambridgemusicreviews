@@ -34,3 +34,25 @@ def get_soup(html):
     #print(soup.prettify())
 
     return soup;
+
+
+class CMR_Index_Categories:
+    extra = "Extras"
+    single_ep = "Singles and EPs"
+    album = "Album reviews"
+    live = "Live Reviews"
+    undefined = "Undefined"
+    
+
+class CMR_Article:
+    title = ""      # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
+    url = ""        # e.g. "https://cambridgemusicreviews.net/2017/07/09/abc-parkers-piece-cambridge-7-july-2017/"
+    index_text = "" # e.g. "ABC"
+    category = CMR_Index_Categories.undefined # e.g. CMR_Index_Categories.live
+    
+    def print_article_details(article):
+            print("title      is :\""+article.title+"\"")
+            print("url        is :\""+article.url+"\"")
+            print("index_text is :\""+article.index_text+"\"")
+            print("category   is :\""+article.category+"\"")
+    
