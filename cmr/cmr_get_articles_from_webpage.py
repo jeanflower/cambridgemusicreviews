@@ -34,7 +34,7 @@ url = get_cmr_url(page_number)
 # or ...
 #hard-code a path to the test data on jean's mac
 #url = "file:///Users/jeanflower/Documents/git/cambridgemusicreviews/"\
-#     "tests/captured_pages/page_text_"+str(page_number)+"_with_divs.html"
+#     "tests/captured_pages/page_text_"+str(page_number)+".html"
 #print(url)
 
 #------- GET DATA out of the web page of interest
@@ -59,17 +59,17 @@ print("done")
 
 #############
 
-#Choose the headings which have class = entry-title
+#Choose the index anchors which have given tag, save Article with given category
 def get_index_anchors(soup, tag, category):    
     #set up an empty list to hold data for each link
     articles_found = []
 
-    #the headings we're interested in all have class=entry-title
+    #the headings we're interested in all have class = given tag
     #ask soup for a list of such headings
     my_div = soup.find("div", { "class" : tag })
     anchors = my_div.findAll('a')
     
-    #iterate over these headings compiling data into result_data
+    #iterate over these anchors compiling data into result_data
     for anchor in anchors: 
         #for each one get the text the human sees and the link url
         this_index_text = str(anchor.contents[0])
@@ -85,11 +85,13 @@ def get_index_anchors(soup, tag, category):
     #pass the results back to the calling code    
     return articles_found
 
-
+#Use a sequence of calls to get the anchors out of each div
 articles = get_index_anchors(soup, "cmr-extras", CMR_Index_Categories.extra)
 articles = articles + get_index_anchors(soup, "cmr-singles", CMR_Index_Categories.single_ep)
 articles = articles + get_index_anchors(soup, "cmr-albums", CMR_Index_Categories.album)
 articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
+
+#report back
 print("articles found:")
 article_number = 0
 for article in articles:
