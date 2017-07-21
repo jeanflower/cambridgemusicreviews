@@ -1,4 +1,6 @@
-from cmr_utilities import CMR_Article, CMR_Index_Categories
+#!/usr/bin/env python3
+
+from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
 
 #Create a CMR_Article object
 print("------- create an article with no data in it")

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from cmr_utilities import get_cmr_url, save_html
 
 # today, after the 21st page, we get an error

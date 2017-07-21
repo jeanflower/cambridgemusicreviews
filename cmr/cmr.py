@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from cmr_utilities import CMR_Index_Categories, CMR_Article
 
 

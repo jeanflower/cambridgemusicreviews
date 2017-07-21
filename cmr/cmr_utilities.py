@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #use urlopen to obtain html from a url
 from urllib.request import urlopen, urlretrieve
 #use beautifulsoup library to parse the html
