@@ -20,18 +20,17 @@ sample_article_1.category = CMR_Index_Categories.live
 
 articles = [sample_article_0, sample_article_1]
 
-print("before filling in missing details:")
+print("--------------------------before filling in missing details:")
 for article in articles:
     print("----")
     article.print_article_details()
 
+print("--------------------------calling fill_in_missing_data")
 fill_in_missing_data(articles,
                      get_missing_index_text_interactive, 
                      get_missing_category_interactive)
 
-print("----")
-print("----")
-print("after filling in missing details:")
+print("--------------------------after filling in missing details:")
 for article in articles:
     print("----")
     article.print_article_details()
