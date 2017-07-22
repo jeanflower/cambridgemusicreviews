@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import  CMR_Article, CMR_Index_Categories
+from cmr.cmr_utilities import CMR_Index_Categories
 
 def get_missing_index_text_interactive(article):
-    # TODO : ask the user to input some text and use their response            
+    # TODO : ask the user to input some text and use their response     
     print("missing index text")
     print("article title was \""+ article.title+"\"")
-    return "junk - get_missing_index_text not yet written"
+    response = input("please type in an index title: ")
+    print("proposed title : "+response)
+    ok = input("save this new title? (y/n): ")
+    if ok=='y':
+        return response
+    else:
+        return ""
 
 def get_missing_category_interactive(article):
     # TODO : ask the user to input a category and use their response
