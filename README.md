@@ -9,7 +9,7 @@ The main contributor to the cambridgemusicreviews site wants to maintain it with
 ![manual index maintenance](docs/editing_cmr_site_index.mp4)
 
 ## Understanding the scripts
-The scripts should have documentation in the comments, but also there is sample code in example_\*.py to illustrate how we might use some functions. 
+The scripts should have documentation in the comments, but also there is sample code in https://github.com/jeanflower/cambridgemusicreviews/tree/master/cmr/examples to illustrate how we might use some functions. 
 
 ## Tests
 There are python unit tests in the tests folder.  These should always pass.
