@@ -2,24 +2,59 @@
 
 from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
 
+def get_html_link(article):
+    html = "<a href=\""
+    html = html + article.url
+    html = html + "\">"
+    html = html + article.index_text
+    html = html + "</a><br />\n"
+    return html
+
 def get_index_html(articles):
-    print("Error : html output not yet implemented")
-    #TODO : write some HTML here, at the moment it generates other text
-    html = "start of html here\n"
-    for article in articles:        
-        html = html + "\nsome more html\n"
-        html = html + article.index_text
-        html = html + "\neven more html\n"
-        html = html + article.url
-        html = html + "\nyet more html\n"
-        
+    html = "<h2>About</h2>\n"+\
+           "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>"+\
+           "<div class=\"cmr-extras\">"+\
+           "<h2>Extras</h2>"+\
+           "<p>\n"
+    for article in articles:
+        if article.category != CMR_Index_Categories.extra :
+            continue        
+        html = html + get_html_link(article);
+    html = html + "</div>\n"+\
+           "<div class=\"cmr-singles\">\n"+\
+           "<h2>Singles and EPs</h2>\n"+\
+           "<p>\n"
+    for article in articles:
+        if article.category != CMR_Index_Categories.single_ep :
+            continue        
+        html = html + get_html_link(article);
+    html = html + "</div>"+\
+           "<div class=\"cmr-albums\">"+\
+           "<h2>Album reviews</h2>"+\
+           "<p>"
+    for article in articles:
+        if article.category != CMR_Index_Categories.album :
+            continue        
+        html = html + get_html_link(article);
+    html = html + "</div>"+\
+           "<div class=\"cmr-live\">"+\
+           "<h2>Live reviews</h2>"+\
+           "<p>"
+    for article in articles:
+        if article.category != CMR_Index_Categories.live :
+            continue        
+        html = html + get_html_link(article);
+    html = html + "</div>"
     return html
 
 def save_index_html(articles, filename):
     get_index_html(articles)
-    print("Error : save not yet implemented")
     #TODO : save to a file called filename
+    html = "<!DOCTYPE html><body>"+get_index_html(articles)+"</body></html>"
     
+    f = open(filename, 'w')
+    f.write(html)
+    f.close()
 
 #Set up an example of a couple of articles we might want to convert into
 #an index
@@ -37,6 +72,6 @@ sample_article_1.category = CMR_Index_Categories.live
 
 articles = [sample_article_0, sample_article_1]
 
-print(get_index_html(articles))
-
+#print(get_index_html(articles))
 #save_index_html(articles, "test.html")
+
