@@ -13,7 +13,6 @@ fill_in_missing_data(articles,
                      get_missing_index_text_interactive, 
                      get_missing_category_interactive)
 
-
 save_index_html(articles, "test.html")
 
 

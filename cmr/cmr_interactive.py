@@ -38,15 +38,15 @@ def _guess_index_text(article):
     
     if article.category == CMR_Index_Categories.live:
         date = phrases[len(phrases)-1]
-        print(date)
+        # print(date)
         date_parts = str(date).split(" ");
-        print(date_parts)
+        #  print(date_parts)
             
         number_part = date_parts[1]
-        print(number_part)
+        # print(number_part)
         
         month_part = date_parts[2]
-    #    year_part = date_parts[2]
+        # year_part = date_parts[2]
         
         date_appendage = ""
         if number_part[len(number_part)-1]==1:
