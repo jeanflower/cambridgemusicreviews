@@ -33,8 +33,8 @@ class Test_fill_in_missing_data(unittest.TestCase):
             
         self.assertEqual(articles[0].title, "ABC, Parker’s Piece, 7 July 2017")
         self.assertEqual(articles[0].url, "http://example_url_0.com")
-        self.assertEqual(articles[0].index_text, "ABC, ")
-        self.assertEqual(articles[0].category, CMR_Index_Categories.album)
+        self.assertEqual(articles[0].index_text, "ABC, 7th July")
+        self.assertEqual(articles[0].category, CMR_Index_Categories.live)
         
         self.assertEqual(articles[1].title, "Lee Hull, Corner House, Cambridge, 4 June 2017")
         self.assertEqual(articles[1].url, "http://example_url_1.com")

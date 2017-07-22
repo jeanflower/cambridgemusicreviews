@@ -5,4 +5,6 @@ articles = get_all_cmr_data()
 for article in articles:
     print("---------------")
     article.print_article_details()
-    
+
+
+

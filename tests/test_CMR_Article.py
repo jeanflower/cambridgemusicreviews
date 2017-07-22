@@ -21,6 +21,5 @@ class Test_CMR_Article(unittest.TestCase):
         article.url = example_url
         self.assertEqual(article.url, example_url)
 
-
 if __name__ == '__main__':
     unittest.main()
