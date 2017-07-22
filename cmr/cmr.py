@@ -33,18 +33,23 @@
 #
 # fill_in_missing_data 
 
-#TODO : get missing data from user
+#Done : get missing data from user
 # Given an article with missing index_text or category,
 # get help from the user to determine the right string/category
 # and fill it in.
-# see cmr_interactive.py
+# 
+# use
+# fill_in_missing_data(articles,
+#                     get_missing_index_text_interactive, 
+#                     get_missing_category_interactive)
 
-#TODO : create index html from article data
-# given a list of CMR_Articles, make a file index.html which can
+
+#DONE : create index html from article data
+# given a list of CMR_Articles, make a file test.html which can
 # be viewed independently or
 # pasted into the WordPress widget
 #
-# see cmr_create_index.py
+# save_index_html(articles, "test.html")
 
 #TODO : write a utility to let a user edit data in the article data
 # given a list of CMR_Articles, let the user make edits
