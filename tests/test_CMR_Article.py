@@ -7,6 +7,8 @@ from cmr.cmr_utilities import CMR_Article
 class Test_CMR_Article(unittest.TestCase):
 
     def test_build_article(self):
+        print("test_build_article...")
+        
         article = CMR_Article()
         
         example_title = "ABC, Parker’s Piece, 7 July 2017"

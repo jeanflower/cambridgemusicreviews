@@ -2,8 +2,9 @@
 
 import unittest
 
-from cmr.cmr_utilities import get_soup
+from cmr.cmr_utilities import web_page 
 from cmr.cmr_get_articles_from_webpage import get_entry_titles 
+from bs4 import BeautifulSoup
 
 from os import path
 
@@ -11,25 +12,30 @@ from os import path
 class Test_get_entry_titles(unittest.TestCase):
 
     def test_get_entry_titles(self):
-        
-        #For testing, use html file stores in this codebase
+        print("test_get_entry_titles...")
+        #For testing, use html file stored in this codebase
         test_file = path.join(path.dirname(__file__), \
            'captured_pages/page_text_1.html')
         html = open(test_file)
 
         #------- GET DATA out of the web page of interest        
-        soup = get_soup(html)
+        soup = BeautifulSoup(html, "lxml")
+        
+        this_web_page = web_page()
+        this_web_page.exists = True
+        this_web_page.html = html
+        this_web_page.soup = soup
         
         #simple test for getting articles out of the web page
 
         #print("------ page 1 entry_title headings")
-        articles = get_entry_titles(soup)
+        articles = get_entry_titles(this_web_page)
 
         # the test doc has 7 articles        
         self.assertEqual(len(articles), 7)
 
         #assert the contents of the last article
-        print(articles[6].title)
+        #print(articles[6].title)
         self.assertEqual(articles[6].title,\
             "The Scissors, Corner House, Cambridge, 1 April\xa02017");
         self.assertEqual(articles[6].url,\
