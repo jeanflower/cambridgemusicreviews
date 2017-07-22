@@ -12,9 +12,9 @@ def get_html_link(article):
 
 def get_index_html(articles):
     html = "<h2>About</h2>\n"+\
-           "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>"+\
-           "<div class=\"cmr-extras\">"+\
-           "<h2>Extras</h2>"+\
+           "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"+\
+           "<div class=\"cmr-extras\">\n"+\
+           "<h2>Extras</h2>\n"+\
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.extra :
@@ -28,18 +28,18 @@ def get_index_html(articles):
         if article.category != CMR_Index_Categories.single_ep :
             continue        
         html = html + get_html_link(article);
-    html = html + "</div>"+\
-           "<div class=\"cmr-albums\">"+\
-           "<h2>Album reviews</h2>"+\
-           "<p>"
+    html = html + "</div>\n"+\
+           "<div class=\"cmr-albums\">\n"+\
+           "<h2>Album reviews</h2>\n"+\
+           "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.album :
             continue        
         html = html + get_html_link(article);
-    html = html + "</div>"+\
-           "<div class=\"cmr-live\">"+\
-           "<h2>Live reviews</h2>"+\
-           "<p>"
+    html = html + "</div>\n"+\
+           "<div class=\"cmr-live\">\n"+\
+           "<h2>Live reviews</h2>\n"+\
+           "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.live :
             continue        

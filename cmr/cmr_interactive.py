@@ -33,6 +33,10 @@ def _confirm_is_album(article):
     print("guessing "+article.title+" is a album review")
     return True
 
+def _confirm_is_single(article):
+    print("guessing "+article.title+" is a single/ep review")
+    return True
+
 def _guess_index_text(article):
     phrases = article.title.split(',')
     
@@ -49,18 +53,22 @@ def _guess_index_text(article):
         # year_part = date_parts[2]
         
         date_appendage = ""
-        if number_part[len(number_part)-1]==1:
+        if number_part[len(number_part)-1]=='1':
             date_appendage = "st"
-        elif number_part[len(number_part)-1]==2:
+        elif number_part[len(number_part)-1]=='2':
             date_appendage = "nd"
-        elif number_part[len(number_part)-1]==3:
+        elif number_part=='13':
+            date_appendage = "th"
+        elif number_part[len(number_part)-1]=='3':
             date_appendage = "rd"
         else :
             date_appendage = "th"
+            
         return phrases[0]+", "+number_part + date_appendage +\
                                " "+month_part 
         #                           + year_part
-    elif article.category == CMR_Index_Categories.album:
+    elif article.category == CMR_Index_Categories.album or \
+         article.category == CMR_Index_Categories.single_ep:
         return phrases[0]
     
 def get_missing_category_interactive(article):
@@ -98,11 +106,27 @@ def get_missing_category_interactive(article):
 #        return cat
 #    else:
 #        return ""
+
+def _known_single_in_title(article):
+
+    # print("check whether we recognise an single here")
+    # print(article.title)
+
+    singles = ["Of The Night"]
+    for single in singles:        
+        if single in article.title:
+            return True
+    
+    return False
+
 def _known_album_in_title(article):
+
+    # print("check whether we recognise an album here")
+    # print(article.title)
+
     albums = ["A Simple Guide To Small And Medium Pond Life",
-              "Of The Night",
               "The Race For Space",
-              "Wave Pictures, released February 2015",
+              "Wave Pictures, released February",
               "Shadows In The Night", 
               "Album Review"]
     for album in albums:        
@@ -134,6 +158,13 @@ def fill_in_missing_data(articles,
         has_category = article.category != CMR_Index_Categories.undefined
         if has_index_text and has_category:
             continue
+
+        if _known_single_in_title(article):
+            if _confirm_is_single(article):
+                article.category = CMR_Index_Categories.single_ep
+                article.index_text = _guess_index_text(article)
+                has_category = True
+                has_index_text = True
 
         if _known_album_in_title(article):
             if _confirm_is_album(article):

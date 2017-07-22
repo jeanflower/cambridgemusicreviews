@@ -96,4 +96,27 @@ class CMR_Article:
             print("index_text is :\""+article.index_text+"\"")
             print("category   is :\""+article.category+"\"")
 
-            
+
+def sort_key(article):
+    result= ""
+    if article.category == CMR_Index_Categories.extra:
+        result+="0 "
+    elif article.category == CMR_Index_Categories.single_ep:
+        result+="1 "
+    elif article.category == CMR_Index_Categories.album:
+        result+="2 "
+    elif article.category == CMR_Index_Categories.live:
+        result+="3 "
+    else:
+        result+="4 "
+    if article.index_text[:3]=="The":
+        result += article.index_text[4:].strip()
+    else:
+        result += article.index_text.strip()
+    print(result);
+    return result;
+    
+def sort_articles(articles):
+    articles.sort(key = sort_key)
+
+    

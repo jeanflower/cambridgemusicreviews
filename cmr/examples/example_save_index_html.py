@@ -5,8 +5,6 @@ from cmr.cmr_interactive import fill_in_missing_data,\
              get_missing_category_interactive
 from cmr.cmr_create_index_html import save_index_html
 
-#articles = get_all_cmr_data_quick_test()
-
 sample_article_0 = CMR_Article()
 sample_article_0.title = "ABC, Parker’s Piece, 7 July 2017"
 sample_article_0.url = "http://example_url_0.com"
@@ -29,3 +27,22 @@ fill_in_missing_data(articles,
                      get_missing_category_interactive)
 
 save_index_html(articles, "test.html")
+
+
+#page_number = 15
+##get url from cmr wordpress site
+#url = get_cmr_url(page_number)
+#this_web_page = get_httpresponse(url)
+#    
+#if this_web_page.exists:
+#    #------- GET DATA out of the web page of interest
+#
+#    #simple test for getting articles out of the web page
+#    #print("------ page 1 entry_title headings")
+#    articles = get_entry_titles(this_web_page)
+#
+#fill_in_missing_data(articles,
+#                     get_missing_index_text_interactive, 
+#                     get_missing_category_interactive)
+#
+#save_index_html(articles, "test.html")
