@@ -130,5 +130,5 @@ def _get_all_cmr_data(quick_test):
 def get_all_cmr_data_quick_test():
     return _get_all_cmr_data(True)
 
-def get_all_cmr_data(quick_test):
+def get_all_cmr_data():
     return _get_all_cmr_data(False)
