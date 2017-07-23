@@ -11,7 +11,8 @@ def get_html_link(article):
     return html
 
 def get_index_html(articles):
-    html = "<h2>About</h2>\n"+\
+    html = "<!–– start copying for wordpess here -->"+\
+           "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"+\
            "<div class=\"cmr-extras\">\n"+\
            "<h2>Extras</h2>\n"+\
@@ -44,7 +45,9 @@ def get_index_html(articles):
         if article.category != CMR_Index_Categories.live :
             continue        
         html = html + get_html_link(article);
-    html = html + "</div>"
+    html = html + \
+           "</div>\n" +\
+           "<!–– start copying for wordpess here -->"
     return html
 
 def save_index_html(articles, filename):
