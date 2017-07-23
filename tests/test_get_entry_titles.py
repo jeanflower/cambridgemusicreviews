@@ -44,5 +44,7 @@ class Test_get_entry_titles(unittest.TestCase):
         self.assertEqual(articles[6].index_text, "");
         self.assertEqual(articles[6].category, "Undefined");
 
+        html.close()
+        
 if __name__ == '__main__':
     unittest.main()

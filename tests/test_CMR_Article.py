@@ -51,8 +51,13 @@ class Test_CMR_Article(unittest.TestCase):
                     sample_article_2, sample_article_3]
         
         sort_articles(articles)
-        for article in articles:
-            article.print_article_details()
+            
+        self.assertEqual(articles[0].title,'z')
+        self.assertEqual(articles[0].index_text,'w')
+        self.assertEqual(articles[1].title,'z')
+        self.assertEqual(articles[1].index_text,'z')
+        self.assertEqual(articles[2].title,"Lee Hull, Corner House, Cambridge, 4 June 2017")
+        self.assertEqual(articles[3].title,"ABC, Parker’s Piece, 7 July 2017")
 
 if __name__ == '__main__':
     unittest.main()
