@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 
 #DONE : obtain titles and urls from articles on a specified web page
 # gets title, url for each
@@ -15,10 +13,6 @@
 # tested only via get_all_cmr_data
 # usage example: example_get_index_anchors.py
 
-#TODO? : make CMR_Index_Categories into an extensible list
-# it's tightly bound to the html that's written and stored in the HTML
-# index.  Do we want to easily add or change the categories?
-
 #DONE : combine article data from web page (including existing index)
 # note both indexes from web page and from index text will be incomplete
 # but the url is shared data and lets us combine the two
@@ -33,7 +27,7 @@
 #
 # fill_in_missing_data 
 
-#Done : get missing data from user
+#DONE : get missing data from user
 # Given an article with missing index_text or category,
 # get help from the user to determine the right string/category
 # and fill it in.
@@ -51,8 +45,6 @@
 #
 # save_index_html(articles, "test.html")
 
-#TODO : write a utility to let a user edit data in the article data
-# given a list of CMR_Articles, let the user make edits
 
 
 
