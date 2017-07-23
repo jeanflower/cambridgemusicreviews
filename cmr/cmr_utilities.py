@@ -113,7 +113,7 @@ def sort_key(article):
         result += article.index_text[4:].strip()
     else:
         result += article.index_text.strip()
-    print(result);
+    #print(result);
     return result;
     
 def sort_articles(articles):
