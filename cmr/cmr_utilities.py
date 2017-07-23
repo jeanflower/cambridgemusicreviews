@@ -46,7 +46,7 @@ def get_httpresponse(url):
 
     except error.HTTPError as err:
        if err.code == 404:
-           print("got 404")
+           #print("got 404")
            returned_web_page.exists = False;
            returned_web_page.html = ""
        else:
