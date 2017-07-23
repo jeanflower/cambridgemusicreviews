@@ -11,13 +11,13 @@ The main contributor to the cambridgemusicreviews site wants to maintain it with
 ## Understanding the scripts
 The scripts should have documentation in the comments, but also there is sample code in https://github.com/jeanflower/cambridgemusicreviews/tree/master/cmr/examples to illustrate how we might use some functions. 
 
-# Example:
+### Example:
 python make_index_html.py 
 generates a file called test.html which can be used to update the html for the index widget in the page.
 
 ## Tests
 There are python unit tests in the tests folder.  These should always pass.
-# To run the unit tests:
+### To run the unit tests:
 python -m unittest discover tests
 
 ## Contributors
