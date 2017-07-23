@@ -25,18 +25,6 @@ def get_missing_index_text_interactive(article):
 #    else:
 #        return ""
 
-def _confirm_is_live(article):
-    print("guessing "+article.title+" is a live review")
-    return True
-
-def _confirm_is_album(article):
-    print("guessing "+article.title+" is a album review")
-    return True
-
-def _confirm_is_single(article):
-    print("guessing "+article.title+" is a single/ep review")
-    return True
-
 def _guess_index_text(article):
     phrases = article.title.split(',')
     
@@ -53,8 +41,12 @@ def _guess_index_text(article):
         # year_part = date_parts[2]
         
         date_appendage = ""
-        if number_part[len(number_part)-1]=='1':
+        if number_part=='11':
+            date_appendage = "th"
+        elif number_part[len(number_part)-1]=='1':
             date_appendage = "st"
+        elif number_part=='12':
+            date_appendage = "th"
         elif number_part[len(number_part)-1]=='2':
             date_appendage = "nd"
         elif number_part=='13':
@@ -151,7 +143,10 @@ def _known_venue_in_title(article):
 # Store result back in articles
 def fill_in_missing_data(articles, 
                          get_missing_index_text, 
-                         get_missing_category):
+                         get_missing_category,
+                         confirm_is_single,
+                         confirm_is_album,
+                         confirm_is_live):
     for article in articles:
         # an article which already has index_text and a category is complete
         has_index_text = len(article.index_text) > 0
@@ -160,21 +155,21 @@ def fill_in_missing_data(articles,
             continue
 
         if _known_single_in_title(article):
-            if _confirm_is_single(article):
+            if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep
                 article.index_text = _guess_index_text(article)
                 has_category = True
                 has_index_text = True
 
         if _known_album_in_title(article):
-            if _confirm_is_album(article):
+            if confirm_is_album(article):
                 article.category = CMR_Index_Categories.album
                 article.index_text = _guess_index_text(article)
                 has_category = True
                 has_index_text = True
                 
         if _known_venue_in_title(article):
-            if _confirm_is_live(article):
+            if confirm_is_live(article):
                 article.category = CMR_Index_Categories.live
                 article.index_text = _guess_index_text(article)
                 has_category = True
