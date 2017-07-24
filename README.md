@@ -14,8 +14,12 @@ generates a file called test.html which can be used to update the html for the i
 
 ## Understanding the scripts
 The scripts should have documentation in the comments, but also there is sample code in .  
-https://github.com/jeanflower/cambridgemusicreviews/tree/master/cmr/examples  
+https://github.com/jeanflower/cambridgemusicreviews/tree/master/examples  
 to illustrate how we might use some functions. 
+
+To run all example code (and check it all still compiles!)  
+```python run_examples.py```
+
 ## Tests
 There are python unit tests in the tests folder.  These should always pass.
 ### To run the unit tests:
