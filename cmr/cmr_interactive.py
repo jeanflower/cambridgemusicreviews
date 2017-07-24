@@ -4,15 +4,15 @@ from cmr.cmr_utilities import CMR_Index_Categories
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
-    return response.lowercase() == 'y';    
+    return response.lower() == 'y';    
 
 def confirm_is_album_interactive(article):
     response = input("guessed "+article.title+" is an album review; ok? (y/n):")
-    return response.lowercase() == 'y';    
+    return response.lower() == 'y';    
 
 def confirm_is_live_interactive(article):
     response = input("guessed "+article.title+" is a live review; ok? (y/n):")
-    return response.lowercase() == 'y';    
+    return response.lower() == 'y';    
     
 def get_missing_index_text_interactive(article):
     # TODO : ask the user to input some text and use their response     

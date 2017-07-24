@@ -11,7 +11,7 @@ def get_html_link(article):
     return html
 
 def get_index_html(articles):
-    html = "<!–– start copying for wordpess here -->"+\
+    html = "\n<!–– start copying for wordpess here -->\n"+\
            "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"+\
            "<div class=\"cmr-extras\">\n"+\
@@ -47,7 +47,7 @@ def get_index_html(articles):
         html = html + get_html_link(article);
     html = html + \
            "</div>\n" +\
-           "<!–– start copying for wordpess here -->"
+           "<!–– stop copying for wordpess here -->\n"
     return html
 
 def save_index_html(articles, filename):

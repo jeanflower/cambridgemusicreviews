@@ -28,11 +28,11 @@ def get_httpresponse(url):
         soup = _get_soup(html)
         returned_web_page.soup = soup
 
-        #print(get_soup(html).prettify())
+        #print(_get_soup(html).prettify())
         #bt wraps failure in a helpful page - look for no anchors
         if soup.find("a") == None:
 #        if 1+1!=2:
-#        if "webaddresshelp" in get_soup(html).prettify():
+#        if "webaddresshelp" in _get_soup(html).prettify():
             #print("opened page ok, found no anchors")
             returned_web_page.exists = False;
             returned_web_page.html = ""
@@ -40,7 +40,7 @@ def get_httpresponse(url):
             returned_web_page.exists = True;
             #print("opened page ok, extract content")
             #print("html is "+str(html))
-            #print(get_soup(html).prettify())
+            #print(_get_soup(html).prettify())
             returned_web_page.html = html
 
 
