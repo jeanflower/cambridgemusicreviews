@@ -11,9 +11,6 @@ example_get_all_cmr_data()
 from examples.example_get_entry_titles import example_get_entry_titles
 example_get_entry_titles()
 
-from examples.example_get_fill_save import example_get_fill_save
-example_get_fill_save()
-
 from examples.example_get_index_anchors import example_get_index_anchors
 example_get_index_anchors()
 
