@@ -62,7 +62,7 @@ def save_html(url, destination_file):
         urlretrieve(url, destination_file)    
         #print("no error")
         return True
-    except error.HTTPError as err:
+    except error.HTTPError:
         #print("got error")
         return False    
 
