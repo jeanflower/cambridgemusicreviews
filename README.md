@@ -23,11 +23,13 @@ to illustrate how we might use some functions.
 To run all example code (and check it all still compiles!)  
 ```python run_examples.py```
 
-## Tests
+## Tests and quality
 There are python unit tests in the tests folder.  These should always pass.
 ### To run the unit tests:
 ```python -m unittest discover tests```
-
+### Quality
+Visit the codacy dashboard here  
+https://www.codacy.com/app/jeanflower/cambridgemusicreviews/dashboard
 ## Contributors
 Initially set up by Jean Flower.
 
