@@ -19,7 +19,7 @@ def get_index_html(articles):
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.extra :
-            continue        
+            continue
         html = html + get_html_link(article);
     html = html + "</div>\n"+\
            "<div class=\"cmr-singles\">\n"+\
@@ -27,7 +27,7 @@ def get_index_html(articles):
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.single_ep :
-            continue        
+            continue
         html = html + get_html_link(article);
     html = html + "</div>\n"+\
            "<div class=\"cmr-albums\">\n"+\
@@ -35,7 +35,7 @@ def get_index_html(articles):
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.album :
-            continue        
+            continue
         html = html + get_html_link(article);
     html = html + "</div>\n"+\
            "<div class=\"cmr-live\">\n"+\
@@ -43,7 +43,7 @@ def get_index_html(articles):
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.live :
-            continue        
+            continue
         html = html + get_html_link(article);
     html = html + \
            "</div>\n" +\
@@ -54,7 +54,7 @@ def save_index_html(articles, filename):
     get_index_html(articles)
     #TODO : save to a file called filename
     html = "<!DOCTYPE html><body>"+get_index_html(articles)+"</body></html>"
-    
+
     f = open(filename, 'w')
     f.write(html)
     f.close()

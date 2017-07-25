@@ -13,7 +13,7 @@ def get_cmr_url(page_number):
     #set the url based on the page number given
     url="https://cambridgemusicreviews.net/page/"+str(page_number)
     #print(url)
-    return url    
+    return url
 
 #go to the music reviews page and extracts the
 #important information we need to process further
@@ -21,7 +21,7 @@ def get_httpresponse(url):
     #print("url is "+url)
 
     returned_web_page = web_page()
-    #go to the given url and obtain the html 
+    #go to the given url and obtain the html
     try:
         html = urlopen(url)
         soup = _get_soup(html)
@@ -52,18 +52,18 @@ def get_httpresponse(url):
            #print("did not get 404")
            returned_web_page.exists = True;
            returned_web_page.html = ""
-        
+
     return returned_web_page
 
 #save html from a url to a local file
 def save_html(url, destination_file):
     try:
-        urlretrieve(url, destination_file)    
+        urlretrieve(url, destination_file)
         #print("no error")
         return True
     except error.HTTPError:
         #print("got error")
-        return False    
+        return False
 
 #obtain a BeautifulSoup object which can parse the html
 def _get_soup(html):
@@ -87,14 +87,14 @@ class CMR_Index_Categories:
     album = "Album reviews"
     live = "Live Reviews"
     undefined = "Undefined"
-    
+
 
 class CMR_Article:
     title = ""      # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
     url = ""        # e.g. "https://cambridgemusicreviews.net/2017/07/09/abc-parkers-piece-cambridge-7-july-2017/"
     index_text = "" # e.g. "ABC"
     category = CMR_Index_Categories.undefined # e.g. CMR_Index_Categories.live
-    
+
     def print_article_details(article):
             print("title      is :\""+article.title+"\"")
             print("url        is :\""+article.url+"\"")
@@ -120,8 +120,7 @@ def sort_key(article):
         result += article.index_text.strip()
     #print(result);
     return result;
-    
+
 def sort_articles(articles):
     articles.sort(key = sort_key)
 
-    

@@ -8,15 +8,15 @@ from bs4 import BeautifulSoup
 def example_soup():
     #choose a web site we want to visit
     url="http://www.google.co.uk"
-        
-    #go to the given url and obtain the html 
+
+    #go to the given url and obtain the html
     html = urlopen(url)
-    
+
     #set up a beautifulsoup object to parse the html
     soup = BeautifulSoup(html, "lxml")
-    
+
     #check the soup got the expected text
     print(soup.prettify())
-    
+
     #Many more soup functions are documented here
     #https://www.crummy.com/software/BeautifulSoup/bs4/doc/

@@ -5,20 +5,20 @@ from cmr.cmr_utilities import \
 
 #  Given a page with articles,
 #  obtain index-relevant data from the articles.
-#  Data comes back as (partially complete) 
+#  Data comes back as (partially complete)
 #  CMR_Article objects; we'll know the title and url.
 
 #  Given a page with an existing index,
 #  obtain the data from the index.
 #  Expect to find categoriseddata tagged by
 #  "cmr-extras", "cmr-singles", "cmr-albums" and "cmr-live".
-#  Data comes back as (partially complete) 
+#  Data comes back as (partially complete)
 #  CMR_Article objects; we'll know the index text, url and category.
 
 #Choose the headings which have class = entry-title
 def get_entry_titles(web_page):
     soup = web_page.soup
-    
+
     #set up an empty list to hold data for each link
     articles_found = []
 
@@ -29,9 +29,9 @@ def get_entry_titles(web_page):
     #the headings we're interested in all have class=entry-title
     #ask soup for a list of such headings
     myH1s = soup.findAll("h1", { "class" : "entry-title" })
-    
+
     #iterate over these headings compiling data into result_data
-    for h1 in myH1s: 
+    for h1 in myH1s:
         #for each one get the text the human sees and the link url
         this_title = h1.find('a').contents[0]
         this_url = h1.find('a')["href"]
@@ -41,8 +41,8 @@ def get_entry_titles(web_page):
         this_article.title = str(this_title)
         this_article.url = this_url
         articles_found.append(this_article)
-        
-    #pass the results back to the calling code    
+
+    #pass the results back to the calling code
     return articles_found
 
 # Iterate over all cmr articles extracting article data until
@@ -52,10 +52,10 @@ def _get_all_cmr_articles(quick_test):
 
     articles_found = []
 
-    max_page_number = 100; #current max is 20    
+    max_page_number = 100; #current max is 20
     if quick_test:
         max_page_number = 2
-        
+
     for page_number in range(1, max_page_number):
         web_page = get_httpresponse(get_cmr_url(page_number))
         if not(web_page.exists):
@@ -70,7 +70,7 @@ def get_all_cmr_articles():
 #############
 
 #Choose the index anchors which have given tag, save Article with given category
-def get_index_anchors(soup, tag, category):    
+def get_index_anchors(soup, tag, category):
     #set up an empty list to hold data for each link
     articles_found = []
 
@@ -78,9 +78,9 @@ def get_index_anchors(soup, tag, category):
     #ask soup for a list of such headings
     my_div = soup.find("div", { "class" : tag })
     anchors = my_div.findAll('a')
-    
+
     #iterate over these anchors compiling data into result_data
-    for anchor in anchors: 
+    for anchor in anchors:
         #for each one get the text the human sees and the link url
         this_index_text = str(anchor.contents[0])
         this_url = str(anchor["href"])
@@ -91,8 +91,8 @@ def get_index_anchors(soup, tag, category):
         this_article.url = this_url
         this_article.category = category
         articles_found.append(this_article)
-        
-    #pass the results back to the calling code    
+
+    #pass the results back to the calling code
     return articles_found
 
 def _extend_url_map(soup, div_string, category, url_map):
@@ -113,7 +113,7 @@ def _add_existing_index_data(articles):
     _extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
     _extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
     _extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
-        
+
     for article in articles:
         map_entry = url_map.get(article.url)
         if map_entry == None:

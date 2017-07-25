@@ -9,10 +9,10 @@ class Test_get_httpresponse(unittest.TestCase):
 
     def test_get_httpresponse(self):
         print("test_get_httpresponse...")
-        
+
         url = "http://nosuchpage.html"
         web_page = get_httpresponse(url)
-        
+
         self.assertEqual(web_page.exists, False);
 
         url = "http://www.google.co.uk"
