@@ -27,6 +27,9 @@ To run all example code (and check it all still compiles!)
 There are python unit tests in the tests folder.  These should always pass.
 ### To run the unit tests:
 ```python -m unittest discover tests```
+### Coverage
+Coverage data can be collected using  
+```coverage run -m unittest discover tests/```
 ### Quality
 This repo is under codacy review
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a59e0815f2a74514bcd1e1273f525705)](https://www.codacy.com/app/jeanflower/cambridgemusicreviews?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jeanflower/cambridgemusicreviews&amp;utm_campaign=Badge_Grade)
