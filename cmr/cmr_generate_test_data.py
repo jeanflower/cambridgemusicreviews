@@ -10,6 +10,10 @@ def generate_test_data():
     # after loading the data from the CMR wordpress site
     for page_number in range(1, max_page_number):
         url = get_cmr_url(page_number)
-        if not save_html(url, "page_text_"+str(page_number)+".html"):
+        print("ask for "+url)
+        destination_filename = "page_text_"+str(page_number)+".html"
+        if not save_html(url, destination_filename):
+            print("failed to obtain page")
             break
+        print("saved as "+destination_filename)
 

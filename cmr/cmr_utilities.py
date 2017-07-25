@@ -58,7 +58,13 @@ def get_httpresponse(url):
 
 #save html from a url to a local file
 def save_html(url, destination_file):
-    urlretrieve(url, destination_file)    
+    try:
+        urlretrieve(url, destination_file)    
+        #print("no error")
+        return True
+    except error.HTTPError as err:
+        #print("got error")
+        return False    
 
 #obtain a BeautifulSoup object which can parse the html
 def _get_soup(html):

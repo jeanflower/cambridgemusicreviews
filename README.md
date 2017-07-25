@@ -8,7 +8,10 @@ A place to develop scripts associated with https://cambridgemusicreviews.net
 The main contributor to the cambridgemusicreviews site wants to maintain it with minimal technical intervention.  Anything we can do to script maintainance of the site will be welcomed. The following video show some manual work maintaining the site index which we would like to make less manual.
 ![manual index maintenance](docs/editing_cmr_site_index.mp4)
 
-### Example:
+### Examples:
+```python capture_cmr_pages.py```
+generates a set of files called page_text_1.html, page_text_2.html,... a local archive of the current state of the CMR site.
+
 ```python make_index_html.py``` 
 generates a file called test.html which can be used to update the html for the index widget in the page.
 
