@@ -15,7 +15,6 @@ def get_cmr_url(page_number):
     #print(url)
     return url    
 
-web_page = {"exists":False, "html":"undefined"}
 #go to the music reviews page and extracts the
 #important information we need to process further
 def get_httpresponse(url):
