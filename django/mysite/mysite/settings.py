@@ -25,8 +25,8 @@ SECRET_KEY = '=b7*i_(vb9-q*9#6bprl%-z)j=d(q*_vfvv665r4#4+*4vt-7f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['jeanflower.pythonanywhere.com']
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
