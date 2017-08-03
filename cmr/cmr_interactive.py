@@ -158,7 +158,7 @@ def fill_in_missing_data_interactive(articles):
                      confirm_is_single_interactive,
                      confirm_is_album_interactive,
                      confirm_is_live_interactive)
-    
+
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles

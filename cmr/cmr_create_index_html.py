@@ -53,7 +53,7 @@ def _get_index_html(articles):
 def get_index_doc_html(articles):
     html = "<!DOCTYPE html><body>"+_get_index_html(articles)+"</body></html>"
     return html
-    
+
 def save_index_html(articles, filename):
     #TODO : save to a file called filename
     html = get_index_doc_html(articles)

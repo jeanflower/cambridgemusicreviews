@@ -27,7 +27,7 @@ class Test_get_httpresponse(unittest.TestCase):
         articles = articles + get_index_anchors(soup, "cmr-singles", CMR_Index_Categories.single_ep)
         articles = articles + get_index_anchors(soup, "cmr-albums", CMR_Index_Categories.album)
         articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
-    
+
         #report back
         print("articles found:")
         article_number = 0
