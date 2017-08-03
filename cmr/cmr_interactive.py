@@ -132,7 +132,8 @@ def _known_album_in_title(article):
               "The Race For Space",
               "Wave Pictures, released February",
               "Shadows In The Night",
-              "Album Review"]
+              "Album Review",
+              "This Is The Sound Of Sugar Town"]
     for album in albums:
         if album in article.title:
             return True
@@ -150,6 +151,14 @@ def _known_venue_in_title(article):
 
     return False
 
+def fill_in_missing_data_interactive(articles):
+    return fill_in_missing_data(articles,
+                     get_missing_index_text_interactive,
+                     get_missing_category_interactive,
+                     confirm_is_single_interactive,
+                     confirm_is_album_interactive,
+                     confirm_is_live_interactive)
+    
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles

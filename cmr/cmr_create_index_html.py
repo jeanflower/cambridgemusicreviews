@@ -10,7 +10,7 @@ def get_html_link(article):
     html = html + "</a><br />\n"
     return html
 
-def get_index_html(articles):
+def _get_index_html(articles):
     html = "\n<!–– start copying for wordpess here -->\n"+\
            "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"+\
@@ -50,11 +50,13 @@ def get_index_html(articles):
            "<!–– stop copying for wordpess here -->\n"
     return html
 
+def get_index_doc_html(articles):
+    html = "<!DOCTYPE html><body>"+_get_index_html(articles)+"</body></html>"
+    return html
+    
 def save_index_html(articles, filename):
-    get_index_html(articles)
     #TODO : save to a file called filename
-    html = "<!DOCTYPE html><body>"+get_index_html(articles)+"</body></html>"
-
+    html = get_index_doc_html(articles)
     f = open(filename, 'w')
     f.write(html)
     f.close()
