@@ -2,12 +2,7 @@
 
 #from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
 from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
-from cmr.cmr_interactive import fill_in_missing_data,\
-             get_missing_index_text_interactive, \
-             get_missing_category_interactive, \
-             confirm_is_single_interactive, \
-             confirm_is_album_interactive, \
-             confirm_is_live_interactive
+from cmr.cmr_interactive import fill_in_missing_data_interactive
 
 
 def example_fill_in_missing_data():
@@ -31,12 +26,7 @@ def example_fill_in_missing_data():
         article.print_article_details()
 
     print("--------------------------calling fill_in_missing_data")
-    fill_in_missing_data(articles,
-                         get_missing_index_text_interactive,
-                         get_missing_category_interactive,
-                         confirm_is_single_interactive,
-                         confirm_is_album_interactive,
-                         confirm_is_live_interactive)
+    fill_in_missing_data_interactive(articles)
 
     print("--------------------------after filling in missing details:")
     for article in articles:

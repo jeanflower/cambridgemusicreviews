@@ -4,12 +4,7 @@ from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories, \
 
 from cmr.cmr_get_articles_from_webpage import get_entry_titles
 
-from cmr.cmr_interactive import fill_in_missing_data,\
-             get_missing_index_text_interactive, \
-             get_missing_category_interactive, \
-             confirm_is_single_interactive, \
-             confirm_is_album_interactive, \
-             confirm_is_live_interactive
+from cmr.cmr_interactive import fill_in_missing_data_interactive
 
 from cmr.cmr_create_index_html import save_index_html
 
@@ -31,12 +26,7 @@ def example_save_index_html():
         print("----")
         article.print_article_details()
 
-    fill_in_missing_data(articles,
-                         get_missing_index_text_interactive,
-                         get_missing_category_interactive,
-                         confirm_is_single_interactive,
-                         confirm_is_album_interactive,
-                         confirm_is_live_interactive)
+    fill_in_missing_data_interactive(articles)
 
     save_index_html(articles, "test.html")
 
@@ -53,11 +43,6 @@ def example_save_index_html():
         #print("------ page 1 entry_title headings")
         articles = get_entry_titles(this_web_page)
 
-    fill_in_missing_data(articles,
-                         get_missing_index_text_interactive,
-                         get_missing_category_interactive,
-                         confirm_is_single_interactive,
-                         confirm_is_album_interactive,
-                         confirm_is_live_interactive)
+    fill_in_missing_data_interactive(articles)
 
     save_index_html(articles, "test.html")
