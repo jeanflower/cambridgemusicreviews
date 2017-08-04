@@ -29,10 +29,27 @@ class Test_get_httpresponse(unittest.TestCase):
         articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
 
         #report back
-        print("articles found:")
-        article_number = 0
-        for article in articles:
-            article_number = article_number + 1
-            print("--------- article number "+str(article_number)+" "+article.category)
-        #    article.print_article_details();
-        print("done")
+        
+        self.assertEqual(len(articles), 134);
+        for i in range(0, 5):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
+        for i in range(5, 22):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.single_ep)
+        for i in range(22, 55):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.album)
+        for i in range(55, 134):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.live)
+        
+        self.assertEqual(articles[0].title, "")
+        self.assertEqual(articles[0].url, "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/")
+        self.assertEqual(articles[0].index_text, "12 Highlights from 2015")
+        
+#        print("articles found:")
+#        article_number = 0
+#        for article in articles:
+#            article_number = article_number + 1
+#            print("--------- article number "+str(article_number)+" "+article.index_text)
+#        #    article.print_article_details();
+#        print("done")
+
+        html.close()
