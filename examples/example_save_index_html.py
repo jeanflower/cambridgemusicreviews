@@ -1,8 +1,7 @@
 #from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories, \
-                              get_cmr_url, get_httpresponse
+from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
 
-from cmr.cmr_get_articles_from_webpage import get_entry_titles
+from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
 
 from cmr.cmr_interactive import fill_in_missing_data_interactive
 
@@ -31,17 +30,10 @@ def example_save_index_html():
     save_index_html(articles, "test.html")
 
 
-    page_number = 15
-    #get url from cmr wordpress site
-    url = get_cmr_url(page_number)
-    this_web_page = get_httpresponse(url)
 
-    if this_web_page.exists:
-        #------- GET DATA out of the web page of interest
 
-        #simple test for getting articles out of the web page
-        #print("------ page 1 entry_title headings")
-        articles = get_entry_titles(this_web_page)
+
+    articles = get_all_cmr_articles()
 
     fill_in_missing_data_interactive(articles)
 

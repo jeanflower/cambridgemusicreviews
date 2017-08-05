@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import CMR_Index_Categories
+import re
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
@@ -111,6 +112,12 @@ def get_missing_category_interactive(article):
 #    else:
 #        return ""
 
+def _string_in_title(s, article):
+    if s in article.title:
+        return True
+    #print(s+" is not in "+article.title)
+    return False
+
 def _known_single_in_title(article):
 
     # print("check whether we recognise an single here")
@@ -118,7 +125,7 @@ def _known_single_in_title(article):
 
     singles = ["Of The Night"]
     for single in singles:
-        if single in article.title:
+        if _string_in_title(single, article):
             return True
 
     return False
@@ -135,7 +142,7 @@ def _known_album_in_title(article):
               "Album Review",
               "This Is The Sound Of Sugar Town"]
     for album in albums:
-        if album in article.title:
+        if _string_in_title(album, article):
             return True
 
     return False
@@ -146,7 +153,7 @@ def _known_venue_in_title(article):
               "Home Festival, Mundford", "Cambridge Folk Festival",
               "Thetford Forest", "Blue Moon", "Roundhouse"]
     for venue in venues:
-        if venue in article.title:
+        if _string_in_title(venue, article):
             return True
 
     return False
@@ -159,6 +166,14 @@ def fill_in_missing_data_interactive(articles):
                      confirm_is_album_interactive,
                      confirm_is_live_interactive)
 
+def fill_in_missing_data_quiet(articles):
+    return fill_in_missing_data(articles,
+                     get_missing_index_text_interactive,
+                     get_missing_category_interactive,
+                     lambda x:True,
+                     lambda x:True,
+                     lambda x:True)
+    
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles
@@ -174,7 +189,7 @@ def fill_in_missing_data(articles,
         has_category = article.category != CMR_Index_Categories.undefined
         if has_index_text and has_category:
             continue
-
+        
         if _known_single_in_title(article):
             if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep

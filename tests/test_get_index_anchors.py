@@ -53,3 +53,7 @@ class Test_get_httpresponse(unittest.TestCase):
 #        print("done")
 
         html.close()
+
+
+if __name__ == '__main__':
+    unittest.main()

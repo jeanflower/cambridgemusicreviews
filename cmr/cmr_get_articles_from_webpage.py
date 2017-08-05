@@ -3,71 +3,66 @@
 from cmr.cmr_utilities import \
     CMR_Article, get_cmr_url, get_httpresponse, CMR_Index_Categories
 
-#  Given a page with articles,
+import requests
+import re
+import html
+
+#  Given the CMR with articles,
 #  obtain index-relevant data from the articles.
+#  Use the wordpress REST API.
 #  Data comes back as (partially complete)
 #  CMR_Article objects; we'll know the title and url.
 
-#  Given a page with an existing index,
-#  obtain the data from the index.
-#  Expect to find categoriseddata tagged by
-#  "cmr-extras", "cmr-singles", "cmr-albums" and "cmr-live".
-#  Data comes back as (partially complete)
-#  CMR_Article objects; we'll know the index text, url and category.
-
-#Choose the headings which have class = entry-title
-def get_entry_titles(web_page):
-    soup = web_page.soup
-
+def _get_all_cmr_articles_no_index(quick_test):
     #set up an empty list to hold data for each link
     articles_found = []
 
-    if soup == None:
-        print("error : no soup?")
-        return articles_found
+    # Wordpress serves up data one page at a time
+    # Today we have 8 pages. Allow site to grow to 1000 pages.
+    for page_number in range(1, 1000):
+        url = "https://public-api.wordpress.com/rest/v1.1/sites/"\
+             +"cambridgemusicreviews.net/posts"
+             
+        # influences the formatting of the results
+        url+= "?context=\"display\""
 
-    #the headings we're interested in all have class=entry-title
-    #ask soup for a list of such headings
-    myH1s = soup.findAll("h1", { "class" : "entry-title" })
-
-    #iterate over these headings compiling data into result_data
-    for h1 in myH1s:
-        #for each one get the text the human sees and the link url
-        this_title = h1.find('a').contents[0]
-        this_url = h1.find('a')["href"]
-
-        # build a CMR_Article
-        this_article = CMR_Article()
-        this_article.title = str(this_title)
-        this_article.url = this_url
-        articles_found.append(this_article)
+        url+= "&page="+str(page_number)
+        
+        if quick_test:
+            # ask for 4 results only
+            url+= "&number=4"
+        
+        ret = requests.get(url)
+        returned_code = ret.status_code
+        #print("returned value is "+str(ret.status_code))
+        
+        if returned_code == 200:
+            posts = ret.json()["posts"]
+            
+            if len(posts) == 0:
+                break
+    
+            #print("got "+str(len(posts))+" posts");    
+            
+            for post in posts:
+                # build a CMR_Article
+                this_article = CMR_Article()
+                this_article.title = html.unescape(post["title"])
+                this_article.url = post["URL"]
+                articles_found.append(this_article)
+        else:
+            print("error from REST API request")
+            break
 
     #pass the results back to the calling code
     return articles_found
 
-# Iterate over all cmr articles extracting article data until
-# we get to a page that doesn't exist.
-# Return a list of all articles found.
-def _get_all_cmr_articles(quick_test):
-
-    articles_found = []
-
-    max_page_number = 100; #current max is 20
-    if quick_test:
-        max_page_number = 2
-
-    for page_number in range(1, max_page_number):
-        web_page = get_httpresponse(get_cmr_url(page_number))
-        if not(web_page.exists):
-            break;
-        articles_found = articles_found + get_entry_titles(web_page)
-
-    return articles_found;
-
-def get_all_cmr_articles():
-    return _get_all_cmr_articles(False)
-
-#############
+#  Given a page with an existing index,
+#  obtain the data from the index.
+#  Expect to find categorised data tagged by
+#  "cmr-extras", "cmr-singles", "cmr-albums" and "cmr-live".
+#  Data comes back as (partially complete)
+#  CMR_Article objects; we'll know the index text, url and category.
 
 #Choose the index anchors which have given tag, save Article with given category
 def get_index_anchors(soup, tag, category):
@@ -114,21 +109,30 @@ def _add_existing_index_data(articles):
     _extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
     _extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
 
+    #print(url_map)
+
     for article in articles:
+        # we're treating the URL string as a unique key for each article
+        # but sometimes they are http and sometimes https
         map_entry = url_map.get(article.url)
+        if map_entry == None and "http:" in article.url:
+            map_entry = url_map.get(re.sub("http:", "https:", article.url))
+        if map_entry == None and "https:" in article.url:
+            map_entry = url_map.get(re.sub("https:", "http:", article.url))
         if map_entry == None:
+            #print("umatched url "+article.url)
             continue
         article.index_text = map_entry.index_text
         article.category = map_entry.category
 
 # From both articles and existing index, combined
-def _get_all_cmr_data(quick_test):
-    articles = _get_all_cmr_articles(quick_test)
+def _get_all_cmr_articles(quick_test):
+    articles = _get_all_cmr_articles_no_index(quick_test)
     _add_existing_index_data(articles)
     return articles
 
 def get_all_cmr_data_quick_test():
-    return _get_all_cmr_data(True)
+    return _get_all_cmr_articles(True)
 
-def get_all_cmr_data():
-    return _get_all_cmr_data(False)
+def get_all_cmr_articles():
+    return _get_all_cmr_articles(False)

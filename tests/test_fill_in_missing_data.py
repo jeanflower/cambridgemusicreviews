@@ -11,15 +11,12 @@ def _get_missing_index_text_test(article):
 def _get_missing_category_test(article):
     return CMR_Index_Categories.live
 
-# during testing, do not check back with the iuser to confirm any guesses
+# during testing, do not check back with the user to confirm any guesses
 # about filling in data
 def _confirm_test(article):
     return True
 
-class Test_fill_in_missing_data(unittest.TestCase):
-
-
-    def test_fill_in_missing_data_01(self):
+def setup_articles():
         sample_article_0 = CMR_Article()
         sample_article_0.title = "ABC, Parker’s Piece, 7 month-year"
         sample_article_0.url = "http://example_url_0.com"
@@ -42,6 +39,13 @@ class Test_fill_in_missing_data(unittest.TestCase):
                              _confirm_test,
                              _confirm_test,
                              _confirm_test)
+        return articles
+
+class Test_fill_in_missing_data(unittest.TestCase):
+
+
+    def test_fill_in_missing_data_01(self):
+        articles = setup_articles()
 
         self.assertEqual(articles[0].title, "ABC, Parker’s Piece, 7 month-year")
         self.assertEqual(articles[0].url, "http://example_url_0.com")
@@ -85,6 +89,4 @@ class Test_fill_in_missing_data(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
 
