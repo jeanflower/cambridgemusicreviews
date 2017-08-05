@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import CMR_Index_Categories
-import re
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
