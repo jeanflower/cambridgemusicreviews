@@ -10,7 +10,7 @@ def index(request):
     #url+= "&search=\"Dylan\""
     ret = requests.get(url)
     returned_code = ret.status_code
-    print("returned value is "+str(ret.status_code))    
+    print("returned value is "+str(ret.status_code))
     if returned_code == 200:
         all_posts = ret.json()["posts"]
         titles = ""
