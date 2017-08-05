@@ -15,10 +15,8 @@ generates a set of files called page_text_1.html, page_text_2.html,... a local a
 ```python make_index_html.py``` 
 generates a file called test.html which can be used to update the html for the index widget in the page.
 
-To run python scripts in a Django web server, go to django/mysite and say   
-```python manage.py runserver```
-then go to http://127.0.0.1:8000/polls/
-(but this is not hooked up the the cmr code yet)
+```python django/mysite/manage.py runserver```
+runs a web sever, e.g. visit http://127.0.0.1:8000/polls/
 
 ## Understanding the scripts
 The scripts should have documentation in the comments, but also there is sample code in .  
