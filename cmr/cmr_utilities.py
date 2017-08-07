@@ -59,7 +59,7 @@ def get_cmr_page(page_number):
     return _get_httpresponse(_get_cmr_url(page_number))
 
 def save_cmr_page(page_number, destination_file):
-     _save_html(_get_cmr_url(page_number))
+     return _save_html(_get_cmr_url(page_number), destination_file)
 
 #save html from a url to a local file
 def _save_html(url, destination_file):
