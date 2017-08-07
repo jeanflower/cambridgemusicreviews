@@ -21,6 +21,8 @@ def _get_httpresponse(url):
     #print("url is "+url)
 
     returned_web_page = web_page()
+    returned_web_page.exists = False;
+    returned_web_page.html = ""
     #go to the given url and obtain the html
     try:
         html = urlopen(url)  # nosec ; we know the url is made locally
@@ -29,13 +31,9 @@ def _get_httpresponse(url):
 
         #print(_get_soup(html).prettify())
         #bt wraps failure in a helpful page - look for no anchors
-        if soup.find("a") == None:
-#        if 1+1!=2:
-#        if "webaddresshelp" in _get_soup(html).prettify():
+        if not soup.find("a") == None:
+#        if not "webaddresshelp" in _get_soup(html).prettify():
             #print("opened page ok, found no anchors")
-            returned_web_page.exists = False;
-            returned_web_page.html = ""
-        else:
             returned_web_page.exists = True;
             #print("opened page ok, extract content")
             #print("html is "+str(html))
@@ -44,11 +42,7 @@ def _get_httpresponse(url):
 
 
     except error.HTTPError as err:
-       if err.code == 404:
-           #print("got 404")
-           returned_web_page.exists = False;
-           returned_web_page.html = ""
-       else:
+       if not err.code == 404:
            #print("did not get 404")
            returned_web_page.exists = True;
            returned_web_page.html = ""
