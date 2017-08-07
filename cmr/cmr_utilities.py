@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 #define the location of the cambridgemusicreviews site
 #the page auto-revelas more content, accessible using increasing
 #page_numbers
-def get_cmr_url(page_number):
+def _get_cmr_url(page_number):
     #set the url based on the page number given
     url="https://cambridgemusicreviews.net/page/"+str(page_number)
     #print(url)
@@ -17,13 +17,13 @@ def get_cmr_url(page_number):
 
 #go to the music reviews page and extracts the
 #important information we need to process further
-def get_httpresponse(url):
+def _get_httpresponse(url):
     #print("url is "+url)
 
     returned_web_page = web_page()
     #go to the given url and obtain the html
     try:
-        html = urlopen(url)
+        html = urlopen(url)  # nosec ; we know the url is made locally
         soup = _get_soup(html)
         returned_web_page.soup = soup
 
@@ -55,10 +55,16 @@ def get_httpresponse(url):
 
     return returned_web_page
 
+def get_cmr_page(page_number):
+    return _get_httpresponse(_get_cmr_url(page_number))
+
+def save_cmr_page(page_number, destination_file):
+     _save_html(_get_cmr_url(page_number))
+
 #save html from a url to a local file
-def save_html(url, destination_file):
+def _save_html(url, destination_file):
     try:
-        urlretrieve(url, destination_file)
+        urlretrieve(url, destination_file)  # nosec ; we know the url is made locally
         #print("no error")
         return True
     except error.HTTPError:
