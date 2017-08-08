@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import CMR_Index_Categories
-import re
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
@@ -174,6 +173,12 @@ def fill_in_missing_data_quiet(articles):
                      lambda x:True,
                      lambda x:True)
     
+def _article_has_category(article):
+    return article.category != CMR_Index_Categories.undefined
+
+def _article_has_index_text(article):
+    return len(article.index_text) > 0
+
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles
@@ -184,10 +189,9 @@ def fill_in_missing_data(articles,
                          confirm_is_album,
                          confirm_is_live):
     for article in articles:
-        # an article which already has index_text and a category is complete
-        has_index_text = len(article.index_text) > 0
-        has_category = article.category != CMR_Index_Categories.undefined
-        if has_index_text and has_category:
+        has_category = _article_has_category(article)
+        has_index_text = _article_has_index_text(article)
+        if has_category and has_index_text:
             continue
         
         if _known_single_in_title(article):
@@ -219,17 +223,11 @@ def fill_in_missing_data(articles,
 
 
 def report_missing_data(articles):
-
     count_complete_index_entries = 0;
 
     for article in articles:
-        # an article which already has index_text and a category is complete
-
-        has_index_text = len(article.index_text) > 0
-        has_category = article.category != CMR_Index_Categories.undefined
-        if has_index_text and has_category:
-            count_complete_index_entries = count_complete_index_entries + 1
-            continue
+        has_category = _article_has_category(article)
+        has_index_text = _article_has_index(article)
 
         if not has_index_text:
             print(article.title+" has missing index text")
@@ -240,6 +238,9 @@ def report_missing_data(articles):
         if not has_index_text or not has_category:
             print("umatched url is "+article.url)
 
+        if has_category and has_index_text:
+            count_complete_index_entries = count_complete_index_entries + 1
+            continue
 
     print( str(count_complete_index_entries)+
           " complete entries out of "+

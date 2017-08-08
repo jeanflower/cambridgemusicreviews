@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import \
-    CMR_Article, get_cmr_url, get_httpresponse, CMR_Index_Categories
+    CMR_Article, get_cmr_page, CMR_Index_Categories
 
 import requests
 import re
@@ -99,7 +99,7 @@ def _extend_url_map(soup, div_string, category, url_map):
 # and fill in known index_title and category information
 def _add_existing_index_data(articles):
     # all indexes should be the same, look at page 1
-    web_page = get_httpresponse(get_cmr_url(1))
+    web_page = get_cmr_page(1)
     soup = web_page.soup
 
     # Use URL as key in a map
