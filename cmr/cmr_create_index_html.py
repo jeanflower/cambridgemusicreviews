@@ -6,7 +6,10 @@ def get_html_link(article):
     html = "<a href=\""
     html = html + article.url
     html = html + "\">"
-    html = html + article.index_text
+    if article.index_text=="":
+        html = html + "no index text"
+    else:
+        html = html + article.index_text
     html = html + "</a><br />\n"
     return html
 
@@ -43,6 +46,14 @@ def _get_index_html(articles):
            "<p>\n"
     for article in articles:
         if article.category != CMR_Index_Categories.live :
+            continue
+        html = html + get_html_link(article);
+    html = html + "</div>\n"+\
+           "<div class=\"cmr-unclassified\">\n"+\
+           "<h2>No Category</h2>\n"+\
+           "<p>\n"
+    for article in articles:
+        if article.category != CMR_Index_Categories.undefined :
             continue
         html = html + get_html_link(article);
     html = html + \
