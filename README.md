@@ -15,8 +15,9 @@ generates a set of files called page_text_1.html, page_text_2.html,... a local a
 ```python make_index_html.py``` 
 generates a file called test.html which can be used to update the html for the index widget in the page.
 
-```python django/mysite/manage.py runserver```
-runs a web sever, e.g. visit http://127.0.0.1:8000/polls/
+From django/mysite/
+```python manage.py runserver```
+runs a web sever, e.g. responding to http://127.0.0.1:8000/polls/
 
 ## Development
 ### Gitflow
