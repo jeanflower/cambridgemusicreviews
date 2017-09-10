@@ -50,7 +50,10 @@ def _guess_index_text(article):
         # print(number_part)
 
         month_part = date_parts[2]
-        # year_part = date_parts[2]
+                
+        year_part = ""
+        if len(date_parts) > 3:
+            year_part = date_parts[3]
 
         date_appendage = ""
         if number_part=='11':
@@ -68,9 +71,12 @@ def _guess_index_text(article):
         else :
             date_appendage = "th"
 
-        return phrases[0]+", "+number_part + date_appendage +\
+        result = phrases[0]+", "+number_part + date_appendage +\
                                " "+month_part
-        #                           + year_part
+        if len(date_parts) > 3:
+            result += " "+year_part
+        return result
+    
     elif article.category == CMR_Index_Categories.album or \
          article.category == CMR_Index_Categories.single_ep:
         return phrases[0]
@@ -158,20 +164,25 @@ def _known_venue_in_title(article):
     return False
 
 def fill_in_missing_data_interactive(articles):
+    problem_titles = []
     return fill_in_missing_data(articles,
                      get_missing_index_text_interactive,
                      get_missing_category_interactive,
                      confirm_is_single_interactive,
                      confirm_is_album_interactive,
-                     confirm_is_live_interactive)
+                     confirm_is_live_interactive,
+                     False, #quiet
+                     problem_titles)
 
-def fill_in_missing_data_quiet(articles):
+def fill_in_missing_data_quiet(articles, problem_titles):
     return fill_in_missing_data(articles,
                      get_missing_index_text_interactive,
                      get_missing_category_interactive,
-                     lambda x:True,
-                     lambda x:True,
-                     lambda x:True)
+                     lambda x:True, # confirmation that a guess is OK
+                     lambda x:True, # confirmation that a guess is OK
+                     lambda x:True, # confirmation that a guess is OK
+                     True, # quiet
+                     problem_titles)
     
 def _article_has_category(article):
     return article.category != CMR_Index_Categories.undefined
@@ -179,6 +190,21 @@ def _article_has_category(article):
 def _article_has_index_text(article):
     return len(article.index_text) > 0
 
+def guess_category_from_tags(article):
+    could_be_live = "live" in article.tags
+    could_be_album = "LP" in article.tags
+    could_be_single_ep = "single" in article.tags or "EP" in article.tags
+
+    if could_be_live and not could_be_album and not could_be_single_ep:
+        return CMR_Index_Categories.live
+    elif not could_be_live and could_be_album and not could_be_single_ep:    
+        return CMR_Index_Categories.album
+    elif not could_be_live and not could_be_album and could_be_single_ep:   
+        return CMR_Index_Categories.single_ep
+    else:
+        return CMR_Index_Categories.undefined
+    
+    
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles
@@ -187,7 +213,11 @@ def fill_in_missing_data(articles,
                          get_missing_category,
                          confirm_is_single,
                          confirm_is_album,
-                         confirm_is_live):
+                         confirm_is_live,
+                         quiet,
+                         problem_articles):
+    
+    got_all_data_ok = True
     for article in articles:
         has_category = _article_has_category(article)
         has_index_text = _article_has_index_text(article)
@@ -198,50 +228,35 @@ def fill_in_missing_data(articles,
             if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep
                 article.index_text = _guess_index_text(article)
-                has_category = True
-                has_index_text = True
+                continue
 
         if _known_album_in_title(article):
             if confirm_is_album(article):
                 article.category = CMR_Index_Categories.album
                 article.index_text = _guess_index_text(article)
-                has_category = True
-                has_index_text = True
+                continue
 
         if _known_venue_in_title(article):
             if confirm_is_live(article):
                 article.category = CMR_Index_Categories.live
                 article.index_text = _guess_index_text(article)
-                has_category = True
-                has_index_text = True
+                continue
 
+        guess_category = guess_category_from_tags(article)
+        if guess_category != CMR_Index_Categories.undefined:
+            article.category = guess_category
+            article.index_text = _guess_index_text(article)
+            continue;
+
+        if quiet:
+            problem_articles.append(article)
+            got_all_data_ok = False
+        
         if not has_category:
-            article.category = get_missing_category(article)
+            article.category = get_missing_category(article, quiet)
 
         if not has_index_text:
-            article.index_text = get_missing_index_text(article)
+            article.index_text = get_missing_index_text(article, quiet)
+        
+    return got_all_data_ok
 
-
-def report_missing_data(articles):
-    count_complete_index_entries = 0;
-
-    for article in articles:
-        has_category = _article_has_category(article)
-        has_index_text = _article_has_index(article)
-
-        if not has_index_text:
-            print(article.title+" has missing index text")
-
-        if not has_category:
-            print(article.title+" has missing category")
-
-        if not has_index_text or not has_category:
-            print("umatched url is "+article.url)
-
-        if has_category and has_index_text:
-            count_complete_index_entries = count_complete_index_entries + 1
-            continue
-
-    print( str(count_complete_index_entries)+
-          " complete entries out of "+
-          str(len(articles)))

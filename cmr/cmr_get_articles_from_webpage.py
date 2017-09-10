@@ -49,6 +49,7 @@ def _get_all_cmr_articles_no_index(quick_test):
                 this_article = CMR_Article()
                 this_article.title = html.unescape(post["title"])
                 this_article.url = post["URL"]
+                this_article.tags = list(post["tags"].keys())
                 articles_found.append(this_article)
         else:
             print("error from REST API request")
@@ -95,11 +96,20 @@ def _extend_url_map(soup, div_string, category, url_map):
     for article in articles:
         url_map[article.url] = article
 
+def _report_unexpected_category(article):
+    print("unexpected category!!!")
+    print(article.title)
+    print(article.url)
+    print(str(article.tags))
+    print(str(article.category))
+
 # Given a set of found articles, look at the existing index
 # and fill in known index_title and category information
 def _add_existing_index_data(articles):
     # all indexes should be the same, look at page 1
-    web_page = get_cmr_page(1)
+    local = True
+    web_page = get_cmr_page(1, local)
+
     soup = web_page.soup
 
     # Use URL as key in a map
@@ -122,8 +132,10 @@ def _add_existing_index_data(articles):
         if map_entry == None:
             #print("umatched url "+article.url)
             continue
+        
         article.index_text = map_entry.index_text
         article.category = map_entry.category
+        
 
 # From both articles and existing index, combined
 def _get_all_cmr_articles(quick_test):

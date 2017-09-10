@@ -5,10 +5,10 @@ import unittest
 from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
 from cmr.cmr_interactive import fill_in_missing_data
 
-def _get_missing_index_text_test(article):
+def _get_missing_index_text_test(article, quiet):
     return article.title[:5] # for testing, use first 5 characters of title
 
-def _get_missing_category_test(article):
+def _get_missing_category_test(article, quiet):
     return CMR_Index_Categories.live
 
 # during testing, do not check back with the user to confirm any guesses
@@ -20,25 +20,32 @@ def setup_articles():
         sample_article_0 = CMR_Article()
         sample_article_0.title = "ABC, Parker’s Piece, 7 month-year"
         sample_article_0.url = "http://example_url_0.com"
+        sample_article_0.tags = []
 
         sample_article_1 = CMR_Article()
         sample_article_1.title = "Lee Hull, Corner House, Cambridge, 4 June 2017"
         sample_article_1.url = "http://example_url_1.com"
         sample_article_1.index_text = "Lee Hull, 4th Junish 2017"
         sample_article_1.category = CMR_Index_Categories.live
+        sample_article_1.tags = []
 
         sample_article_2 = CMR_Article()
         sample_article_2.title = "no idea, what this is, 1 month-year"
         sample_article_2.url = "http://example_url_2.com"
+        sample_article_2.tags = []
 
         articles = [sample_article_0, sample_article_1, sample_article_2]
 
+        quiet = True
+        problem_articles=[]
         fill_in_missing_data(articles,
                              _get_missing_index_text_test,
                              _get_missing_category_test,
                              _confirm_test,
                              _confirm_test,
-                             _confirm_test)
+                             _confirm_test,
+                             quiet,
+                             problem_articles)
         return articles
 
 class Test_fill_in_missing_data(unittest.TestCase):
@@ -74,12 +81,16 @@ class Test_fill_in_missing_data(unittest.TestCase):
             sample_article.url = "http://example_url_0.com"
             articles = [sample_article]
 
+            quiet = True
+            problem_articles=[]
             fill_in_missing_data(articles,
                              _get_missing_index_text_test,
                              _get_missing_category_test,
                              _confirm_test,
                              _confirm_test,
-                             _confirm_test)
+                             _confirm_test,
+                             quiet,
+                             problem_articles)
 
             #print(articles[0].index_text)
 
