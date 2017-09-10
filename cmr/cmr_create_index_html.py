@@ -62,7 +62,10 @@ def _get_index_html(articles):
     return html
 
 def get_index_doc_html(articles):
-    html = "<!DOCTYPE html><body>"+_get_index_html(articles)+"</body></html>"
+    index_html = _get_index_html(articles)
+    html = "<!DOCTYPE html><body>"+index_html+\
+           "<p><xmp>"+index_html+"</xmp>"+\
+           "</body></html>"
     return html
 
 def save_index_html(articles, filename):
@@ -71,4 +74,23 @@ def save_index_html(articles, filename):
     f = open(filename, 'w')
     f.write(html)
     f.close()
+
+
+def get_html_problem_link(article):
+    html = "<a href=\""
+    html = html + article.url
+    html = html + "\">"
+    html = html + article.title
+    html = html + "</a><br />\n"
+    return html
+
+def _get_problem_html(articles):
+    html = "Problem - not enough information to build index for the following articles:<p>"
+    for article in articles:
+        html = html + get_html_problem_link(article);
+    return html
+
+def get_problem_doc_html(articles):
+    html = "<!DOCTYPE html><body>"+_get_problem_html(articles)+"</body></html>"
+    return html
 
