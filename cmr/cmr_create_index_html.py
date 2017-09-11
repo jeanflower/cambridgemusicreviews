@@ -63,7 +63,8 @@ def _get_index_html(articles):
 
 def get_index_doc_html(articles):
     index_html = _get_index_html(articles)
-    html = "<!DOCTYPE html><body>"+index_html+\
+    html = "<!DOCTYPE html>"+\
+           "<title>Cambridge Music Reviews index</title><body>"+index_html+\
            "<p><xmp>"+index_html+"</xmp>"+\
            "</body></html>"
     return html
@@ -91,6 +92,8 @@ def _get_problem_html(articles):
     return html
 
 def get_problem_doc_html(articles):
-    html = "<!DOCTYPE html><body>"+_get_problem_html(articles)+"</body></html>"
+    html = "<!DOCTYPE html>"+\
+           "<title>Cambridge Music Reviews index</title><body>"+\
+           _get_problem_html(articles)+"</body></html>"
     return html
 
