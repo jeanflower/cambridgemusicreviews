@@ -5,6 +5,7 @@ from urllib.request import urlopen, urlretrieve
 from urllib import error
 #use beautifulsoup library to parse the html
 from bs4 import BeautifulSoup
+from os import path
 
 #define the location of the cambridgemusicreviews site
 #the page auto-revelas more content, accessible using increasing
@@ -21,7 +22,7 @@ def _get_httpresponse(url):
     #print("url is "+url)
 
     returned_web_page = web_page()
-    returned_web_page.exists = False;
+    returned_web_page.exists = False
     returned_web_page.html = ""
     #go to the given url and obtain the html
     try:
@@ -34,7 +35,7 @@ def _get_httpresponse(url):
         if not soup.find("a") == None:
 #        if not "webaddresshelp" in _get_soup(html).prettify():
             #print("opened page ok, found no anchors")
-            returned_web_page.exists = True;
+            returned_web_page.exists = True
             #print("opened page ok, extract content")
             #print("html is "+str(html))
             #print(_get_soup(html).prettify())
@@ -49,8 +50,22 @@ def _get_httpresponse(url):
 
     return returned_web_page
 
-def get_cmr_page(page_number):
-    return _get_httpresponse(_get_cmr_url(page_number))
+def get_cmr_page(page_number, local):
+    if local:
+        local_file = path.join(path.dirname(__file__), \
+                     'captured_pages/page_text_1.html')
+        html = open(local_file)
+        #print("got web page "+str(web_page))
+
+        returned_web_page = web_page()
+        returned_web_page.exists = True
+        returned_web_page.html = html
+        returned_web_page.soup = _get_soup(html)
+    
+        html.close()
+        return returned_web_page
+    else:
+        return _get_httpresponse(_get_cmr_url(page_number))
 
 def save_cmr_page(page_number, destination_file):
      return _save_html(_get_cmr_url(page_number), destination_file)
