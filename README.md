@@ -17,14 +17,14 @@ generates a file called test.html which can be used to update the html for the i
 
 From django/mysite/
 ```python manage.py runserver```
-runs a web sever, e.g. responding to http://127.0.0.1:8000/polls/
+runs a web sever, e.g. responding to http://127.0.0.1:8000/indexer/
 
 ## Development
 ### Gitflow
 The repo is organised using Gitflow, see https://www.atlassian.com/git/tutorials/comparing-workflows.
 
 ### Understanding the scripts
-The scripts should have documentation in the comments, but also there is sample code in .  
+The scripts should have documentation in the comments, but also there is sample code in .  
 https://github.com/jeanflower/cambridgemusicreviews/tree/master/examples  
 to illustrate how we might use some functions. 
 
