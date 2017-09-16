@@ -16,7 +16,7 @@ problem_articles = []
 if fill_in_missing_data_quiet(articles, problem_articles):
 
     sort_articles(articles)
-    save_index_html(articles, "test.html")
+    save_index_html(articles, "test_output_all_sorted.html")
 
 else:
 

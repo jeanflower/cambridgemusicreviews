@@ -27,14 +27,12 @@ def example_save_index_html():
 
     fill_in_missing_data_interactive(articles)
 
-    save_index_html(articles, "test.html")
-
-
+    save_index_html(articles, "test_output_two_samples.html")
 
 
 
     articles = get_all_cmr_articles()
 
     fill_in_missing_data_interactive(articles)
-
-    save_index_html(articles, "test.html")
+    
+    save_index_html(articles, "test_output_all_unsorted.html")

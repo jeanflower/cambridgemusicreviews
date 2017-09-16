@@ -30,7 +30,7 @@ class Test_get_httpresponse(unittest.TestCase):
 
         #report back
 
-        self.assertEqual(len(articles), 134);
+        self.assertEqual(len(articles), 134)
         for i in range(0, 5):
             self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
         for i in range(5, 22):
@@ -49,7 +49,7 @@ class Test_get_httpresponse(unittest.TestCase):
 #        for article in articles:
 #            article_number = article_number + 1
 #            print("--------- article number "+str(article_number)+" "+article.index_text)
-#        #    article.print_article_details();
+#        #    article.print_article_details()
 #        print("done")
 
         html.close()

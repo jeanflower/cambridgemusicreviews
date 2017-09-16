@@ -1,70 +1,72 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories
+from cmr.cmr_utilities import CMR_Index_Categories, CMR_Index_Status
 
-def get_html_link(article):
-    html = "<a href=\""
+def _get_html_link(article, highlight_guesses):
+    html = ""
+    highlighted = False
+    if highlight_guesses and article.index_status == CMR_Index_Status.from_code:
+        html = html + "<mark>"
+        highlighted = True
+    html = html + "<a href=\""
     html = html + article.url
     html = html + "\">"
     if article.index_text=="":
         html = html + "no index text"
     else:
         html = html + article.index_text
-    html = html + "</a><br />\n"
+    html = html + "</a>"
+    if highlighted:
+        html = html + "</mark>"
+    html = html + "<br />\n"
     return html
 
-def _get_index_html(articles):
+def _insert_section(articles, html,  highlight_guesses,
+                    category, section_text, class_text):
+    section = "<div class=\""+class_text+"\">\n"+\
+              "<h2>"+section_text+"</h2>\n"+\
+              "<p>\n"
+    count = 0
+    for article in articles:
+        if article.category != category :
+            continue
+        section = section + _get_html_link(article, highlight_guesses)
+        count = count + 1
+    section = section + "</div>\n"
+    if count > 0:
+        html += section
+    
+    return html
+
+def _get_index_html(articles, highlight_guesses):
     html = "\n<!–– start copying for wordpess here -->\n"+\
            "<h2>About</h2>\n"+\
-           "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"+\
-           "<div class=\"cmr-extras\">\n"+\
-           "<h2>Extras</h2>\n"+\
-           "<p>\n"
-    for article in articles:
-        if article.category != CMR_Index_Categories.extra :
-            continue
-        html = html + get_html_link(article);
-    html = html + "</div>\n"+\
-           "<div class=\"cmr-singles\">\n"+\
-           "<h2>Singles and EPs</h2>\n"+\
-           "<p>\n"
-    for article in articles:
-        if article.category != CMR_Index_Categories.single_ep :
-            continue
-        html = html + get_html_link(article);
-    html = html + "</div>\n"+\
-           "<div class=\"cmr-albums\">\n"+\
-           "<h2>Album reviews</h2>\n"+\
-           "<p>\n"
-    for article in articles:
-        if article.category != CMR_Index_Categories.album :
-            continue
-        html = html + get_html_link(article);
-    html = html + "</div>\n"+\
-           "<div class=\"cmr-live\">\n"+\
-           "<h2>Live reviews</h2>\n"+\
-           "<p>\n"
-    for article in articles:
-        if article.category != CMR_Index_Categories.live :
-            continue
-        html = html + get_html_link(article);
-    html = html + "</div>\n"+\
-           "<div class=\"cmr-unclassified\">\n"+\
-           "<h2>No Category</h2>\n"+\
-           "<p>\n"
-    for article in articles:
-        if article.category != CMR_Index_Categories.undefined :
-            continue
-        html = html + get_html_link(article);
-    html = html + \
-           "</div>\n" +\
-           "<!–– stop copying for wordpess here -->\n"
+           "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"
+           
+    html = _insert_section(articles, html, highlight_guesses,
+                    CMR_Index_Categories.extra, 
+                    "Extras", "cmr-extras")
+    html = _insert_section(articles, html, highlight_guesses, 
+                    CMR_Index_Categories.single_ep , 
+                    "Singles and EPs", "cmr-singles")
+    html = _insert_section(articles, html, highlight_guesses, 
+                    CMR_Index_Categories.album, 
+                    "Album reviews", "cmr-albums")
+    html = _insert_section(articles, html, highlight_guesses, 
+                    CMR_Index_Categories.live, 
+                    "Live reviews", "cmr-live")
+    html = _insert_section(articles, html, highlight_guesses, 
+                    CMR_Index_Categories.undefined, 
+                    "No category", "cmr-unclassified")
+
+    html = html + "<!–– stop copying for wordpess here -->\n"
     return html
 
 def get_index_doc_html(articles):
-    index_html = _get_index_html(articles)
+    index_html_highlighted = _get_index_html(articles, True)
+    index_html = _get_index_html(articles, False)
     html = "<!DOCTYPE html>"+\
-           "<title>Cambridge Music Reviews index</title><body>"+index_html+\
+           "<title>Cambridge Music Reviews index</title><body>"+index_html_highlighted+\
            "<p><xmp>"+index_html+"</xmp>"+\
            "</body></html>"
     return html

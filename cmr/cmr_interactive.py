@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories
+from cmr.cmr_utilities import CMR_Index_Categories, CMR_Index_Status
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
-    return response.lower() == 'y';
+    return response.lower() == 'y'
 
 def confirm_is_album_interactive(article):
     response = input("guessed "+article.title+" is an album review; ok? (y/n):")
-    return response.lower() == 'y';
+    return response.lower() == 'y'
 
 def confirm_is_live_interactive(article):
     response = input("guessed "+article.title+" is a live review; ok? (y/n):")
-    return response.lower() == 'y';
+    return response.lower() == 'y'
 
 def get_missing_index_text_interactive(article):
     # TODO : ask the user to input some text and use their response
@@ -43,7 +43,7 @@ def _guess_index_text(article):
     if article.category == CMR_Index_Categories.live:
         date = phrases[len(phrases)-1]
         # print(date)
-        date_parts = str(date).split(" ");
+        date_parts = str(date).split(" ")
         #  print(date_parts)
 
         number_part = date_parts[1]
@@ -82,7 +82,7 @@ def _guess_index_text(article):
         return phrases[0]
 
 def get_missing_category_interactive(article):
-    # TODO : ask the user to input a category and use their response
+    # ask the user to input a category and use their response
     print("missing category")
     print("article title is \""+ article.title+"\"")
     print("article url is \""+ article.url+"\"")
@@ -103,19 +103,6 @@ def get_missing_category_interactive(article):
         cat = CMR_Index_Categories.live
     return cat
 
-#    proposed_data = CMR_Article()
-#    proposed_data.title = article.title
-#    proposed_data.url = article.url
-#    proposed_data.index_text = article.index_text
-#    proposed_data.category = cat
-#
-#    print("proposed article : ")
-#    proposed_data.print_article_details()
-#    ok = input("use this new data? (y/n): ")
-#    if ok=='y':
-#        return cat
-#    else:
-#        return ""
 
 def _string_in_title(s, article):
     if s in article.title:
@@ -228,25 +215,29 @@ def fill_in_missing_data(articles,
             if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep
                 article.index_text = _guess_index_text(article)
+                article.index_status = CMR_Index_Status.from_code
                 continue
 
         if _known_album_in_title(article):
             if confirm_is_album(article):
                 article.category = CMR_Index_Categories.album
                 article.index_text = _guess_index_text(article)
+                article.index_status = CMR_Index_Status.from_code
                 continue
 
         if _known_venue_in_title(article):
             if confirm_is_live(article):
                 article.category = CMR_Index_Categories.live
                 article.index_text = _guess_index_text(article)
+                article.index_status = CMR_Index_Status.from_code
                 continue
 
         guess_category = guess_category_from_tags(article)
         if guess_category != CMR_Index_Categories.undefined:
             article.category = guess_category
             article.index_text = _guess_index_text(article)
-            continue;
+            article.index_status = CMR_Index_Status.from_code
+            continue
 
         if quiet:
             problem_articles.append(article)
@@ -257,6 +248,8 @@ def fill_in_missing_data(articles,
 
         if not has_index_text:
             article.index_text = get_missing_index_text(article, quiet)
+
+        article.index_status = CMR_Index_Status.from_enduser
         
     return got_all_data_ok
 

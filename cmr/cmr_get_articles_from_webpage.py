@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import \
-    CMR_Article, get_cmr_page, CMR_Index_Categories
+    CMR_Article, get_cmr_page, CMR_Index_Categories, CMR_Index_Status
 
 import requests
 import re
@@ -42,7 +42,7 @@ def _get_all_cmr_articles_no_index(quick_test):
             if len(posts) == 0:
                 break
     
-            #print("got "+str(len(posts))+" posts");    
+            #print("got "+str(len(posts))+" posts")
             
             for post in posts:
                 # build a CMR_Article
@@ -86,6 +86,7 @@ def get_index_anchors(soup, tag, category):
         this_article.index_text = this_index_text
         this_article.url = this_url
         this_article.category = category
+        this_article.index_status = CMR_Index_Status.from_html_index
         articles_found.append(this_article)
 
     #pass the results back to the calling code
@@ -135,6 +136,7 @@ def _add_existing_index_data(articles):
         
         article.index_text = map_entry.index_text
         article.category = map_entry.category
+        article.index_status = map_entry.index_status
         
 
 # From both articles and existing index, combined

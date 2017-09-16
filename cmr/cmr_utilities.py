@@ -45,7 +45,7 @@ def _get_httpresponse(url):
     except error.HTTPError as err:
        if not err.code == 404:
            #print("did not get 404")
-           returned_web_page.exists = True;
+           returned_web_page.exists = True
            returned_web_page.html = ""
 
     return returned_web_page
@@ -89,7 +89,7 @@ def _get_soup(html):
     #check the soup got the expected text
     #print(soup.prettify())
 
-    return soup;
+    return soup
 
 class web_page:
     exists = False
@@ -102,13 +102,19 @@ class CMR_Index_Categories:
     album = "Album reviews"
     live = "Live Reviews"
     undefined = "Undefined"
-
+    
+class CMR_Index_Status:
+    from_html_index = "Derived from existing HTML index"
+    from_code = "Guessed using code"
+    from_enduser = "Set or confirmed by enduser"
+    undefined = "Undefined"
 
 class CMR_Article:
     title = ""      # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
     url = ""        # e.g. "https://cambridgemusicreviews.net/2017/07/09/abc-parkers-piece-cambridge-7-july-2017/"
     index_text = "" # e.g. "ABC"
     category = CMR_Index_Categories.undefined # e.g. CMR_Index_Categories.live
+    index_status = CMR_Index_Status.undefined
 
     def print_article_details(article):
             print("title      is :\""+article.title+"\"")
@@ -133,8 +139,8 @@ def sort_key(article):
         result += article.index_text[4:].strip()
     else:
         result += article.index_text.strip()
-    #print(result);
-    return result;
+    #print(result)
+    return result
 
 def sort_articles(articles):
     articles.sort(key = sort_key)
