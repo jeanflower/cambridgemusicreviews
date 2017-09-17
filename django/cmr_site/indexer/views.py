@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.template import loader
 
 #import requests
 #def index(request):
@@ -30,7 +31,7 @@ import_module("cmr.cmr_create_index_html")
 from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
 from cmr.cmr_interactive import fill_in_missing_data_quiet
 from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
-from cmr.cmr_utilities import sort_articles
+from cmr.cmr_utilities import sort_articles, CMR_Index_Categories
 
 from indexer.models import Article, Tag
 
@@ -129,7 +130,35 @@ def display_tagged_db_index(request, tag_text):
                             "(only "+str(white_list_of_tag_text_values)+" allowed)")
     
     db_articles = Article.objects.filter(tag__text__contains = tag_text)
-    articles=[]
+
+    articles_extras=[]
+    articles_singles=[]
+    articles_albums=[]
+    articles_live=[]
+    articles_unclassified=[]
     for db_article in db_articles:
-        articles.append(_make_Article(db_article))
-    return HttpResponse("Current db content : "+_make_sorted_html(articles))
+        if db_article.category == CMR_Index_Categories.extra:
+            articles_extras.append(_make_Article(db_article))
+        elif db_article.category == CMR_Index_Categories.single_ep:
+            articles_singles.append(_make_Article(db_article))
+        elif db_article.category == CMR_Index_Categories.album:
+            articles_albums.append(_make_Article(db_article))
+        elif db_article.category == CMR_Index_Categories.live:
+            articles_live.append(_make_Article(db_article))
+        else:
+            articles_unclassified.append(_make_Article(db_article))
+    
+    print(len(articles_extras))
+    print(len(articles_singles))
+    print(len(articles_albums))
+    print(len(articles_live))
+    
+    template = loader.get_template('indexer/index.html')
+    context = {
+        'article_list_extras'      : articles_extras,
+        'article_list_singles'     : articles_singles,
+        'article_list_albums'      : articles_albums,
+        'article_list_live'        : articles_live,
+        'article_list_unclassified': articles_unclassified,
+    }
+    return HttpResponse("Current db content : "+template.render(context, request))
