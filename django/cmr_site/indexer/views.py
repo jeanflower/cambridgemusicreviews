@@ -32,7 +32,7 @@ from cmr.cmr_interactive import fill_in_missing_data_quiet
 from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
 from cmr.cmr_utilities import sort_articles
 
-from indexer.models import Article
+#from indexer.models import Article
 
 def index(request):
 
