@@ -32,7 +32,28 @@ from cmr.cmr_interactive import fill_in_missing_data_quiet
 from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
 from cmr.cmr_utilities import sort_articles
 
-#from indexer.models import Article
+from indexer.models import Article
+
+def _make_sorted_html(articles):
+    sort_articles(articles)
+    return get_index_doc_html(articles)
+
+def _make_Article(db_article):
+    result = Article()
+    result.title = db_article.title
+    result.url = db_article.url
+    result.index_text = db_article.index_text
+    result.category = db_article.category
+    result.index_status = db_article.index_status
+    result.tags=[]
+    return result
+
+def _make_articles_from_db():
+    db_articles = Article.objects.all()
+    articles=[]
+    for db_article in db_articles:
+        articles.append(_make_Article(db_article))
+    return articles
 
 def index(request):
 
@@ -44,20 +65,6 @@ def index(request):
 #    a.save()
 
     articles = get_all_cmr_articles()
-
-    # Popoulate the db with the articles we obtained above
-#    print("clear db")
-#    Article.objects.all().delete()
-#    db_articles = Article.objects.all()
-#    print(db_articles)
-#    print("populate db")
-#    for article in articles:
-#        a = Article(title = article.title,
-#                    url = article.url,
-#                    index_text = article.url,
-#                    category = article.category,
-#                    index_status = article.index_status);
-#        a.save()
 
     #db_articles = Article.objects.all()
     #print(db_articles)
@@ -76,9 +83,7 @@ def index(request):
 
     problem_articles = []
     if fill_in_missing_data_quiet(articles, problem_articles):
-        sort_articles(articles)
-        html = get_index_doc_html(articles)
-        return HttpResponse(html)
+        return HttpResponse(_make_sorted_html(articles))
     else:
         html = get_problem_doc_html(problem_articles)
         return HttpResponse(html)
@@ -87,3 +92,27 @@ def index(request):
 #def index(request):
 #    return HttpResponse("Hello, world. You're at the indexer.")
 
+def refresh_from_wp(request):
+    articles = get_all_cmr_articles()
+
+    # Populate the db with the articles we obtained above
+    Article.objects.all().delete()
+    for article in articles:
+        a = Article(title = article.title,
+                    url = article.url,
+                    index_text = article.index_text,
+                    category = article.category,
+                    index_status = article.index_status);
+        a.save()
+
+    #db_articles = Article.objects.all()
+    #print(db_articles)
+    
+    html = "This is an unsorted view of content as refreshed from "+\
+           "the wordpress site<p>"+get_index_doc_html(articles)
+    return HttpResponse(html)
+
+def display_db_index(request):
+    articles = _make_articles_from_db()
+    return HttpResponse("Current db content : "+_make_sorted_html(articles))
+    
