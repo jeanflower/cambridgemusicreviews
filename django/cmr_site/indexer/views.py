@@ -122,7 +122,8 @@ def display_db_index(request):
 
 white_list_of_tag_text_values = ["live", "album", "single", "EP"]
 
-def display_tagged_db_index(request, tag_text):
+def display_tagged_db_index(request, tag_text, raw_view):
+    print("raw_view = "+raw_view)
     # Only pass whitelisted tag_text values into DB
     # While any tags are possible on WordPress, we protect our DB
     if not tag_text in white_list_of_tag_text_values:
@@ -153,8 +154,11 @@ def display_tagged_db_index(request, tag_text):
     print(len(articles_albums))
     print(len(articles_live))
     
+    show_raw_html = not raw_view == "0"
+    
     template = loader.get_template('indexer/index.html')
     context = {
+        'show_raw_html'            : show_raw_html,
         'article_list_extras'      : articles_extras,
         'article_list_singles'     : articles_singles,
         'article_list_albums'      : articles_albums,
