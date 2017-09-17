@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from enum import IntEnum
 #use urlopen to obtain html from a url
 from urllib.request import urlopen, urlretrieve
 from urllib import error
@@ -96,18 +97,21 @@ class web_page:
     html = ""
     soup = None
 
-class CMR_Index_Categories:
-    extra = "Extras"
-    single_ep = "Singles and EPs"
-    album = "Album reviews"
-    live = "Live Reviews"
-    undefined = "Undefined"
-    
-class CMR_Index_Status:
-    from_html_index = "Derived from existing HTML index"
-    from_code = "Guessed using code"
-    from_enduser = "Set or confirmed by enduser"
-    undefined = "Undefined"
+class CMR_Index_Categories(IntEnum):
+    extra = 0     #"Extras"
+    single_ep = 1 #"Singles and EPs"
+    album = 2     #"Album reviews"
+    live = 3      #"Live Reviews"
+    undefined = 4 #"Undefined"
+
+index_category_strings = ["Extras", "Singles and EPs", "Album reviews", 
+                          "Live Reviews", "Undefined"]    
+
+class CMR_Index_Status(IntEnum):
+    from_html_index = 0 #"Derived from existing HTML index"
+    from_code = 1       #"Guessed using code"
+    from_enduser = 2    #"Set or confirmed by enduser"
+    undefined = 3       #"Undefined"
 
 class CMR_Article:
     title = ""      # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
@@ -120,7 +124,7 @@ class CMR_Article:
             print("title      is :\""+article.title+"\"")
             print("url        is :\""+article.url+"\"")
             print("index_text is :\""+article.index_text+"\"")
-            print("category   is :\""+article.category+"\"")
+            print("category   is :\""+index_category_strings[article.category]+"\"")
 
 
 def sort_key(article):

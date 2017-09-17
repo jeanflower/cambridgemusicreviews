@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories, CMR_Index_Status
+from cmr.cmr_utilities import CMR_Index_Categories, index_category_strings, \
+                              CMR_Index_Status
 
 def _get_html_link(article, highlight_guesses):
     html = ""
@@ -22,9 +23,9 @@ def _get_html_link(article, highlight_guesses):
     return html
 
 def _insert_section(articles, html,  highlight_guesses,
-                    category, section_text, class_text):
+                    category, class_text):
     section = "<div class=\""+class_text+"\">\n"+\
-              "<h2>"+section_text+"</h2>\n"+\
+              "<h2>"+index_category_strings[category]+"</h2>\n"+\
               "<p>\n"
     count = 0
     for article in articles:
@@ -44,20 +45,15 @@ def _get_index_html(articles, highlight_guesses):
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"
            
     html = _insert_section(articles, html, highlight_guesses,
-                    CMR_Index_Categories.extra, 
-                    "Extras", "cmr-extras")
+                    CMR_Index_Categories.extra, "cmr-extras")
     html = _insert_section(articles, html, highlight_guesses, 
-                    CMR_Index_Categories.single_ep , 
-                    "Singles and EPs", "cmr-singles")
+                    CMR_Index_Categories.single_ep, "cmr-singles")
     html = _insert_section(articles, html, highlight_guesses, 
-                    CMR_Index_Categories.album, 
-                    "Album reviews", "cmr-albums")
+                    CMR_Index_Categories.album, "cmr-albums")
     html = _insert_section(articles, html, highlight_guesses, 
-                    CMR_Index_Categories.live, 
-                    "Live reviews", "cmr-live")
+                    CMR_Index_Categories.live, "cmr-live")
     html = _insert_section(articles, html, highlight_guesses, 
-                    CMR_Index_Categories.undefined, 
-                    "No category", "cmr-unclassified")
+                    CMR_Index_Categories.undefined, "cmr-unclassified")
 
     html = html + "<!–– stop copying for wordpess here -->\n"
     return html
