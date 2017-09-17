@@ -119,6 +119,7 @@ class CMR_Article:
     index_text = "" # e.g. "ABC"
     category = CMR_Index_Categories.undefined # e.g. CMR_Index_Categories.live
     index_status = CMR_Index_Status.undefined
+    tags=[]
 
     def print_article_details(article):
             print("title      is :\""+article.title+"\"")
