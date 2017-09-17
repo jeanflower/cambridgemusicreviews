@@ -3,8 +3,6 @@ from django.db import models
 import sys
 sys.path.append('../..')
 
-from cmr.cmr_utilities import \
-    CMR_Index_Categories, CMR_Index_Status
 from django.utils import timezone
 import datetime
 
