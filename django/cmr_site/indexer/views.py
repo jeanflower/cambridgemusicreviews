@@ -32,7 +32,7 @@ from cmr.cmr_interactive import fill_in_missing_data_quiet
 from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
 from cmr.cmr_utilities import sort_articles
 
-from indexer.models import Article
+from indexer.models import Article, Tag
 
 def _make_sorted_html(articles):
     sort_articles(articles)
@@ -97,6 +97,7 @@ def refresh_from_wp(request):
 
     # Populate the db with the articles we obtained above
     Article.objects.all().delete()
+    Tag.objects.all().delete()
     for article in articles:
         a = Article(title = article.title,
                     url = article.url,
@@ -104,6 +105,8 @@ def refresh_from_wp(request):
                     category = article.category,
                     index_status = article.index_status);
         a.save()
+        for t in article.tags:
+            Tag.objects.create(article = a, text = t)
 
     #db_articles = Article.objects.all()
     #print(db_articles)
@@ -116,3 +119,9 @@ def display_db_index(request):
     articles = _make_articles_from_db()
     return HttpResponse("Current db content : "+_make_sorted_html(articles))
     
+def display_tagged_db_index(request, tag_text):
+    db_articles = Article.objects.filter(tag__text__contains = tag_text)
+    articles=[]
+    for db_article in db_articles:
+        articles.append(_make_Article(db_article))
+    return HttpResponse("Current db content : "+_make_sorted_html(articles))

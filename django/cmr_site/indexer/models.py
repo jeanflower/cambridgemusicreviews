@@ -17,4 +17,11 @@ class Article(models.Model):
             "index_text is :\""+self.index_text+"\"\n"+\
             "category   is :\""+str(self.category)+"\"\n";
         return result
+
+class Tag(models.Model):
+    article = models.ForeignKey(Article)
+    text = models.CharField( max_length = 200, default = "" ) # e.g. "live" 
+
+    def __str__(self):
+        return self.text
     
