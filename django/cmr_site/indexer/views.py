@@ -118,8 +118,16 @@ def refresh_from_wp(request):
 def display_db_index(request):
     articles = _make_articles_from_db()
     return HttpResponse("Current db content : "+_make_sorted_html(articles))
-    
+
+white_list_of_tag_text_values = ["live", "album", "single", "EP"]
+
 def display_tagged_db_index(request, tag_text):
+    # Only pass whitelisted tag_text values into DB
+    # While any tags are possible on WordPress, we protect our DB
+    if not tag_text in white_list_of_tag_text_values:
+        return HttpResponse("not-approved tag text value "+\
+                            "(only "+str(white_list_of_tag_text_values)+" allowed)")
+    
     db_articles = Article.objects.filter(tag__text__contains = tag_text)
     articles=[]
     for db_article in db_articles:
