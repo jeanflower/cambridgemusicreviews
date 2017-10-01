@@ -27,6 +27,7 @@ from .forms import IndexTextForm, CHOICES
 
 import sys
 sys.path.append('../..')
+#sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
 
 from importlib import import_module
 import_module("cmr.cmr_create_index_html")
@@ -99,7 +100,7 @@ def cmr_home(request):
     " is a non-persistent way of generating index, guessing categories,"+\
     " highlighting 'new' items (contact admin to update what constitutes \"new\")<p>"+\
     "<a href = \"refresh_from_wp\">refresh_from_wp</a>"+\
-    " clears DB, visits wp, populates DB, presents view of data<p>"+\
+    " (SLOW!) clears DB, visits wp, populates DB, presents view of data<p>"+\
     "<a href = \"display_db_index\">display_db_index</a>"+\
     " displays current db content, allows edit of entries<p>"+\
     "<a href = \"display_db_index_raw\">display_db_index_raw</a>"+\

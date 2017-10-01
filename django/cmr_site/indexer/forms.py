@@ -3,6 +3,7 @@ from indexer.models import max_index_text_length
 
 import sys
 sys.path.append('../..')
+#sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
 
 from importlib import import_module
 import_module("cmr.cmr_utilities")
