@@ -1,0 +1,41 @@
+diff --git a/django/cmr_site/indexer/forms.py b/django/cmr_site/indexer/forms.py
+index eb41039..0c942df 100644
+--- a/django/cmr_site/indexer/forms.py
++++ b/django/cmr_site/indexer/forms.py
+@@ -2,7 +2,7 @@ from django import forms
+ from indexer.models import max_index_text_length
+ 
+ import sys
+-sys.path.append('../..')
++sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
+ 
+ from importlib import import_module
+ diff --git a/django/cmr_site/indexer/views.py b/django/cmr_site/indexer/views.py
+index 6298502..d6b1d3f 100644
+--- a/django/cmr_site/indexer/views.py
++++ b/django/cmr_site/indexer/views.py
+@@ -23,7 +23,7 @@ from django.template import loader
+ #        print("not a 200 response")
+ 
+ import sys
+-sys.path.append('../..')
++sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
+ 
+ from importlib import import_module
+ import_module("cmr.cmr_create_index_html")
+ 
+ 
+ 
+diff --git a/django/cmr_site/mysite/settings.py b/django/cmr_site/mysite/settings.py
+index fa3f7db..4203ed7 100644
+--- a/django/cmr_site/mysite/settings.py
++++ b/django/cmr_site/mysite/settings.py
+@@ -25,8 +25,7 @@ SECRET_KEY = '=b7*i_(vb9-q*9#6bprl%-z)j=d(q*_vfvv665r4#4+*4vt-7f'
+ # SECURITY WARNING: don't run with debug turned on in production!
+ DEBUG = True
+ 
+-# ALLOWED_HOSTS = ['jeanflower.pythonanywhere.com']
+-ALLOWED_HOSTS = []
++ALLOWED_HOSTS = ['jeanflower.pythonanywhere.com']
+ 
+ # Application definition
