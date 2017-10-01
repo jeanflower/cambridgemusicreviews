@@ -2,6 +2,12 @@ To update pythonanywhere:
 
 1.
 In bash console, use git fetch + rebase to get new code.  
+
+rebase may say
+(django17) 12:06 ~/cambridgemusicreviews/cambridgemusicreviews/django/cmr_site (develop)$ git rebase
+Cannot rebase: You have unstaged changes.
+Please commit or stash them.
+
 There may be clashes.  
 If faced with tricky resolution, it can be easiest to
 clean using git reset --hard and reapply following three changes.

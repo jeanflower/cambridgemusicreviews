@@ -8,19 +8,16 @@ sys.path.append('../..')
 from importlib import import_module
 import_module("cmr.cmr_utilities")
 
-from cmr.cmr_utilities import index_category_strings
+from cmr.cmr_utilities import INDEX_CATEGORY_STRINGS
 
-CHOICES = (('1', index_category_strings[0]), 
-           ('2', index_category_strings[1]), 
-           ('3', index_category_strings[2]), 
-           ('4', index_category_strings[3]), 
-           ('5', index_category_strings[4]))
+CHOICES = (('1', INDEX_CATEGORY_STRINGS[0]), \
+           ('2', INDEX_CATEGORY_STRINGS[1]), \
+           ('3', INDEX_CATEGORY_STRINGS[2]), \
+           ('4', INDEX_CATEGORY_STRINGS[3]), \
+           ('5', INDEX_CATEGORY_STRINGS[4]))
 
 class IndexTextForm(forms.Form):
-    index_text = forms.CharField(label = "index text", 
-                                 max_length = max_index_text_length,
-                                 )
+    index_text = forms.CharField(label="index text",
+                                 max_length=max_index_text_length,
+                                )
     category_choice = forms.MultipleChoiceField(choices=CHOICES)
-    
-    
-    

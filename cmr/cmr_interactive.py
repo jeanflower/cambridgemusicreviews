@@ -50,25 +50,25 @@ def _guess_index_text(article):
         # print(number_part)
 
         month_part = date_parts[2]
-                
+
         year_part = ""
         if len(date_parts) > 3:
             year_part = date_parts[3]
 
         date_appendage = ""
-        if number_part=='11':
+        if number_part == '11':
             date_appendage = "th"
-        elif number_part[len(number_part)-1]=='1':
+        elif number_part[len(number_part)-1] == '1':
             date_appendage = "st"
-        elif number_part=='12':
+        elif number_part == '12':
             date_appendage = "th"
-        elif number_part[len(number_part)-1]=='2':
+        elif number_part[len(number_part)-1] == '2':
             date_appendage = "nd"
-        elif number_part=='13':
+        elif number_part == '13':
             date_appendage = "th"
-        elif number_part[len(number_part)-1]=='3':
+        elif number_part[len(number_part)-1] == '3':
             date_appendage = "rd"
-        else :
+        else:
             date_appendage = "th"
 
         result = phrases[0]+", "+number_part + date_appendage +\
@@ -76,7 +76,7 @@ def _guess_index_text(article):
         if len(date_parts) > 3:
             result += " "+year_part
         return result
-    
+
     elif article.category == CMR_Index_Categories.album or \
          article.category == CMR_Index_Categories.single_ep:
         return phrases[0]
@@ -93,13 +93,13 @@ def get_missing_category_interactive(article):
     print("  Live Reviews    (l)")
     response = input("please type in a category (e/s/a/l): ")
     cat = CMR_Index_Categories.undefined
-    if response == 'e' :
+    if response == 'e':
         cat = CMR_Index_Categories.extra
-    elif response == 's' :
+    elif response == 's':
         cat = CMR_Index_Categories.single_ep
-    elif response == 'a' :
+    elif response == 'a':
         cat = CMR_Index_Categories.album
-    elif response == 'l' :
+    elif response == 'l':
         cat = CMR_Index_Categories.live
     return cat
 
@@ -152,25 +152,25 @@ def _known_venue_in_title(article):
 
 def fill_in_missing_data_interactive(articles):
     problem_titles = []
-    return fill_in_missing_data(articles,
-                     get_missing_index_text_interactive,
-                     get_missing_category_interactive,
-                     confirm_is_single_interactive,
-                     confirm_is_album_interactive,
-                     confirm_is_live_interactive,
-                     False, #quiet
+    return fill_in_missing_data(articles,\
+                     get_missing_index_text_interactive,\
+                     get_missing_category_interactive,\
+                     confirm_is_single_interactive,\
+                     confirm_is_album_interactive,\
+                     confirm_is_live_interactive,\
+                     False,\
                      problem_titles)
 
 def fill_in_missing_data_quiet(articles, problem_titles):
-    return fill_in_missing_data(articles,
-                     get_missing_index_text_interactive,
-                     get_missing_category_interactive,
-                     lambda x:True, # confirmation that a guess is OK
-                     lambda x:True, # confirmation that a guess is OK
-                     lambda x:True, # confirmation that a guess is OK
+    return fill_in_missing_data(articles,\
+                     get_missing_index_text_interactive,\
+                     get_missing_category_interactive,\
+                     lambda x: True, # confirmation that a guess is OK
+                     lambda x: True, # confirmation that a guess is OK
+                     lambda x: True, # confirmation that a guess is OK
                      True, # quiet
                      problem_titles)
-    
+
 def _article_has_category(article):
     return article.category != CMR_Index_Categories.undefined
 
@@ -184,14 +184,14 @@ def guess_category_from_tags(article):
 
     if could_be_live and not could_be_album and not could_be_single_ep:
         return CMR_Index_Categories.live
-    elif not could_be_live and could_be_album and not could_be_single_ep:    
+    elif not could_be_live and could_be_album and not could_be_single_ep:
         return CMR_Index_Categories.album
-    elif not could_be_live and not could_be_album and could_be_single_ep:   
+    elif not could_be_live and not could_be_album and could_be_single_ep:
         return CMR_Index_Categories.single_ep
     else:
         return CMR_Index_Categories.undefined
-    
-    
+
+
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles
@@ -203,14 +203,14 @@ def fill_in_missing_data(articles,
                          confirm_is_live,
                          quiet,
                          problem_articles):
-    
+
     got_all_data_ok = True
     for article in articles:
         has_category = _article_has_category(article)
         has_index_text = _article_has_index_text(article)
         if has_category and has_index_text:
             continue
-        
+
         if _known_single_in_title(article):
             if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep
@@ -242,7 +242,7 @@ def fill_in_missing_data(articles,
         if quiet:
             problem_articles.append(article)
             got_all_data_ok = False
-        
+
         if not has_category:
             article.category = get_missing_category(article, quiet)
 
@@ -250,6 +250,5 @@ def fill_in_missing_data(articles,
             article.index_text = get_missing_index_text(article, quiet)
 
         article.index_status = CMR_Index_Status.from_enduser
-        
-    return got_all_data_ok
 
+    return got_all_data_ok

@@ -32,4 +32,3 @@ def example_fill_in_missing_data():
     for article in articles:
         print("----")
         article.print_article_details()
-

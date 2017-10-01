@@ -32,4 +32,3 @@ def example_CMR_Article():
 
     # print out its contents
     my_article.print_article_details()
-

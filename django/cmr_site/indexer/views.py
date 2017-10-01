@@ -1,42 +1,21 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.shortcuts import render 
-
-from .forms import IndexTextForm, CHOICES
-
-#import requests
-#def index(request):
-#    # see https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/posts/
-#    #url = "https://cambridgemusicreviews.net/"
-#    url = "https://public-api.wordpress.com/rest/v1.1/sites/cambridgemusicreviews.net/posts"
-#    url+= "?number=17"
-#    url+= "&context=\"display\""
-#    #url+= "&search=\"Dylan\""
-#    ret = requests.get(url)
-#    returned_code = ret.status_code
-#    print("returned value is "+str(ret.status_code))
-#    if returned_code == 200:
-#        all_posts = ret.json()["posts"]
-#        titles = ""
-#        for post in all_posts:
-#            print(post["title"])
-#            titles += "<p>"+post["title"]+"\n"
-#        return HttpResponse(titles)
-#    else:
-#        print("not a 200 response")
-
 import sys
 sys.path.append('../..')
 #sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
 
 from importlib import import_module
+
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import loader
+from django.shortcuts import render
+
+from .forms import IndexTextForm, CHOICES
+
 import_module("cmr.cmr_create_index_html")
 
 from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
 from cmr.cmr_interactive import fill_in_missing_data_quiet
 from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
 from cmr.cmr_utilities import sort_articles, CMR_Index_Categories
-
 
 from indexer.models import Article, Tag
 
@@ -51,12 +30,12 @@ def _make_Article(db_article):
     result.index_text = db_article.index_text
     result.category = db_article.category
     result.index_status = db_article.index_status
-    result.tags=[]
+    result.tags = []
     return result
 
 def _make_articles_from_db():
     db_articles = Article.objects.all()
-    articles=[]
+    articles = []
     for db_article in db_articles:
         articles.append(_make_Article(db_article))
     return articles
@@ -110,8 +89,8 @@ def cmr_home(request):
 
 
 def _db_sort_key(article):
-    result= ""
-    if article.index_text[:3]=="The":
+    result = ""
+    if article.index_text[:3] == "The":
         result += article.index_text[4:].strip()
     else:
         result += article.index_text.strip()
@@ -119,7 +98,7 @@ def _db_sort_key(article):
     return result
 
 def _sort_db_articles(articles):
-    articles.sort(key = _db_sort_key)
+    articles.sort(key=_db_sort_key)
 
 
 #def index(request):
@@ -132,30 +111,30 @@ def refresh_from_wp(request):
     Article.objects.all().delete()
     Tag.objects.all().delete()
     for article in articles:
-        a = Article(title = article.title,
-                    url = article.url,
-                    index_text = article.index_text,
-                    category = article.category,
-                    index_status = article.index_status);
+        a = Article(title=article.title,
+                    url=article.url,
+                    index_text=article.index_text,
+                    category=article.category,
+                    index_status=article.index_status)
 #        print("article id is "+str(a.id)) # has no id yet
         a.save()
 #        print("article id after save is "+str(a.id)) # has id now
         for t in article.tags:
-            Tag.objects.create(article = a, text = t)
+            Tag.objects.create(article=a, text=t)
 
     #db_articles = Article.objects.all()
     #print(db_articles)
-    
+
     html = "This is a view of content as refreshed from "+\
            "the wordpress site<p>"+get_index_doc_html(articles)
     return HttpResponse(html)
 
 def display_db_index(request):
-    raw_view = "0" 
+    raw_view = "0"
     return display_tagged_db_index(request, "all", raw_view)
 
 def display_db_index_raw(request):
-    raw_view = "1" 
+    raw_view = "1"
     return display_tagged_db_index(request, "all", raw_view)
 
 white_list_of_tag_text_values = ["live", "album", "single", "EP", "all"]
@@ -166,7 +145,7 @@ white_list_of_tag_text_values = ["live", "album", "single", "EP", "all"]
 
 
 def display_tagged_db_index(request, tag_text, raw_view):
-    
+
     # Only pass whitelisted tag_text values into DB
     # While any tags are possible on WordPress, we protect our DB
     if not tag_text in white_list_of_tag_text_values:
@@ -175,13 +154,13 @@ def display_tagged_db_index(request, tag_text, raw_view):
     if tag_text == "all":
         db_articles = Article.objects.all()
     else:
-        db_articles = Article.objects.filter(tag__text__contains = tag_text)
+        db_articles = Article.objects.filter(tag__text__contains=tag_text)
 
-    articles_extras=[]
-    articles_singles=[]
-    articles_albums=[]
-    articles_live=[]
-    articles_unclassified=[]
+    articles_extras = []
+    articles_singles = []
+    articles_albums = []
+    articles_live = []
+    articles_unclassified = []
     for db_article in db_articles:
         if db_article.category == CMR_Index_Categories.extra:
             articles_extras.append(db_article)
@@ -194,7 +173,7 @@ def display_tagged_db_index(request, tag_text, raw_view):
         else:
             articles_unclassified.append(db_article)
 
-    
+
 #    print(len(articles_extras))
 #    print(len(articles_singles))
 #    print(len(articles_albums))
@@ -205,12 +184,12 @@ def display_tagged_db_index(request, tag_text, raw_view):
     _sort_db_articles(articles_albums)
     _sort_db_articles(articles_live)
     _sort_db_articles(articles_unclassified)
-    
+
     #show_displayed_html = not raw_view == "1"
     show_raw_html = not raw_view == "0"
     print("raw_view "+str(raw_view))
     print("show raw html?"+str(show_raw_html))
-    
+
     template = loader.get_template('indexer/index.html')
     context = {
         'show_raw_html'            : show_raw_html,
@@ -225,9 +204,9 @@ def display_tagged_db_index(request, tag_text, raw_view):
 def get_index_text(request, article_id):
     print("entered get_index_text for id "+article_id)
 
-    db_articles = Article.objects.filter(pk = article_id)
+    db_articles = Article.objects.filter(pk=article_id)
     db_article = db_articles.first()
-    
+
     if request.method == 'POST':
         form = IndexTextForm(request.POST)
         if form.is_valid():
@@ -242,18 +221,17 @@ def get_index_text(request, article_id):
             return HttpResponseRedirect(article_id)
 
     else:
- 
+
         default_index_text = db_article.index_text
         default_choice = CHOICES[db_article.category][0]
         print("default choice = "+str(default_choice))
-        form = IndexTextForm(initial={'index_text':default_index_text, 
-                                      'category_choice':default_choice} )
-    
+        form = IndexTextForm(initial={'index_text':default_index_text,
+                                      'category_choice':default_choice})
+
     #print("form is" +str(form))
     return render(request, 'indexer/index_text.html',
-                  {'article_id': article_id, 
+                  {'article_id': article_id,
                    'article_title': db_article.title,
                    'article_url' : db_article.url,
                    'article_index_text' : db_article.index_text,
                    'form': form})
-

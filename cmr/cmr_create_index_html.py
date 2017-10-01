@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories, index_category_strings, \
+from cmr.cmr_utilities import CMR_Index_Categories, INDEX_CATEGORY_STRINGS, \
                               CMR_Index_Status
 
 def _get_html_link(article, highlight_guesses):
@@ -12,7 +12,7 @@ def _get_html_link(article, highlight_guesses):
     html = html + "<a href=\""
     html = html + article.url
     html = html + "\">"
-    if article.index_text=="":
+    if article.index_text == "":
         html = html + "no index text"
     else:
         html = html + article.index_text
@@ -22,37 +22,37 @@ def _get_html_link(article, highlight_guesses):
     html = html + "<br />\n"
     return html
 
-def _insert_section(articles, html,  highlight_guesses,
+def _insert_section(articles, html, highlight_guesses,
                     category, class_text):
     section = "<div class=\""+class_text+"\">\n"+\
-              "<h2>"+index_category_strings[category]+"</h2>\n"+\
+              "<h2>"+INDEX_CATEGORY_STRINGS[category]+"</h2>\n"+\
               "<p>\n"
     count = 0
     for article in articles:
-        if article.category != category :
+        if article.category != category:
             continue
         section = section + _get_html_link(article, highlight_guesses)
         count = count + 1
     section = section + "</div>\n"
     if count > 0:
         html += section
-    
+
     return html
 
 def _get_index_html(articles, highlight_guesses):
     html = "\n<!–– start copying for wordpess here -->\n"+\
            "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"
-           
-    html = _insert_section(articles, html, highlight_guesses,
+
+    html = _insert_section(articles, html, highlight_guesses,\
                     CMR_Index_Categories.extra, "cmr-extras")
-    html = _insert_section(articles, html, highlight_guesses, 
+    html = _insert_section(articles, html, highlight_guesses,\
                     CMR_Index_Categories.single_ep, "cmr-singles")
-    html = _insert_section(articles, html, highlight_guesses, 
+    html = _insert_section(articles, html, highlight_guesses,\
                     CMR_Index_Categories.album, "cmr-albums")
-    html = _insert_section(articles, html, highlight_guesses, 
+    html = _insert_section(articles, html, highlight_guesses,\
                     CMR_Index_Categories.live, "cmr-live")
-    html = _insert_section(articles, html, highlight_guesses, 
+    html = _insert_section(articles, html, highlight_guesses,\
                     CMR_Index_Categories.undefined, "cmr-unclassified")
 
     html = html + "<!–– stop copying for wordpess here -->\n"
@@ -84,9 +84,10 @@ def get_html_problem_link(article):
     return html
 
 def _get_problem_html(articles):
-    html = "Problem - not enough information to build index for the following articles:<p>"
+    html = "Problem - not enough information to build index for the "+\
+           "following articles:<p>"
     for article in articles:
-        html = html + get_html_problem_link(article);
+        html = html + get_html_problem_link(article)
     return html
 
 def get_problem_doc_html(articles):
@@ -94,4 +95,3 @@ def get_problem_doc_html(articles):
            "<title>Cambridge Music Reviews index</title><body>"+\
            _get_problem_html(articles)+"</body></html>"
     return html
-
