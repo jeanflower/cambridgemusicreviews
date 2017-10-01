@@ -8,6 +8,7 @@
     <p>
     <div class="cmr-extras">
     {% for article in article_list_extras %}
+        {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
         <a href={{ article.url }}>{{ article.index_text }}</a><br />
     {% endfor %}
     </div>
@@ -18,6 +19,7 @@
     <p>
     <div class="cmr-singles">
     {% for article in article_list_singles %}
+        {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
         <a href={{ article.url }}>{{ article.index_text }}</a><br />
     {% endfor %}
     </div>
@@ -28,6 +30,7 @@
     <p>
     <div class="cmr-albums">
     {% for article in article_list_albums %}
+        {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
         <a href={{ article.url }}>{{ article.index_text }}</a><br />
     {% endfor %}
     </div>
@@ -38,17 +41,19 @@
     <p>
     <div class="cmr-live">
     {% for article in article_list_live %}
+        {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
         <a href={{ article.url }}>{{ article.index_text }}</a><br />
     {% endfor %}
     </div>
 {% else %}
 {% endif %}
 {% if article_list_unclassified %}
-    <h2>Extras</h2>
+    <h2>Unclassified</h2>
     <p>
     <div class="cmr-unclassified">
     {% for article in article_list_unclassified %}
-        <a href={{ article.url }}>{{ article.index_text }}</a></li>
+        {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
+        <a href={{ article.url }}>{{ article.index_text }}</a><br>
     {% endfor %}
     </div>
 {% else %}
