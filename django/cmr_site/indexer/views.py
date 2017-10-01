@@ -106,6 +106,9 @@ def _sort_db_articles(articles):
 
 def refresh_from_wp(request):
     articles = get_all_cmr_articles()
+    
+    problem_articles = []
+    fill_in_missing_data_quiet(articles, problem_articles)
 
     # Populate the db with the articles we obtained above
     Article.objects.all().delete()

@@ -9,7 +9,7 @@
     <div class="cmr-extras">
     {% for article in article_list_extras %}
         {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
-        <a href={{ article.url }}>{{ article.index_text }}</a><br />
+        {% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
     {% endfor %}
     </div>
 {% else %}
@@ -20,7 +20,7 @@
     <div class="cmr-singles">
     {% for article in article_list_singles %}
         {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
-        <a href={{ article.url }}>{{ article.index_text }}</a><br />
+        {% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
     {% endfor %}
     </div>
 {% else %}
@@ -31,7 +31,7 @@
     <div class="cmr-albums">
     {% for article in article_list_albums %}
         {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
-        <a href={{ article.url }}>{{ article.index_text }}</a><br />
+        {% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
     {% endfor %}
     </div>
 {% else %}
@@ -42,7 +42,7 @@
     <div class="cmr-live">
     {% for article in article_list_live %}
         {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
-        <a href={{ article.url }}>{{ article.index_text }}</a><br />
+        {% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
     {% endfor %}
     </div>
 {% else %}
@@ -53,7 +53,7 @@
     <div class="cmr-unclassified">
     {% for article in article_list_unclassified %}
         {% if not show_raw_html %}<a href="../get_index_text/{{article.pk}}">edit</a>&nbsp&nbsp{% endif %}
-        <a href={{ article.url }}>{{ article.index_text }}</a><br>
+        {% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
     {% endfor %}
     </div>
 {% else %}
