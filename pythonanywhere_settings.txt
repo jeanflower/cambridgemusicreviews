@@ -1,3 +1,16 @@
+To update pythonanywhere:
+
+1.
+In bash console, use git fetch + rebase to get new code.  
+There may be clashes.  
+If faced with tricky resolution, it can be easiest to
+clean using git reset --hard and reapply following three changes.
+In vi use
+i / esc to enter / exit INSERT mode
+x / P to cut / paste single character (e.g. a #)
+:wq / :q! to quit with / without write of file
+
+
 diff --git a/django/cmr_site/indexer/forms.py b/django/cmr_site/indexer/forms.py
 index eb41039..0c942df 100644
 --- a/django/cmr_site/indexer/forms.py
@@ -39,3 +52,12 @@ index fa3f7db..4203ed7 100644
 +ALLOWED_HOSTS = ['jeanflower.pythonanywhere.com']
  
  # Application definition
+ 
+ 2. Update DB
+ python manage.py makemigrations
+ python manage.py migrate
+ 
+ 3. Reload site (under Web tab)
+ 
+ 
+ 
