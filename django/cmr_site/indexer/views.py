@@ -248,7 +248,7 @@ def get_index_text(request, article_id):
             #print(chosen_category)
             db_article.category = int(choice[0])-1
             db_article.save()
-            return HttpResponseRedirect(article_id)
+            return HttpResponseRedirect('../display_db_index')
 
     else:
 
