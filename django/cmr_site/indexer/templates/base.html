@@ -1,5 +1,8 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'indexer/style.css' %}" />
+
 {% block content %}
-<h1>Cambridge Music Review Links:</h1>
+<h1>Cambridge Music Review Links</h1>
 <a href = "{% url 'display_db_index' %}">Current index</a><br>
 <a href = "{% url 'display_tagged_db_index' 'single' 0%}">Current index with 'single' tags</a><br>
 <a href = "{% url 'display_tagged_db_index' 'EP' 0%}">Current index with 'EP' tags</a><br>
