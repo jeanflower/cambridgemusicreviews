@@ -75,18 +75,9 @@ def index(request):
 
 def cmr_home(request):
 
-    html = "<a href = \"index\">index</a>"+\
-    " is a non-persistent way of generating index, guessing categories,"+\
-    " highlighting 'new' items (contact admin to update what constitutes \"new\")<p>"+\
-    "<a href = \"refresh_from_wp\">refresh_from_wp</a>"+\
-    " (SLOW!) clears DB, visits wp, populates DB, presents view of data<p>"+\
-    "<a href = \"display_db_index\">display_db_index</a>"+\
-    " displays current db content, allows edit of entries<p>"+\
-    "<a href = \"display_db_index_raw\">display_db_index_raw</a>"+\
-    " displays current db content, raw html<p>"+\
-    ""
-    return HttpResponse(html)
-
+    template = loader.get_template('base.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
 def _db_sort_key(article):
     result = ""
@@ -99,10 +90,6 @@ def _db_sort_key(article):
 
 def _sort_db_articles(articles):
     articles.sort(key=_db_sort_key)
-
-
-#def index(request):
-#    return HttpResponse("Hello, world. You're at the indexer.")
 
 def refresh_from_wp(request):
     articles = get_all_cmr_articles()
@@ -127,11 +114,51 @@ def refresh_from_wp(request):
 
     #db_articles = Article.objects.all()
     #print(db_articles)
+    
+    html = "<h1>Replaced content after updating from "+\
+           "the WordPress site</h1>"+get_index_doc_html(articles)
+           
+    return render(request, 'indexer/generic.html',
+                  {'html_content': html})     
 
-    html = "This is a view of content as refreshed from "+\
-           "the wordpress site<p>"+get_index_doc_html(articles)
-    return HttpResponse(html)
+def update_from_wp(request):
+    articles = get_all_cmr_articles()
+    new_articles = []
+    for article in articles:
+        db_articles = Article.objects.filter(url=article.url)
+        if len(db_articles) == 0:
+            new_articles.append(article)
+            
+    if len(new_articles) == 0:
+        template = loader.get_template('indexer/no_new_articles.html')
+        context = {}
+        return HttpResponse(template.render(context, request))
+            
+    problem_articles = []
+    fill_in_missing_data_quiet(new_articles, problem_articles)
 
+    # Add to the db the new articles we obtained above
+    for article in articles:
+        a = Article(title=article.title,
+                    url=article.url,
+                    index_text=article.index_text,
+                    category=article.category,
+                    index_status=article.index_status)
+#        print("article id is "+str(a.id)) # has no id yet
+        a.save()
+#        print("article id after save is "+str(a.id)) # has id now
+        for t in article.tags:
+            Tag.objects.create(article=a, text=t)
+
+    #db_articles = Article.objects.all()
+    #print(db_articles)
+
+    html = "This is a view of new content after updating from "+\
+           "the wordpress site<p>"+get_index_doc_html(new_articles)
+           
+    return render(request, 'indexer/generic.html',
+                  {'html_content': html})           
+           
 def display_db_index(request):
     raw_view = "0"
     return display_tagged_db_index(request, "all", raw_view)

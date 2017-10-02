@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.cmr_home, name='cmr_home'),
     url(r'^index$', views.index, name='index'),
     url(r'^refresh_from_wp/$', views.refresh_from_wp, name='refresh_from_wp'),
+    url(r'^update_from_wp/$', views.update_from_wp, name='update_from_wp'),
     url(r'^get_index_text/(?P<article_id>\d+)$', views.get_index_text, name='get_index_text'),
     url(r'^display_db_index/$', views.display_db_index, name='display_db_index'),
     url(r'^display_db_index_raw/$', views.display_db_index_raw, name='display_db_index_raw'),

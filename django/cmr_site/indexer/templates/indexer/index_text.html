@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
 <h1>Edit the index text or category of this article</h1>
 
 <a href={{article_url}}>{{article_title}}</a><p>
@@ -8,3 +12,4 @@
 </form>
 
 <a href="/indexer/">Finished editing, go back home</a>
+{% endblock %}

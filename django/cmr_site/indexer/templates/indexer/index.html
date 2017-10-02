@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
 {% if show_raw_html %}
     <xmp>
 {% endif %}
@@ -61,3 +65,4 @@
 {% if show_raw_html %}
     </xmp>
 {% endif %}
+{% endblock %}
