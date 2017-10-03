@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^display_db_index_raw/$', views.display_db_index_raw, name='display_db_index_raw'),
     url(r'^display_tagged_db_index/(?P<tag_text>\w+)/(?P<raw_view>\d+)/$', views.display_tagged_db_index, name='display_tagged_db_index'),
     #url(r'^(?P<article_id>[0-9]+)/edit/$', views.edit, name='edit'),
+    url(r'^search/$', views.search, name='search'),
 ]
 

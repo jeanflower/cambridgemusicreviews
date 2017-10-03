@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ block.super }}
+<h1>Search</h1>
+
+<a href={{article_url}}>{{article_title}}</a><p>
+<form action="/indexer/search/" method = "post">
+    {% csrf_token %}
+    {{form}}    
+    <input type="submit" value = "Submit" />
+</form>
+{% endblock %}

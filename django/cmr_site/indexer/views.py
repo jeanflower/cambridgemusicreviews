@@ -8,7 +8,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
 
-from .forms import IndexTextForm, CHOICES
+from .forms import EditEntryForm, CATEGORY_CHOICES, \
+                   SearchForm, SEARCH_LOCATION_CHOICES
 
 import_module("cmr.cmr_create_index_html")
 
@@ -173,19 +174,7 @@ white_list_of_tag_text_values = ["live", "album", "single", "EP", "all"]
 # raw_view = 1 : show raw html
 # raw_view = 2 : show formatted html then raw HTML
 
-
-def display_tagged_db_index(request, tag_text, raw_view):
-
-    # Only pass whitelisted tag_text values into DB
-    # While any tags are possible on WordPress, we protect our DB
-    if not tag_text in white_list_of_tag_text_values:
-        return HttpResponse("not-approved tag text value "+\
-                            "(only "+str(white_list_of_tag_text_values)+" allowed)")
-    if tag_text == "all":
-        db_articles = Article.objects.all()
-    else:
-        db_articles = Article.objects.filter(tag__text__contains=tag_text)
-
+def display_db_articles( request, db_articles, title, raw_view ):
     articles_extras = []
     articles_singles = []
     articles_albums = []
@@ -216,12 +205,13 @@ def display_tagged_db_index(request, tag_text, raw_view):
     _sort_db_articles(articles_unclassified)
 
     #show_displayed_html = not raw_view == "1"
-    show_raw_html = not raw_view == "0"
+    show_raw_html = not raw_view == "0" and not raw_view == 0
     print("raw_view "+str(raw_view))
     print("show raw html?"+str(show_raw_html))
 
     template = loader.get_template('indexer/index.html')
     context = {
+        'title'                    : title,
         'show_raw_html'            : show_raw_html,
         'article_list_extras'      : articles_extras,
         'article_list_singles'     : articles_singles,
@@ -231,6 +221,20 @@ def display_tagged_db_index(request, tag_text, raw_view):
     }
     return HttpResponse(template.render(context, request))
 
+def display_tagged_db_index(request, tag_text, raw_view):
+
+    # Only pass whitelisted tag_text values into DB
+    # While any tags are possible on WordPress, we protect our DB
+    if not tag_text in white_list_of_tag_text_values:
+        return HttpResponse("not-approved tag text value "+\
+                            "(only "+str(white_list_of_tag_text_values)+" allowed)")
+    if tag_text == "all":
+        db_articles = Article.objects.all()
+    else:
+        db_articles = Article.objects.filter(tag__text__contains=tag_text)
+
+    return display_db_articles(request, db_articles, "", raw_view)
+
 def get_index_text(request, article_id):
     print("entered get_index_text for id "+article_id)
 
@@ -238,7 +242,7 @@ def get_index_text(request, article_id):
     db_article = db_articles.first()
 
     if request.method == 'POST':
-        form = IndexTextForm(request.POST)
+        form = EditEntryForm(request.POST)
         if form.is_valid():
             db_article.index_text = form.cleaned_data['index_text']
             choice = form.cleaned_data['category_choice']
@@ -253,9 +257,9 @@ def get_index_text(request, article_id):
     else:
 
         default_index_text = db_article.index_text
-        default_choice = CHOICES[db_article.category][0]
+        default_choice = CATEGORY_CHOICES[db_article.category][0]
         print("default choice = "+str(default_choice))
-        form = IndexTextForm(initial={'index_text':default_index_text,
+        form = EditEntryForm(initial={'index_text':default_index_text,
                                       'category_choice':default_choice})
 
     #print("form is" +str(form))
@@ -265,3 +269,40 @@ def get_index_text(request, article_id):
                    'article_url' : db_article.url,
                    'article_index_text' : db_article.index_text,
                    'form': form})
+
+def search(request):
+
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            search_term = form.cleaned_data['search_term']
+            
+            search_results = []
+            search_locations = form.cleaned_data['location_choice']
+            for location in search_locations:
+                print(SEARCH_LOCATION_CHOICES[int(location)-1][1])
+                if SEARCH_LOCATION_CHOICES[int(location)-1][1] == "Title":
+                    search_results = search_results +\
+                            list(Article.objects.filter(title__icontains=search_term))
+                elif SEARCH_LOCATION_CHOICES[int(location)-1][1] == "Tags":
+                    search_results = search_results +\
+                            list(Article.objects.filter(tag__text__icontains=search_term))
+                elif SEARCH_LOCATION_CHOICES[int(location)-1][1] == "Index text":
+                    search_results = search_results +\
+                            list(Article.objects.filter(index_text__icontains=search_term))
+
+            return display_db_articles(request, 
+                                       set(search_results), 
+                                       "Search Results", 
+                                       "0")
+
+    else:
+
+        default_search_text = "search_term"
+        default_choice = '1'
+        form = SearchForm(initial={'':default_search_text,
+                                   'location_choice':default_choice})
+
+    #print("form is" +str(form))
+    return render(request, 'indexer/search.html',
+                  {'form': form})

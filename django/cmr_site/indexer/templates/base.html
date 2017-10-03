@@ -4,10 +4,7 @@
 {% block content %}
 <h1>Cambridge Music Review Links</h1>
 <a href = "{% url 'display_db_index' %}">Current index</a><br>
-<a href = "{% url 'display_tagged_db_index' 'single' 0%}">Current index with 'single' tags</a><br>
-<a href = "{% url 'display_tagged_db_index' 'EP' 0%}">Current index with 'EP' tags</a><br>
-<a href = "{% url 'display_tagged_db_index' 'album' 0%}">Current index with 'album' tags</a><br>
-<a href = "{% url 'display_tagged_db_index' 'live' 0%}">Current index with 'live' tags</a> <br>
+<a href = "{% url 'search' %}">Search</a><br>
 
 <a href = "{% url 'display_db_index_raw' %}">Current index as raw HTML</a> suitable for inserting into WordPress widget<p>
 <a href = "{% url 'refresh_from_wp' %}">Refresh_from_wp</a>
