@@ -17,7 +17,9 @@ CHOICES = (('1', INDEX_CATEGORY_STRINGS[0]), \
            ('5', INDEX_CATEGORY_STRINGS[4]))
 
 class IndexTextForm(forms.Form):
-    index_text = forms.CharField(label="Index text",
+    index_text = forms.CharField(label="Index link text",
                                  max_length=max_index_text_length,
                                 )
-    category_choice = forms.MultipleChoiceField(choices=CHOICES)
+    category_choice = forms.ChoiceField(label = '', 
+                                        widget=forms.RadioSelect, 
+                                        choices=CHOICES)
