@@ -42,7 +42,7 @@ def make_coded_message(uncoded_message, shift):<br>\
     return message_coded<br>\
 <br>\
 print(make_coded_message(\"happy birthday laurence\", 1))<br>\
-    </pre>"
+</pre>"
     message = message + "<p><p>"    
     message = message + "Have fun! Love from Jean and Gem."
     return HttpResponse(message)
