@@ -1,11 +1,10 @@
 from django.http import HttpResponse
 
 def message(request):
-    message = "Happy Birthday Laurence<p>"
-    
+    message = "Happy Birthday Laurence<br>"
     message = message + "<a href = http://jeanflower.pythonanywhere.com/laurence/messages>click here for a longer message!</a><p>"
     url = 'http://jeanflower.pythonanywhere.com/laurence/codes/hello/0'
-    message = message + "Or go to <a href = '"+url+"'>"+url+"</a><p>"
+    message = message + "Or go to <a href = '"+url+"'>"+url+"</a><br>"
     message = message + "Try things other than hello and 0."
     message = message + "<p><p>"
     url = 'http://pythonfiddle.com/'
