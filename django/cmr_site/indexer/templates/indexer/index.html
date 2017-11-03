@@ -14,7 +14,7 @@
 <p>
 <h2>Extras</h2>
 <div class="cmr-extras">
-{% for article in article_list_extras %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}
+{% for article in article_list_extras %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href={{ article.url }}>{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br />
 {% endfor %}</div>
 {% else %}
 {% endif %}

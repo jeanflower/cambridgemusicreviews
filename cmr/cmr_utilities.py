@@ -54,21 +54,18 @@ def _get_httpresponse(url):
 # Get an HttpResponse for the CMR page with given number.
 # NB wordpress serves up CMR articles in batches / pages.
 # Optionally, get the data from a local file (quicker for debugging work).
-def get_cmr_page(page_number, local):
-    if local:
-        local_file = path.join(path.dirname(__file__), \
-                     'captured_pages/page_text_1.html')
-        html = open(local_file)
+def get_local_cmr_page():
+    local_file = path.join(path.dirname(__file__), \
+                 'captured_pages/page_text_1.html')
+    html = open(local_file)
 
-        returned_web_page = Web_Page()
-        returned_web_page.exists = True
-        returned_web_page.html = html
-        returned_web_page.soup = _get_soup(html)
+    returned_web_page = Web_Page()
+    returned_web_page.exists = True
+    returned_web_page.html = html
+    returned_web_page.soup = _get_soup(html)
 
-        html.close()
-        return returned_web_page
-    else:
-        return _get_httpresponse(_get_cmr_url(page_number))
+    html.close()
+    return returned_web_page
 
 # Save a CMR page obtained from WordPress as a local html file.
 def save_cmr_page(page_number, destination_file):

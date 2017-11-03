@@ -1,13 +1,15 @@
 #from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
+from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories, sort_articles
 
 from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
 
-from cmr.cmr_interactive import fill_in_missing_data_interactive
+from cmr.cmr_interactive import fill_in_missing_data_interactive, \
+                                fill_in_missing_data_quiet
 
 from cmr.cmr_create_index_html import save_index_html
 
-def example_save_index_html():
+def example_save_index_html_two_articles():
+    
     sample_article_0 = CMR_Article()
     sample_article_0.title = "ABC, Parker’s Piece, 7 July 2017"
     sample_article_0.url = "http://example_url_0.com"
@@ -29,9 +31,16 @@ def example_save_index_html():
 
     save_index_html(articles, "test_output_two_samples.html")
 
-
+def example_save_index_html():
     articles = get_all_cmr_articles()
 
-    fill_in_missing_data_interactive(articles)
+    problem_articles = []
+    fill_in_missing_data_quiet(articles, problem_articles)
+
+    sort_articles(articles)
 
     save_index_html(articles, "test_output_all_unsorted.html")
+
+
+if __name__ == '__main__':
+    example_save_index_html()

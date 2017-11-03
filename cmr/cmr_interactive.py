@@ -14,7 +14,7 @@ def confirm_is_live_interactive(article):
     response = input("guessed "+article.title+" is a live review; ok? (y/n):")
     return response.lower() == 'y'
 
-def get_missing_index_text_interactive(article):
+def _get_missing_index_text_interactive(article, quiet):
     # TODO : ask the user to input some text and use their response
     print("missing index text")
 
@@ -80,8 +80,11 @@ def _guess_index_text(article):
     elif article.category == CMR_Index_Categories.album or \
          article.category == CMR_Index_Categories.single_ep:
         return phrases[0]
+    
+    else:
+        return article.title
 
-def get_missing_category_interactive(article):
+def get_missing_category_interactive(article, quiet):
     # ask the user to input a category and use their response
     print("missing category")
     print("article title is \""+ article.title+"\"")
@@ -153,7 +156,7 @@ def _known_venue_in_title(article):
 def fill_in_missing_data_interactive(articles):
     problem_titles = []
     return fill_in_missing_data(articles,\
-                     get_missing_index_text_interactive,\
+                     _get_missing_index_text_interactive,\
                      get_missing_category_interactive,\
                      confirm_is_single_interactive,\
                      confirm_is_album_interactive,\
@@ -163,7 +166,7 @@ def fill_in_missing_data_interactive(articles):
 
 def fill_in_missing_data_quiet(articles, problem_titles):
     return fill_in_missing_data(articles,\
-                     get_missing_index_text_interactive,\
+                     _get_missing_index_text_interactive,\
                      get_missing_category_interactive,\
                      lambda x: True, # confirmation that a guess is OK
                      lambda x: True, # confirmation that a guess is OK
@@ -210,7 +213,7 @@ def fill_in_missing_data(articles,
         has_index_text = _article_has_index_text(article)
         if has_category and has_index_text:
             continue
-
+        
         if _known_single_in_title(article):
             if confirm_is_single(article):
                 article.category = CMR_Index_Categories.single_ep
@@ -239,9 +242,13 @@ def fill_in_missing_data(articles,
             article.index_status = CMR_Index_Status.from_code
             continue
 
+        article.print_article_details()
+
         if quiet:
-            problem_articles.append(article)
-            got_all_data_ok = False
+            article.category = CMR_Index_Categories.extra
+            article.index_text = _guess_index_text(article)
+            article.index_status = CMR_Index_Status.from_code
+            continue
 
         if not has_category:
             article.category = get_missing_category(article, quiet)

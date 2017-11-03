@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from cmr.cmr_utilities import \
-    CMR_Article, get_cmr_page, CMR_Index_Categories, CMR_Index_Status
+    CMR_Article, get_local_cmr_page, CMR_Index_Categories, CMR_Index_Status
 
 import requests
 import re
@@ -92,7 +92,7 @@ def get_index_anchors(soup, tag, category):
     #pass the results back to the calling code
     return articles_found
 
-def _extend_url_map(soup, div_string, category, url_map):
+def extend_url_map(soup, div_string, category, url_map):
     articles = get_index_anchors(soup, div_string, category)
     for article in articles:
         url_map[article.url] = article
@@ -108,17 +108,16 @@ def _report_unexpected_category(article):
 # and fill in known index_title and category information
 def _add_existing_index_data(articles):
     # all indexes should be the same, look at page 1
-    local = True
-    web_page = get_cmr_page(1, local)
+    web_page = get_local_cmr_page()
 
     soup = web_page.soup
 
     # Use URL as key in a map
     url_map = dict()
-    _extend_url_map(soup, "cmr-extras", CMR_Index_Categories.extra, url_map)
-    _extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
-    _extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
-    _extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
+    extend_url_map(soup, "cmr-extras", CMR_Index_Categories.extra, url_map)
+    extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
+    extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
+    extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
 
     #print(url_map)
 
@@ -137,7 +136,6 @@ def _add_existing_index_data(articles):
         article.index_text = map_entry.index_text
         article.category = map_entry.category
         article.index_status = map_entry.index_status
-        
 
 # From both articles and existing index, combined
 def _get_all_cmr_articles(quick_test):
