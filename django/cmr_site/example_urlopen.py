@@ -16,3 +16,8 @@ def example_urlopen():
     #call read() on the HTTPResponse object
     #(get a lot back from a simple call to google!)
     print(html.read())
+
+
+if __name__ == '__main__':
+    example_urlopen()
+

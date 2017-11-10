@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-#from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
-from cmr.cmr_interactive import fill_in_missing_data_interactive
+#from cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
+from cmr_utilities import CMR_Article, CMR_Index_Categories
+from cmr_interactive import fill_in_missing_data_interactive
 
 
 def example_fill_in_missing_data():
@@ -32,3 +32,7 @@ def example_fill_in_missing_data():
     for article in articles:
         print("----")
         article.print_article_details()
+
+
+if __name__ == '__main__':
+    example_fill_in_missing_data()

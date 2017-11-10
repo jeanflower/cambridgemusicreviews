@@ -2,8 +2,6 @@ import sys
 sys.path.append('../..')
 #sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
 
-from importlib import import_module
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
@@ -11,14 +9,12 @@ from django.shortcuts import render
 from .forms import EditEntryForm, CATEGORY_CHOICES, \
                    SearchForm, SEARCH_LOCATION_CHOICES
 
-import_module("cmr.cmr_create_index_html")
+from cmr_get_articles_from_webpage import get_all_cmr_articles
+from cmr_interactive import fill_in_missing_data_quiet
+from cmr_create_index_html import get_index_doc_html, get_problem_doc_html
+from cmr_utilities import sort_articles
 
-from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
-from cmr.cmr_interactive import fill_in_missing_data_quiet
-from cmr.cmr_create_index_html import get_index_doc_html, get_problem_doc_html
-from cmr.cmr_utilities import sort_articles, CMR_Index_Categories
-
-from indexer.models import Article, Tag
+from indexer.models import Article, Tag, CMR_Index_Categories
 
 def _make_sorted_html(articles):
     sort_articles(articles)
@@ -206,8 +202,8 @@ def display_db_articles( request, db_articles, title, raw_view ):
 
     #show_displayed_html = not raw_view == "1"
     show_raw_html = not raw_view == "0" and not raw_view == 0
-    print("raw_view "+str(raw_view))
-    print("show raw html?"+str(show_raw_html))
+    #print("raw_view "+str(raw_view))
+    #print("show raw html?"+str(show_raw_html))
 
     template = loader.get_template('indexer/index.html')
     context = {
@@ -246,7 +242,7 @@ def get_index_text(request, article_id):
         if form.is_valid():
             db_article.index_text = form.cleaned_data['index_text']
             choice = form.cleaned_data['category_choice']
-            print(choice[0])
+            #print(choice[0])
             #chosen_category = dict(form.fields['category_choice'].choices)\
             #                      [choice]
             #print(chosen_category)
@@ -258,7 +254,7 @@ def get_index_text(request, article_id):
 
         default_index_text = db_article.index_text
         default_choice = CATEGORY_CHOICES[db_article.category][0]
-        print("default choice = "+str(default_choice))
+        #print("default choice = "+str(default_choice))
         form = EditEntryForm(initial={'index_text':default_index_text,
                                       'category_choice':default_choice})
 

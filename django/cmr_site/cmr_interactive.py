@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories, CMR_Index_Status
+from indexer.models import CMR_Index_Categories, CMR_Index_Status
 
 def confirm_is_single_interactive(article):
     response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
@@ -242,9 +242,10 @@ def fill_in_missing_data(articles,
             article.index_status = CMR_Index_Status.from_code
             continue
 
-        article.print_article_details()
+#        article.print_article_details()
 
         if quiet:
+            # quiet mode puts unknown as "extras"
             article.category = CMR_Index_Categories.extra
             article.index_text = _guess_index_text(article)
             article.index_status = CMR_Index_Status.from_code

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-from enum import IntEnum
 #use urlopen to obtain html from a url
 from urllib.request import urlopen, urlretrieve
 from urllib import error
 from os import path
 #use beautifulsoup library to parse the html
 from bs4 import BeautifulSoup
+
+from indexer.models import CMR_Index_Categories
 
 #define the location of the cambridgemusicreviews site
 #the page auto-revelas more content, accessible using increasing
@@ -99,39 +100,6 @@ class Web_Page:
     exists = False
     html = ""
     soup = None
-
-# An article can fall into one of these categories.
-class CMR_Index_Categories(IntEnum): # pylint :disable=W0631
-    extra = 0     #"Extras"
-    single_ep = 1 #"Singles and EPs"
-    album = 2     #"Album reviews"
-    live = 3      #"Live Reviews"
-    undefined = 4 #"Undefined"
-
-INDEX_CATEGORY_STRINGS = ["Extras", "Singles and EPs", "Album reviews",
-                          "Live Reviews", "Undefined"]
-
-class CMR_Index_Status(IntEnum):
-    from_html_index = 0 #"Derived from existing HTML index"
-    from_code = 1       #"Guessed using code"
-    from_enduser = 2    #"Set or confirmed by enduser"
-    undefined = 3       #"Undefined"
-
-class CMR_Article:
-    title = ""      # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
-    url = ""
-    # e.g. "https://cambridgemusicreviews.net/2017/07/09/abc--7-july-2017/"
-    index_text = "" # e.g. "ABC"
-    category = CMR_Index_Categories.undefined # e.g. CMR_Index_Categories.live
-    index_status = CMR_Index_Status.undefined
-    tags = []
-
-    def print_article_details(self):
-        print("title      is :\""+self.title+"\"")
-        print("url        is :\""+self.url+"\"")
-        print("index_text is :\""+self.index_text+"\"")
-        print("category   is :\""+INDEX_CATEGORY_STRINGS[self.category]+"\"")
-
 
 def sort_key(article):
     result = ""

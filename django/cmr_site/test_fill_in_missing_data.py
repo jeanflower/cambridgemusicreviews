@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 import unittest
+from django.test import TestCase
 
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
-from cmr.cmr_interactive import fill_in_missing_data
+from indexer.models import Article, CMR_Index_Categories
+from cmr_interactive import fill_in_missing_data
 
 def _get_missing_index_text_test(article, quiet):
     return article.title[:5] # for testing, use first 5 characters of title
@@ -17,19 +18,19 @@ def _confirm_test(article):
     return True
 
 def setup_articles():
-        sample_article_0 = CMR_Article()
+        sample_article_0 = Article()
         sample_article_0.title = "ABC, Parker’s Piece, 7 month-year"
         sample_article_0.url = "http://example_url_0.com"
         sample_article_0.tags = []
 
-        sample_article_1 = CMR_Article()
+        sample_article_1 = Article()
         sample_article_1.title = "Lee Hull, Corner House, Cambridge, 4 June 2017"
         sample_article_1.url = "http://example_url_1.com"
         sample_article_1.index_text = "Lee Hull, 4th Junish 2017"
         sample_article_1.category = CMR_Index_Categories.live
         sample_article_1.tags = []
 
-        sample_article_2 = CMR_Article()
+        sample_article_2 = Article()
         sample_article_2.title = "no idea, what this is, 1 month-year"
         sample_article_2.url = "http://example_url_2.com"
         sample_article_2.tags = []
@@ -48,7 +49,7 @@ def setup_articles():
                              problem_articles)
         return articles
 
-class Test_fill_in_missing_data(unittest.TestCase):
+class Test_fill_in_missing_data(TestCase):
 
 
     def test_fill_in_missing_data_01(self):
@@ -66,8 +67,8 @@ class Test_fill_in_missing_data(unittest.TestCase):
 
         self.assertEqual(articles[2].title, "no idea, what this is, 1 month-year")
         self.assertEqual(articles[2].url, "http://example_url_2.com")
-        self.assertEqual(articles[2].index_text, "no id")
-        self.assertEqual(articles[2].category, CMR_Index_Categories.live)
+        self.assertEqual(articles[2].index_text, "no idea, what this is, 1 month-year")
+        self.assertEqual(articles[2].category, CMR_Index_Categories.extra)
 
     def test_fill_in_missing_data_02(self):
         gig_dates = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th",
@@ -76,7 +77,7 @@ class Test_fill_in_missing_data(unittest.TestCase):
                      "23rd", "24th", "25th", "26th", "27th", "28th", "29th",
                      "30th", "31st"]
         for i in range(1, 31):
-            sample_article = CMR_Article()
+            sample_article = Article()
             sample_article.title = "ABC, Parker’s Piece, "+str(i)+" month-year"
             sample_article.url = "http://example_url_0.com"
             articles = [sample_article]

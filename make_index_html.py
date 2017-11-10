@@ -1,10 +1,10 @@
-from cmr.cmr_utilities import sort_articles
+from cmr_utilities import sort_articles
 
-from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
+from cmr_get_articles_from_webpage import get_all_cmr_articles
 
-from cmr.cmr_interactive import fill_in_missing_data_quiet
+from cmr_interactive import fill_in_missing_data_quiet
 
-from cmr.cmr_create_index_html import save_index_html, get_problem_doc_html
+from cmr_create_index_html import save_index_html, get_problem_doc_html
 
 
 articles = get_all_cmr_articles()

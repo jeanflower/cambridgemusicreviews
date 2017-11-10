@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories
+from cmr_utilities import CMR_Article, CMR_Index_Categories
 
 def example_CMR_Article():
     #Create a CMR_Article object
@@ -32,3 +32,7 @@ def example_CMR_Article():
 
     # print out its contents
     my_article.print_article_details()
+
+
+if __name__ == '__main__':
+    example_CMR_Article()

@@ -1,8 +1,23 @@
 from django.db import models
 
-import sys
-sys.path.append('../..')
+from enum import IntEnum
 
+# An article can fall into one of these categories.
+class CMR_Index_Categories(IntEnum): # pylint :disable=W0631
+    extra = 0     #"Extras"
+    single_ep = 1 #"Singles and EPs"
+    album = 2     #"Album reviews"
+    live = 3      #"Live Reviews"
+    undefined = 4 #"Undefined"
+
+class CMR_Index_Status(IntEnum):
+    from_html_index = 0 #"Derived from existing HTML index"
+    from_code = 1       #"Guessed using code"
+    from_enduser = 2    #"Set or confirmed by enduser"
+    undefined = 3       #"Undefined"
+
+INDEX_CATEGORY_STRINGS = ["Extras", "Singles and EPs", "Album reviews",
+                          "Live Reviews", "Undefined"]
 
 max_index_text_length = 100
 
@@ -16,10 +31,16 @@ class Article(models.Model):
     index_text = models.CharField(max_length=max_index_text_length, default="")
     # e.g. "ABC"
 
-    category = models.IntegerField(default=0)
+    category = models.IntegerField(default=CMR_Index_Categories.extra)
     # e.g. CMR_Index_Categories.live enum value
 
-    index_status = models.IntegerField(default=0)
+#    index_status = models.IntegerField(default=0)
+
+    def print_article_details(self):
+        print("title      is :\""+self.title+"\"")
+        print("url        is :\""+self.url+"\"")
+        print("index_text is :\""+self.index_text+"\"")
+        print("category   is :\""+INDEX_CATEGORY_STRINGS[self.category]+"\"")
 
     def __str__(self):
         result = "title      is :\""+self.title+"\"\n"+\

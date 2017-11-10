@@ -1,12 +1,12 @@
 #from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
-from cmr.cmr_utilities import CMR_Article, CMR_Index_Categories, sort_articles
+from cmr_utilities import CMR_Article, CMR_Index_Categories, sort_articles
 
-from cmr.cmr_get_articles_from_webpage import get_all_cmr_articles
+from cmr_get_articles_from_webpage import get_all_cmr_articles
 
-from cmr.cmr_interactive import fill_in_missing_data_interactive, \
+from cmr_interactive import fill_in_missing_data_interactive, \
                                 fill_in_missing_data_quiet
 
-from cmr.cmr_create_index_html import save_index_html
+from cmr_create_index_html import save_index_html
 
 def example_save_index_html_two_articles():
     

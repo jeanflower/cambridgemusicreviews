@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import \
-    CMR_Article, get_local_cmr_page, CMR_Index_Categories, CMR_Index_Status
+from cmr_utilities import get_local_cmr_page
+
+from indexer.models import Article,\
+                           CMR_Index_Categories, CMR_Index_Status
 
 import requests
 import re
@@ -46,7 +48,7 @@ def _get_all_cmr_articles_no_index(quick_test):
             
             for post in posts:
                 # build a CMR_Article
-                this_article = CMR_Article()
+                this_article = Article()
                 this_article.title = html.unescape(post["title"])
                 this_article.url = post["URL"]
                 this_article.tags = list(post["tags"].keys())
@@ -82,7 +84,7 @@ def get_index_anchors(soup, tag, category):
         this_url = str(anchor["href"])
 
         # build a CMR_Article
-        this_article = CMR_Article()
+        this_article = Article()
         this_article.index_text = this_index_text
         this_article.url = this_url
         this_article.category = category

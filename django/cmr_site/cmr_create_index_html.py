@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from cmr.cmr_utilities import CMR_Index_Categories, INDEX_CATEGORY_STRINGS, \
-                              CMR_Index_Status
+from indexer.models import INDEX_CATEGORY_STRINGS,\
+                           CMR_Index_Categories, CMR_Index_Status
 
 def _get_html_link(article, highlight_guesses):
     html = ""

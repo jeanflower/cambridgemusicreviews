@@ -20,3 +20,7 @@ def example_soup():
 
     #Many more soup functions are documented here
     #https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+
+
+if __name__ == '__main__':
+    example_soup()

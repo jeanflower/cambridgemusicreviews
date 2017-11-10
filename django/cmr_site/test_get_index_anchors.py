@@ -2,25 +2,21 @@
 
 import unittest
 
-from cmr.cmr_utilities import CMR_Index_Categories
-from cmr.cmr_get_articles_from_webpage import get_index_anchors
+from django.test import TestCase
 
-from bs4 import BeautifulSoup
+from indexer.models import CMR_Index_Categories
+from cmr_get_articles_from_webpage import get_index_anchors, extend_url_map, get_local_cmr_page
 
-from os import path
-
-class Test_get_httpresponse(unittest.TestCase):
+class Test_get_httpresponse(TestCase):
 
     def test_get_index_anchors(self):
 
-        print("test_get_entry_titles...")
-        #For testing, use html file stored in this codebase
-        test_file = path.join(path.dirname(__file__), \
-           'captured_pages/page_text_1.html')
-        html = open(test_file)
+        local_page = get_local_cmr_page()
+
+        html = local_page.html
 
         #------- GET DATA out of the web page of interest
-        soup = BeautifulSoup(html, "lxml")
+        soup = local_page.soup
 
         #Use a sequence of calls to get the anchors out of each div
         articles = get_index_anchors(soup, "cmr-extras", CMR_Index_Categories.extra)
@@ -30,19 +26,31 @@ class Test_get_httpresponse(unittest.TestCase):
 
         #report back
 
-        self.assertEqual(len(articles), 134)
-        for i in range(0, 5):
+        self.assertEqual(len(articles), 157)
+        for i in range(0, 4):
             self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
-        for i in range(5, 22):
+        for i in range(4, 25):
             self.assertEqual(articles[i].category, CMR_Index_Categories.single_ep)
-        for i in range(22, 55):
+        for i in range(25, 63):
             self.assertEqual(articles[i].category, CMR_Index_Categories.album)
-        for i in range(55, 134):
+        for i in range(63, 157):
             self.assertEqual(articles[i].category, CMR_Index_Categories.live)
 
+        test_url = "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/"
+        test_index_text = "12 Highlights from 2015"
+
         self.assertEqual(articles[0].title, "")
-        self.assertEqual(articles[0].url, "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/")
-        self.assertEqual(articles[0].index_text, "12 Highlights from 2015")
+        self.assertEqual(articles[0].url, test_url)
+        self.assertEqual(articles[0].index_text, test_index_text)
+
+        url_map = dict()
+        extend_url_map(soup, "cmr-extras", CMR_Index_Categories.extra, url_map)
+        extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
+        extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
+        extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
+        
+        self.assertEqual(url_map[test_url].url, test_url)
+        self.assertEqual(url_map[test_url].index_text, test_index_text)
 
 #        print("articles found:")
 #        article_number = 0
