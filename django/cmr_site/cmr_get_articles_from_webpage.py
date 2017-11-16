@@ -62,6 +62,7 @@ def _get_all_cmr_articles_no_index(quick_test):
             this_article.title = html.unescape(post["title"])
             this_article.url = post["URL"]
             this_article.tags = list(post["tags"].keys())
+            this_article.index_status = CMR_Index_Status.undefined
             articles_found.append(this_article)
 
     #pass the results back to the calling code

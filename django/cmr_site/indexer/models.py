@@ -34,7 +34,7 @@ class Article(models.Model):
     category = models.IntegerField(default=CMR_Index_Categories.extra)
     # e.g. CMR_Index_Categories.live enum value
 
-#    index_status = models.IntegerField(default=0)
+    index_status = models.IntegerField(default=0)
 
     tags = []
 
