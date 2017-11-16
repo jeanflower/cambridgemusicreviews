@@ -74,24 +74,3 @@ def save_index_html(articles, filename):
     f.write(html)
     f.close()
 
-
-def get_html_problem_link(article):
-    html = "<a href=\""
-    html = html + article.url
-    html = html + "\">"
-    html = html + article.title
-    html = html + "</a><br />\n"
-    return html
-
-def _get_problem_html(articles):
-    html = "Problem - not enough information to build index for the "+\
-           "following articles:<p>"
-    for article in articles:
-        html = html + get_html_problem_link(article)
-    return html
-
-def get_problem_doc_html(articles):
-    html = "<!DOCTYPE html>"+\
-           "<title>Cambridge Music Reviews index</title><body>"+\
-           _get_problem_html(articles)+"</body></html>"
-    return html

@@ -36,6 +36,8 @@ class Article(models.Model):
 
 #    index_status = models.IntegerField(default=0)
 
+    tags = []
+
     def print_article_details(self):
         print("title      is :\""+self.title+"\"")
         print("url        is :\""+self.url+"\"")
@@ -46,7 +48,7 @@ class Article(models.Model):
         result = "title      is :\""+self.title+"\"\n"+\
             "url        is :\""+self.url+"\"\n"+\
             "index_text is :\""+self.index_text+"\"\n"+\
-            "category   is :\""+str(self.category)+"\"\n"
+            "category   is :\""+INDEX_CATEGORY_STRINGS[self.category]+"\"\n"
         return result
 
 class Tag(models.Model):

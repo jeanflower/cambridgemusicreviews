@@ -13,7 +13,7 @@ import html
 #  obtain index-relevant data from the articles.
 #  Use the wordpress REST API.
 #  Data comes back as (partially complete)
-#  CMR_Article objects; we'll know the title and url.
+#  Article objects; we'll know the title and url.
 
 def _get_all_cmr_articles_no_index(quick_test):
     #set up an empty list to hold data for each link
@@ -34,28 +34,35 @@ def _get_all_cmr_articles_no_index(quick_test):
             # ask for 4 results only
             url+= "&number=4"
         
-        ret = requests.get(url)
-        returned_code = ret.status_code
-        #print("returned value is "+str(ret.status_code))
+        posts = []
         
-        if returned_code == 200:
-            posts = ret.json()["posts"]
+        try:
+            ret = requests.get(url)
+            returned_code = ret.status_code
+            #print("returned value is "+str(ret.status_code))
             
-            if len(posts) == 0:
+            if returned_code == 200:
+                posts = ret.json()["posts"]
+            else:
+                print("error from REST API request")
                 break
-    
-            #print("got "+str(len(posts))+" posts")
-            
-            for post in posts:
-                # build a CMR_Article
-                this_article = Article()
-                this_article.title = html.unescape(post["title"])
-                this_article.url = post["URL"]
-                this_article.tags = list(post["tags"].keys())
-                articles_found.append(this_article)
-        else:
-            print("error from REST API request")
+        
+        except requests.exceptions.ConnectionError as err:
+            print("no connection for REST API request")
             break
+            
+        if len(posts) == 0:
+            break
+
+        #print("got "+str(len(posts))+" posts")
+        
+        for post in posts:
+            # build a CMR_Article
+            this_article = Article()
+            this_article.title = html.unescape(post["title"])
+            this_article.url = post["URL"]
+            this_article.tags = list(post["tags"].keys())
+            articles_found.append(this_article)
 
     #pass the results back to the calling code
     return articles_found
@@ -140,13 +147,13 @@ def _add_existing_index_data(articles):
         article.index_status = map_entry.index_status
 
 # From both articles and existing index, combined
-def _get_all_cmr_articles(quick_test):
+def _get_wp_articles(quick_test):
     articles = _get_all_cmr_articles_no_index(quick_test)
     _add_existing_index_data(articles)
     return articles
 
 def get_all_cmr_data_quick_test():
-    return _get_all_cmr_articles(True)
+    return _get_wp_articles(True)
 
-def get_all_cmr_articles():
-    return _get_all_cmr_articles(False)
+def get_wp_articles():
+    return _get_wp_articles(False)

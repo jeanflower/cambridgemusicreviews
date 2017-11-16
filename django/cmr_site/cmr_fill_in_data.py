@@ -2,24 +2,13 @@
 
 from indexer.models import CMR_Index_Categories, CMR_Index_Status
 
-def confirm_is_single_interactive(article):
-    response = input("guessed "+article.title+" is a single/ep review ; ok? (y/n):")
-    return response.lower() == 'y'
-
-def confirm_is_album_interactive(article):
-    response = input("guessed "+article.title+" is an album review; ok? (y/n):")
-    return response.lower() == 'y'
-
-def confirm_is_live_interactive(article):
-    response = input("guessed "+article.title+" is a live review; ok? (y/n):")
-    return response.lower() == 'y'
 
 def _get_missing_index_text_interactive(article, quiet):
     # TODO : ask the user to input some text and use their response
     print("missing index text")
 
     print("current article is\n")
-    article.print_article_details()
+    print(str(article))
     response = input("please type in text to use for index link: ")
     return response
 
@@ -30,7 +19,7 @@ def _get_missing_index_text_interactive(article, quiet):
 #    proposed_data.category = article.category
 #
 #    print("proposed article : ")
-#    proposed_data.print_article_details()
+#    print(str(proposed_data))
 #    ok = input("use this new data? (y/n): ")
 #    if ok=='y':
 #        return response
@@ -153,27 +142,6 @@ def _known_venue_in_title(article):
 
     return False
 
-def fill_in_missing_data_interactive(articles):
-    problem_titles = []
-    return fill_in_missing_data(articles,\
-                     _get_missing_index_text_interactive,\
-                     get_missing_category_interactive,\
-                     confirm_is_single_interactive,\
-                     confirm_is_album_interactive,\
-                     confirm_is_live_interactive,\
-                     False,\
-                     problem_titles)
-
-def fill_in_missing_data_quiet(articles, problem_titles):
-    return fill_in_missing_data(articles,\
-                     _get_missing_index_text_interactive,\
-                     get_missing_category_interactive,\
-                     lambda x: True, # confirmation that a guess is OK
-                     lambda x: True, # confirmation that a guess is OK
-                     lambda x: True, # confirmation that a guess is OK
-                     True, # quiet
-                     problem_titles)
-
 def _article_has_category(article):
     return article.category != CMR_Index_Categories.undefined
 
@@ -198,14 +166,7 @@ def guess_category_from_tags(article):
 # Find out whether articles have missing index_text or category
 # and ask the user to provide the information.
 # Store result back in articles
-def fill_in_missing_data(articles,
-                         get_missing_index_text,
-                         get_missing_category,
-                         confirm_is_single,
-                         confirm_is_album,
-                         confirm_is_live,
-                         quiet,
-                         problem_articles):
+def fill_in_missing_data(articles):
 
     got_all_data_ok = True
     for article in articles:
@@ -215,25 +176,22 @@ def fill_in_missing_data(articles,
             continue
         
         if _known_single_in_title(article):
-            if confirm_is_single(article):
-                article.category = CMR_Index_Categories.single_ep
-                article.index_text = _guess_index_text(article)
-                article.index_status = CMR_Index_Status.from_code
-                continue
+            article.category = CMR_Index_Categories.single_ep
+            article.index_text = _guess_index_text(article)
+            article.index_status = CMR_Index_Status.from_code
+            continue
 
         if _known_album_in_title(article):
-            if confirm_is_album(article):
-                article.category = CMR_Index_Categories.album
-                article.index_text = _guess_index_text(article)
-                article.index_status = CMR_Index_Status.from_code
-                continue
+            article.category = CMR_Index_Categories.album
+            article.index_text = _guess_index_text(article)
+            article.index_status = CMR_Index_Status.from_code
+            continue
 
         if _known_venue_in_title(article):
-            if confirm_is_live(article):
-                article.category = CMR_Index_Categories.live
-                article.index_text = _guess_index_text(article)
-                article.index_status = CMR_Index_Status.from_code
-                continue
+            article.category = CMR_Index_Categories.live
+            article.index_text = _guess_index_text(article)
+            article.index_status = CMR_Index_Status.from_code
+            continue
 
         guess_category = guess_category_from_tags(article)
         if guess_category != CMR_Index_Categories.undefined:
@@ -242,21 +200,11 @@ def fill_in_missing_data(articles,
             article.index_status = CMR_Index_Status.from_code
             continue
 
-#        article.print_article_details()
+#        print(str(article))
 
-        if quiet:
-            # quiet mode puts unknown as "extras"
-            article.category = CMR_Index_Categories.extra
-            article.index_text = _guess_index_text(article)
-            article.index_status = CMR_Index_Status.from_code
-            continue
-
-        if not has_category:
-            article.category = get_missing_category(article, quiet)
-
-        if not has_index_text:
-            article.index_text = get_missing_index_text(article, quiet)
-
-        article.index_status = CMR_Index_Status.from_enduser
+        article.category = CMR_Index_Categories.extra
+        article.index_text = _guess_index_text(article)
+        article.index_status = CMR_Index_Status.from_code
+        continue
 
     return got_all_data_ok

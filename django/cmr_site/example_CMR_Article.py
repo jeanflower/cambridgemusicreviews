@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
-from cmr_utilities import CMR_Article, CMR_Index_Categories
+from indexer.models import Article, CMR_Index_Categories
 
 def example_CMR_Article():
     #Create a CMR_Article object
     print("------- create an article with no data in it")
-    my_article = CMR_Article()
+    my_article = Article()
 
     # print out its contents
-    my_article.print_article_details()
+    print(str(my_article))
 
     # fill in some details
     print("------- set a title for the article")
     my_article.title = "Ed Sheeran, Wembley Stadium, July 1st 2017"
 
     # print out its contents
-    my_article.print_article_details()
+    print(str(my_article))
 
     # fill in more details
     print("------- set other data for the article")
@@ -24,14 +24,14 @@ def example_CMR_Article():
     my_article.category = CMR_Index_Categories.live
 
     # print out its contents
-    my_article.print_article_details()
+    print(str(my_article))
 
     # change in some details
     print("------- set a title for the article")
     my_article.title = "Ed Sheeran, Wembley Stadium, August 11th 2017"
 
     # print out its contents
-    my_article.print_article_details()
+    print(str(my_article))
 
 
 if __name__ == '__main__':

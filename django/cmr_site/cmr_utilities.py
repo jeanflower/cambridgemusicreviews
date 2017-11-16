@@ -78,8 +78,11 @@ def _save_html(url, destination_file):
         urlretrieve(url, destination_file)  # nosec ; we know the url is made locally
         #print("no error")
         return True
+    except error.URLError:
+        #print("got URL error")
+        return False
     except error.HTTPError:
-        #print("got error")
+        #print("got HTTP error")
         return False
 
 #obtain a BeautifulSoup object which can parse the html

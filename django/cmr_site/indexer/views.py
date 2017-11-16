@@ -1,7 +1,3 @@
-import sys
-sys.path.append('../..')
-#sys.path.append("/home/jeanflower/cambridgemusicreviews/cambridgemusicreviews")
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import render
@@ -9,9 +5,9 @@ from django.shortcuts import render
 from .forms import EditEntryForm, CATEGORY_CHOICES, \
                    SearchForm, SEARCH_LOCATION_CHOICES
 
-from cmr_get_articles_from_webpage import get_all_cmr_articles
-from cmr_interactive import fill_in_missing_data_quiet
-from cmr_create_index_html import get_index_doc_html, get_problem_doc_html
+from cmr_get_articles_from_webpage import get_wp_articles
+from cmr_fill_in_data import fill_in_missing_data
+from cmr_create_index_html import get_index_doc_html
 from cmr_utilities import sort_articles
 
 from indexer.models import Article, Tag, CMR_Index_Categories
@@ -27,7 +23,6 @@ def _make_Article(db_article):
     result.index_text = db_article.index_text
     result.category = db_article.category
     result.index_status = db_article.index_status
-    result.tags = []
     return result
 
 def _make_articles_from_db():
@@ -46,7 +41,7 @@ def index(request):
 #                index_text = "ABC");
 #    a.save()
 
-    articles = get_all_cmr_articles()
+    articles = get_wp_articles()
 
     #db_articles = Article.objects.all()
     #print(db_articles)
@@ -63,12 +58,8 @@ def index(request):
 #    else:
 #        print(result)
 
-    problem_articles = []
-    if fill_in_missing_data_quiet(articles, problem_articles):
-        return HttpResponse(_make_sorted_html(articles))
-    else:
-        html = get_problem_doc_html(problem_articles)
-        return HttpResponse(html)
+    fill_in_missing_data(articles)
+    return HttpResponse(_make_sorted_html(articles))
 
 def cmr_home(request):
 
@@ -88,17 +79,10 @@ def _db_sort_key(article):
 def _sort_db_articles(articles):
     articles.sort(key=_db_sort_key)
 
-def refresh_from_wp(request):
-    articles = get_all_cmr_articles()
-    
-    problem_articles = []
-    fill_in_missing_data_quiet(articles, problem_articles)
-
-    # Populate the db with the articles we obtained above
-    Article.objects.all().delete()
-    Tag.objects.all().delete()
+def _save_articles_to_db(articles):
+    fill_in_missing_data(articles)
     for article in articles:
-        a = Article(title=article.title,
+        a = Article(title=article.title,#TODO - do we need to copy this?
                     url=article.url,
                     index_text=article.index_text,
                     category=article.category,
@@ -108,6 +92,14 @@ def refresh_from_wp(request):
 #        print("article id after save is "+str(a.id)) # has id now
         for t in article.tags:
             Tag.objects.create(article=a, text=t)
+            
+def refresh_from_wp(request):
+    # Populate the db with the articles we obtained above
+    Article.objects.all().delete()
+    Tag.objects.all().delete()
+
+    articles = get_wp_articles()
+    _save_articles_to_db(articles)
 
     #db_articles = Article.objects.all()
     #print(db_articles)
@@ -119,7 +111,8 @@ def refresh_from_wp(request):
                   {'html_content': html})     
 
 def update_from_wp(request):
-    articles = get_all_cmr_articles()
+    articles = get_wp_articles()
+
     new_articles = []
     for article in articles:
         db_articles = Article.objects.filter(url=article.url)
@@ -130,22 +123,8 @@ def update_from_wp(request):
         template = loader.get_template('indexer/no_new_articles.html')
         context = {}
         return HttpResponse(template.render(context, request))
-            
-    problem_articles = []
-    fill_in_missing_data_quiet(new_articles, problem_articles)
-
-    # Add to the db the new articles we obtained above
-    for article in articles:
-        a = Article(title=article.title,
-                    url=article.url,
-                    index_text=article.index_text,
-                    category=article.category,
-                    index_status=article.index_status)
-#        print("article id is "+str(a.id)) # has no id yet
-        a.save()
-#        print("article id after save is "+str(a.id)) # has id now
-        for t in article.tags:
-            Tag.objects.create(article=a, text=t)
+    
+    _save_articles_to_db(articles)
 
     #db_articles = Article.objects.all()
     #print(db_articles)
