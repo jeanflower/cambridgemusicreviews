@@ -19,7 +19,7 @@ def _get_html_link(article, highlight_guesses):
     html = html + "</a>"
     if highlighted:
         html = html + "</mark>"
-    html = html + "<br />\n"
+    html = html + "<br>\n"
     return html
 
 def _insert_section(articles, html, highlight_guesses,
