@@ -10,11 +10,11 @@ The main contributor to the cambridgemusicreviews site wants to maintain it with
 
 ### Examples:
 ```python manage.py shell```
-```exec(open(“capture_cmr_pages.py”).read())```
+```exec(open("capture_cmr_pages.py").read())```
 generates a set of files called page_text_1.html, page_text_2.html,... a local archive of the current state of the CMR site.
 
 ```python manage.py shell```
-```exec(open(“make_index_html.py”).read())```
+```exec(open("make_index_html.py").read())```
 generates a file called test_output_all_sorted.html which guesses categories for new articles and highlights them for review.
 
 From django/cmr_site/
@@ -30,7 +30,7 @@ which illustrate how we might use some functions.
 
 To run all example code (and check it all still compiles!)  
 ```python manage.py shell```
-```exec(open(“run_examples.py”).read())```
+```exec(open("run_examples.py").read())```
 
 ### Tests and quality
 There are python unit tests in the tests folder.  These should always pass.
