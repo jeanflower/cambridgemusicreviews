@@ -83,11 +83,20 @@ def get_index_anchors(soup, tag, category):
     #the headings we're interested in all have class = given tag
     #ask soup for a list of such headings
     my_div = soup.find("div", { "class" : tag })
+    
+#    print(my_div)
+    
     anchors = my_div.findAll('a')
+#    anchors = my_div.findAll()
 
     #iterate over these anchors compiling data into result_data
     for anchor in anchors:
         #for each one get the text the human sees and the link url
+        if len(anchor.contents) == 0:
+#            print("unexpected anchor with no contents")
+#            print(anchor)
+            #stop processing this useless anchor
+            continue
         this_index_text = str(anchor.contents[0])
         this_url = str(anchor["href"])
 
