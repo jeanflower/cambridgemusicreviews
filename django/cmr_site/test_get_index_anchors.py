@@ -24,16 +24,45 @@ class Test_get_httpresponse(TestCase):
         articles = articles + get_index_anchors(soup, "cmr-albums", CMR_Index_Categories.album)
         articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
 
-        #report back
 
-        self.assertEqual(len(articles), 157)
-        for i in range(0, 4):
+        found_num_extras = 0
+        found_num_singles = 0
+        found_num_albums = 0
+        found_num_live = 0
+                
+        for article in articles:
+            if article.category == CMR_Index_Categories.extra:
+                found_num_extras = found_num_extras + 1
+            elif article.category == CMR_Index_Categories.single_ep:
+                found_num_singles = found_num_singles + 1
+            elif article.category == CMR_Index_Categories.album:
+                found_num_albums = found_num_albums + 1
+            elif article.category == CMR_Index_Categories.live:
+                found_num_live = found_num_live + 1
+            
+        #report back
+        
+        expected_num_extras = 4
+        expected_num_singles = 23
+        expected_num_albums = 39
+        expected_num_live = 98
+
+        self.assertEqual(found_num_extras, expected_num_extras)
+        self.assertEqual(found_num_singles, expected_num_singles)
+        self.assertEqual(found_num_albums, expected_num_albums)
+        self.assertEqual(found_num_live, expected_num_live)
+        
+        type_change_1 = found_num_extras + found_num_singles
+        type_change_2 = type_change_1 + found_num_albums
+        type_change_3 = type_change_2 + found_num_live        
+
+        for i in range(0, found_num_extras):
             self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
-        for i in range(4, 25):
+        for i in range(found_num_extras, type_change_1):
             self.assertEqual(articles[i].category, CMR_Index_Categories.single_ep)
-        for i in range(25, 63):
+        for i in range(type_change_1, type_change_2):
             self.assertEqual(articles[i].category, CMR_Index_Categories.album)
-        for i in range(63, 157):
+        for i in range(type_change_2, type_change_3):
             self.assertEqual(articles[i].category, CMR_Index_Categories.live)
 
         test_url = "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/"
