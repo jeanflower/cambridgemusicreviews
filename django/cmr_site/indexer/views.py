@@ -166,7 +166,6 @@ def display_db_articles( request, db_articles, title, raw_view ):
     sort_articles(articles_singles)
     sort_articles(articles_albums)
     sort_articles(articles_live)
-    print("sorting...")
     sort_articles(articles_unclassified)
 
     #show_displayed_html = not raw_view == "1"
