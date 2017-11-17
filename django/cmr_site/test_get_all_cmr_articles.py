@@ -29,7 +29,7 @@ class Test_get_wp_articles(unittest.TestCase):
                 print("no connection for REST API request")
                 return
 
-        print("did we get bcak enough articles?")
+        # print("did we get bcak enough articles?")
         self.assertTrue(num_articles > 100) # currently 145
 
         titles = set()
