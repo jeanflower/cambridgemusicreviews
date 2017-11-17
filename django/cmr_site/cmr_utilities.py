@@ -104,6 +104,8 @@ class Web_Page:
     html = ""
     soup = None
 
+IGNORE_START_STRINGS = ["The ", "'", "\"", "“", "‘"]
+
 def sort_key(article):
     result = ""
     if article.category == CMR_Index_Categories.extra:
@@ -116,11 +118,16 @@ def sort_key(article):
         result += "3 "
     else:
         result += "4 "
-    if article.index_text[:3] == "The":
-        result += article.index_text[4:].strip()
-    else:
-        result += article.index_text.strip()
-    #print(result)
+    rest_of_result = article.index_text
+    for ignore_string in IGNORE_START_STRINGS:     
+        len_string = len(ignore_string)
+        start_of_index = article.index_text[:len_string]
+#        print("compare "+ignore_string+" and "+start_of_index)
+        if start_of_index == ignore_string: # TODO find better way
+#            print("found ignore-string "+ignore_string)
+            rest_of_result = rest_of_result[(len_string):]
+    result += rest_of_result.strip()
+#    print(result)
     return result
 
 def sort_articles(articles):

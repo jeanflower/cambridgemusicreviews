@@ -34,6 +34,7 @@ def _make_articles_from_db():
 
 def index(request):
 
+    print("in index(request)")
     # Create a new database entry
 #    a = Article(title = "ABC, Parker’s Piece, Cambridge, 7 July\xa02017",
 #                url = "https://cambridgemusicreviews.net/2017/"+\
@@ -66,18 +67,6 @@ def cmr_home(request):
     template = loader.get_template('base.html')
     context = {}
     return HttpResponse(template.render(context, request))
-
-def _db_sort_key(article):
-    result = ""
-    if article.index_text[:3] == "The":
-        result += article.index_text[4:].strip()
-    else:
-        result += article.index_text.strip()
-    #print(result)
-    return result
-
-def _sort_db_articles(articles):
-    articles.sort(key=_db_sort_key)
 
 def _save_articles_to_db(articles):
     fill_in_missing_data(articles)
@@ -173,11 +162,12 @@ def display_db_articles( request, db_articles, title, raw_view ):
 #    print(len(articles_albums))
 #    print(len(articles_live))
 
-    _sort_db_articles(articles_extras)
-    _sort_db_articles(articles_singles)
-    _sort_db_articles(articles_albums)
-    _sort_db_articles(articles_live)
-    _sort_db_articles(articles_unclassified)
+    sort_articles(articles_extras)
+    sort_articles(articles_singles)
+    sort_articles(articles_albums)
+    sort_articles(articles_live)
+    print("sorting...")
+    sort_articles(articles_unclassified)
 
     #show_displayed_html = not raw_view == "1"
     show_raw_html = not raw_view == "0" and not raw_view == 0

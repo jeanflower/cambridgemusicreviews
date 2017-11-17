@@ -47,18 +47,37 @@ class Test_Article(unittest.TestCase):
         sample_article_3.index_text = "w"
         sample_article_3.category = CMR_Index_Categories.extra
 
+        sample_article_4 = Article()
+        sample_article_4.title = "z"
+        sample_article_4.url = "http://example_url_0.com"
+        sample_article_4.index_text = "'w"
+        sample_article_4.category = CMR_Index_Categories.extra
+
+        sample_article_5 = Article()
+        sample_article_5.title = "Lee Hull, Corner House, Cambridge, 4 June 2017"
+        sample_article_5.url = "http://example_url_1.com"
+        sample_article_5.index_text = "\"ALee Hull, 4th June 2017"
+        sample_article_5.category = CMR_Index_Categories.live
 
         articles = [sample_article_0, sample_article_1,
-                    sample_article_2, sample_article_3]
+                    sample_article_2, sample_article_3, 
+                    sample_article_4, sample_article_5]
+
+        original_order_articles = list(articles)        
 
         sort_articles(articles)
         
-        self.assertEqual(articles[0].title,'z')
-        self.assertEqual(articles[0].index_text,'w')
-        self.assertEqual(articles[1].title,'z')
-        self.assertEqual(articles[1].index_text,'z')
-        self.assertEqual(articles[2].title,"ABC, Parker’s Piece, 7 July 2017")
-        self.assertEqual(articles[3].title,"Lee Hull, Corner House, Cambridge, 4 June 2017")
+        expected_order = [4, 3, 2, 0, 5, 1]
+        
+        for i in range(0,len(articles)):
+            this_article = articles[i]
+            expected_article = original_order_articles[expected_order[i]]
+            self.assertEqual(this_article.title,
+                             expected_article.title)
+            self.assertEqual(this_article.index_text,
+                             expected_article.index_text)
+            self.assertEqual(this_article.url,
+                             expected_article.url)
 
 if __name__ == '__main__':
     unittest.main()
