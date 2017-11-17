@@ -4,7 +4,7 @@
 {{ block.super }}
 <h1>Edit the index text or category of this article</h1>
 
-<a href={{article_url}}>{{article_title}}</a><p>
+<a href="{{article_url}}">{{article_title}}</a><p>
 <form action="/indexer/get_index_text/{{article_id}}" method = "post">
     {% csrf_token %}
     {{form}}    
