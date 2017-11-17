@@ -42,7 +42,7 @@ def index(request):
 #                index_text = "ABC");
 #    a.save()
 
-    articles = get_wp_articles()
+    articles = _make_articles_from_db()
 
     #db_articles = Article.objects.all()
     #print(db_articles)
