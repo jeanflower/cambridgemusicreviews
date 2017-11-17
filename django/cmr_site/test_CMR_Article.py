@@ -50,7 +50,7 @@ class Test_Article(unittest.TestCase):
         sample_article_4 = Article()
         sample_article_4.title = "z"
         sample_article_4.url = "http://example_url_0.com"
-        sample_article_4.index_text = "'w"
+        sample_article_4.index_text = "'v"
         sample_article_4.category = CMR_Index_Categories.extra
 
         sample_article_5 = Article()
