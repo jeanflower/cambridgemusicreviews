@@ -39,12 +39,14 @@ To run the unit tests:
 
 To generate coverage data:  
 ```coverage run -m unittest discover tests/```  
+(doesn't work today - perhaps because I moved the unittests to dajango test framework?)
 
 This repo is under codacy review
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a59e0815f2a74514bcd1e1273f525705)](https://www.codacy.com/app/jeanflower/cambridgemusicreviews?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jeanflower/cambridgemusicreviews&amp;utm_campaign=Badge_Grade)
 To update codacy coverage data,  
 ```coverage xml```  
-```python-codacy-coverage -r coverage.xml```
+```python-codacy-coverage -r coverage.xml```  
+(I had to ````export CODACY_PROJECT_TOKEN=...````) to have this work)
 
 ## Contributors
-Initially set up by Jean Flower.
+Jean Flower.
