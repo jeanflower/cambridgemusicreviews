@@ -1,4 +1,4 @@
 #!/bin/bash
-
-python -m unittest discover tests
+cd django/cmr_site
+python manage.py test
 
