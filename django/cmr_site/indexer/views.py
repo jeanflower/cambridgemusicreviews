@@ -113,7 +113,7 @@ def update_from_wp(request):
         context = {}
         return HttpResponse(template.render(context, request))
     
-    _save_articles_to_db(articles)
+    _save_articles_to_db(new_articles)
 
     #db_articles = Article.objects.all()
     #print(db_articles)
