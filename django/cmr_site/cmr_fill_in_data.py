@@ -2,30 +2,6 @@
 
 from indexer.models import CMR_Index_Categories, CMR_Index_Status
 
-
-def _get_missing_index_text_interactive(article, quiet):
-    # TODO : ask the user to input some text and use their response
-    print("missing index text")
-
-    print("current article is\n")
-    print(str(article))
-    response = input("please type in text to use for index link: ")
-    return response
-
-#    proposed_data = CMR_Article()
-#    proposed_data.title = article.title
-#    proposed_data.url = article.url
-#    proposed_data.index_text = response
-#    proposed_data.category = article.category
-#
-#    print("proposed article : ")
-#    print(str(proposed_data))
-#    ok = input("use this new data? (y/n): ")
-#    if ok=='y':
-#        return response
-#    else:
-#        return ""
-
 def _guess_index_text(article):
     phrases = article.title.split(',')
 
@@ -72,29 +48,6 @@ def _guess_index_text(article):
     
     else:
         return article.title
-
-def get_missing_category_interactive(article, quiet):
-    # ask the user to input a category and use their response
-    print("missing category")
-    print("article title is \""+ article.title+"\"")
-    print("article url is \""+ article.url+"\"")
-    print("Possible categories are ")
-    print("  Extras          (e)")
-    print("  Singles and EPs (s)")
-    print("  Album reviews   (a)")
-    print("  Live Reviews    (l)")
-    response = input("please type in a category (e/s/a/l): ")
-    cat = CMR_Index_Categories.undefined
-    if response == 'e':
-        cat = CMR_Index_Categories.extra
-    elif response == 's':
-        cat = CMR_Index_Categories.single_ep
-    elif response == 'a':
-        cat = CMR_Index_Categories.album
-    elif response == 'l':
-        cat = CMR_Index_Categories.live
-    return cat
-
 
 def _string_in_title(s, article):
     if s in article.title:

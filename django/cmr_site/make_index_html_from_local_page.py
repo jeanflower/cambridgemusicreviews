@@ -1,4 +1,4 @@
-from indexer.models import CMR_Index_Categories
+from indexer.models import categories
 
 from cmr_utilities import get_local_cmr_page, sort_articles
 
@@ -16,10 +16,10 @@ html = local_page.html
 soup = local_page.soup
 
 #Use a sequence of calls to get the anchors out of each div
-articles = get_index_anchors(soup, "cmr-extras", CMR_Index_Categories.extra)
-articles = articles + get_index_anchors(soup, "cmr-singles", CMR_Index_Categories.single_ep)
-articles = articles + get_index_anchors(soup, "cmr-albums", CMR_Index_Categories.album)
-articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
+articles = []
+
+for section in categories:
+    articles = articles + get_index_anchors(soup, section)
 
 html.close()
         

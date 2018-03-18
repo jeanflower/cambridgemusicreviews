@@ -107,17 +107,22 @@ class Web_Page:
 IGNORE_START_STRINGS = ["The ", "'", "\"", "“", "‘"]
 
 def sort_key(article):
+
     result = ""
-    if article.category == CMR_Index_Categories.extra:
+
+# It's not obvious how this ordering of categories affects things...
+# or whether we could reuse the enum value 
+    if article.category == CMR_Index_Categories.live:
         result += "0 "
-    elif article.category == CMR_Index_Categories.single_ep:
-        result += "1 "
     elif article.category == CMR_Index_Categories.album:
+        result += "1 "
+    elif article.category == CMR_Index_Categories.single_ep:
         result += "2 "
-    elif article.category == CMR_Index_Categories.live:
+    elif article.category == CMR_Index_Categories.extra:
         result += "3 "
     else:
         result += "4 "
+
     rest_of_result = article.index_text
     for ignore_string in IGNORE_START_STRINGS:     
         len_string = len(ignore_string)

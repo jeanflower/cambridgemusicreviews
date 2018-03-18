@@ -4,11 +4,26 @@ from enum import IntEnum
 
 # An article can fall into one of these categories.
 class CMR_Index_Categories(IntEnum): # pylint :disable=W0631
-    extra = 0     #"Extras"
-    single_ep = 1 #"Singles and EPs"
-    album = 2     #"Album reviews"
-    live = 3      #"Live Reviews"
+    live = 0      #"Live Reviews"
+    album = 1     #"Album reviews"
+    single_ep = 2 #"Singles and EPs"
+    extra = 3     #"Extras"
     undefined = 4 #"Undefined"
+
+categories = [CMR_Index_Categories.extra,
+              CMR_Index_Categories.single_ep,
+              CMR_Index_Categories.album,
+              CMR_Index_Categories.live,
+              CMR_Index_Categories.undefined]
+
+html_tags = {
+    CMR_Index_Categories.extra :     "cmr-extras",
+    CMR_Index_Categories.single_ep : "cmr-singles",
+    CMR_Index_Categories.album :     "cmr-albums",
+    CMR_Index_Categories.live :      "cmr-live",
+    CMR_Index_Categories.undefined : "cmr-unclassified"    
+    }
+
 
 class CMR_Index_Status(IntEnum):
     from_html_index = 0 #"Derived from existing HTML index"

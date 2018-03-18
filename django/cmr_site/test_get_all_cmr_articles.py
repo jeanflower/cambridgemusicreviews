@@ -11,6 +11,7 @@ class Test_get_wp_articles(unittest.TestCase):
         print("test_get_all_cmr_articles...")
 
         articles = get_wp_articles()
+#        print("got articles...")
         
         num_articles = len(articles)
         

@@ -10,7 +10,7 @@ from cmr_fill_in_data import fill_in_missing_data
 from cmr_create_index_html import get_index_doc_html
 from cmr_utilities import sort_articles
 
-from indexer.models import Article, Tag, CMR_Index_Categories
+from indexer.models import Article, Tag, categories, html_tags
 
 def _make_sorted_html(articles):
     sort_articles(articles)
@@ -139,34 +139,20 @@ white_list_of_tag_text_values = ["live", "album", "single", "EP", "all"]
 # raw_view = 2 : show formatted html then raw HTML
 
 def display_db_articles( request, db_articles, title, raw_view ):
-    articles_extras = []
-    articles_singles = []
-    articles_albums = []
-    articles_live = []
-    articles_unclassified = []
+    articles_by_type = {}
+    for category in categories:
+        articles_by_type[category] = []
+    
     for db_article in db_articles:
-        if db_article.category == CMR_Index_Categories.extra:
-            articles_extras.append(db_article)
-        elif db_article.category == CMR_Index_Categories.single_ep:
-            articles_singles.append(db_article)
-        elif db_article.category == CMR_Index_Categories.album:
-            articles_albums.append(db_article)
-        elif db_article.category == CMR_Index_Categories.live:
-            articles_live.append(db_article)
-        else:
-            articles_unclassified.append(db_article)
-
+        articles_by_type[db_article.category].append(db_article)
 
 #    print(len(articles_extras))
 #    print(len(articles_singles))
 #    print(len(articles_albums))
 #    print(len(articles_live))
 
-    sort_articles(articles_extras)
-    sort_articles(articles_singles)
-    sort_articles(articles_albums)
-    sort_articles(articles_live)
-    sort_articles(articles_unclassified)
+    for category in categories:
+        sort_articles(articles_by_type[category])
 
     #show_displayed_html = not raw_view == "1"
     show_raw_html = not raw_view == "0" and not raw_view == 0
@@ -176,13 +162,11 @@ def display_db_articles( request, db_articles, title, raw_view ):
     template = loader.get_template('indexer/index.html')
     context = {
         'title'                    : title,
-        'show_raw_html'            : show_raw_html,
-        'article_list_extras'      : articles_extras,
-        'article_list_singles'     : articles_singles,
-        'article_list_albums'      : articles_albums,
-        'article_list_live'        : articles_live,
-        'article_list_unclassified': articles_unclassified,
-    }
+        'show_raw_html'            : show_raw_html}
+    
+    for category in categories:
+        context[html_tags[category]] = articles_by_type[category]
+    
     return HttpResponse(template.render(context, request))
 
 def display_tagged_db_index(request, tag_text, raw_view):

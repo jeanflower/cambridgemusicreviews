@@ -28,7 +28,12 @@ The scripts should have documentation in the comments, but also there is sample 
 https://github.com/jeanflower/cambridgemusicreviews/tree/master/django/cmr_site  
 which illustrate how we might use some functions. 
 
-To run all example code (and check it all still compiles!)  
+To exercise html-page generation without a network connection
+```python manage.py shell```  
+```exec(open("make_index_html_from_local_page.py").read())```  
+generates test_output_all_sorted.html
+
+To run example code (and check it all still compiles!)  
 ```python manage.py shell```
 ```exec(open("run_examples.py").read())```
 

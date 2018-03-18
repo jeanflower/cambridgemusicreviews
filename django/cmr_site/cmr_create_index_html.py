@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from indexer.models import INDEX_CATEGORY_STRINGS,\
-                           CMR_Index_Categories, CMR_Index_Status
+                           CMR_Index_Categories, CMR_Index_Status, html_tags
 
 def _get_html_link(article, highlight_guesses):
     html = ""
@@ -23,7 +23,8 @@ def _get_html_link(article, highlight_guesses):
     return html
 
 def _insert_section(articles, html, highlight_guesses,
-                    category, class_text):
+                    category):
+    class_text = html_tags[category]
     section = "<div class=\""+class_text+"\">\n"+\
               "<h2>"+INDEX_CATEGORY_STRINGS[category]+"</h2>\n"+\
               "<p>\n"
@@ -39,28 +40,28 @@ def _insert_section(articles, html, highlight_guesses,
 
     return html
 
-def _get_index_html(articles, highlight_guesses):
-    html = "\n<!–– start copying for wordpess here -->\n"+\
+def _make_index_html(articles, highlight_guesses):
+    html = "\n<!–– start copying for wordpress here -->\n"+\
            "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"
+    
+    # This determines the order in which sections appear in html output    
+    sections = [CMR_Index_Categories.live, 
+                CMR_Index_Categories.album,
+                CMR_Index_Categories.single_ep,
+                CMR_Index_Categories.extra,
+                CMR_Index_Categories.undefined]
+    
+    for section in sections:
+        html = _insert_section(articles, html, highlight_guesses,\
+                        section)
 
-    html = _insert_section(articles, html, highlight_guesses,\
-                    CMR_Index_Categories.extra, "cmr-extras")
-    html = _insert_section(articles, html, highlight_guesses,\
-                    CMR_Index_Categories.single_ep, "cmr-singles")
-    html = _insert_section(articles, html, highlight_guesses,\
-                    CMR_Index_Categories.album, "cmr-albums")
-    html = _insert_section(articles, html, highlight_guesses,\
-                    CMR_Index_Categories.live, "cmr-live")
-    html = _insert_section(articles, html, highlight_guesses,\
-                    CMR_Index_Categories.undefined, "cmr-unclassified")
-
-    html = html + "<!–– stop copying for wordpess here -->\n"
+    html = html + "<!–– stop copying for wordpress here -->\n"
     return html
 
 def get_index_doc_html(articles):
-    index_html_highlighted = _get_index_html(articles, True)
-    index_html = _get_index_html(articles, False)
+    index_html_highlighted = _make_index_html(articles, True)
+    index_html = _make_index_html(articles, False)
     html = "<!DOCTYPE html>"+\
            "<title>Cambridge Music Reviews index</title><body>"+index_html_highlighted+\
            "<p><xmp>"+index_html+"</xmp>"+\

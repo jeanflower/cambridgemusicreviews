@@ -3,7 +3,8 @@
 from cmr_utilities import get_local_cmr_page
 
 from indexer.models import Article,\
-                           CMR_Index_Categories, CMR_Index_Status
+                           CMR_Index_Status,\
+                           html_tags, categories
 
 import requests
 import re
@@ -76,14 +77,17 @@ def _get_all_cmr_articles_no_index(quick_test):
 #  CMR_Article objects; we'll know the index text, url and category.
 
 #Choose the index anchors which have given tag, save Article with given category
-def get_index_anchors(soup, tag, category):
+def get_index_anchors(soup, category):
     #set up an empty list to hold data for each link
     articles_found = []
 
     #the headings we're interested in all have class = given tag
     #ask soup for a list of such headings
+    tag = html_tags[category]
     my_div = soup.find("div", { "class" : tag })
     
+    if my_div == None:
+        return articles_found;
 #    print(my_div)
     
     anchors = my_div.findAll('a')
@@ -111,8 +115,9 @@ def get_index_anchors(soup, tag, category):
     #pass the results back to the calling code
     return articles_found
 
-def extend_url_map(soup, div_string, category, url_map):
-    articles = get_index_anchors(soup, div_string, category)
+def extend_url_map(soup, category, url_map):
+#    print("extending url map for "+html_tags[category])
+    articles = get_index_anchors(soup, category)
     for article in articles:
         url_map[article.url] = article
 
@@ -133,10 +138,9 @@ def _add_existing_index_data(articles):
 
     # Use URL as key in a map
     url_map = dict()
-    extend_url_map(soup, "cmr-extras", CMR_Index_Categories.extra, url_map)
-    extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
-    extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
-    extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
+    
+    for section in categories:
+        extend_url_map(soup, section, url_map)
 
     #print(url_map)
 
@@ -151,14 +155,16 @@ def _add_existing_index_data(articles):
         if map_entry == None:
             #print("umatched url "+article.url)
             continue
-        
+
         article.index_text = map_entry.index_text
         article.category = map_entry.category
         article.index_status = map_entry.index_status
 
 # From both articles and existing index, combined
 def _get_wp_articles(quick_test):
+#    print("get articles")
     articles = _get_all_cmr_articles_no_index(quick_test)
+#    print("got articles")
     _add_existing_index_data(articles)
     return articles
 

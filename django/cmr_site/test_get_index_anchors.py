@@ -4,8 +4,9 @@ import unittest
 
 from django.test import TestCase
 
-from indexer.models import CMR_Index_Categories
-from cmr_get_articles_from_webpage import get_index_anchors, extend_url_map, get_local_cmr_page
+from indexer.models import CMR_Index_Categories, categories
+from cmr_get_articles_from_webpage import get_index_anchors, \
+           extend_url_map, get_local_cmr_page
 
 class Test_get_httpresponse(TestCase):
 
@@ -19,11 +20,9 @@ class Test_get_httpresponse(TestCase):
         soup = local_page.soup
 
         #Use a sequence of calls to get the anchors out of each div
-        articles = get_index_anchors(soup, "cmr-extras", CMR_Index_Categories.extra)
-        articles = articles + get_index_anchors(soup, "cmr-singles", CMR_Index_Categories.single_ep)
-        articles = articles + get_index_anchors(soup, "cmr-albums", CMR_Index_Categories.album)
-        articles = articles + get_index_anchors(soup, "cmr-live", CMR_Index_Categories.live)
-
+        articles = []
+        for section in categories:
+            articles = articles + get_index_anchors(soup, section)
 
         found_num_extras = 0
         found_num_singles = 0
@@ -42,10 +41,27 @@ class Test_get_httpresponse(TestCase):
             
         #report back
         
-        expected_num_extras = 4
-        expected_num_singles = 23
-        expected_num_albums = 39
-        expected_num_live = 98
+        expected_num_extras = 5
+        expected_num_singles = 29
+        expected_num_albums = 41
+        expected_num_live = 103
+        
+        report = ""
+        print_report = False;
+        if found_num_extras != expected_num_extras:
+            print_report = True;
+            report += "found_num_extras = "+str(found_num_extras)
+        if found_num_singles != expected_num_singles:
+            print_report = True;
+            report += "found_num_singles = "+str(found_num_singles)
+        if found_num_albums != expected_num_albums:
+            print_report = True;
+            report += "found_num_albums = "+str(found_num_albums)
+        if found_num_live != expected_num_live:
+            print_report = True;
+            report += "found_num_live = "+str(found_num_live)
+        if print_report:
+            print(report)
 
         self.assertEqual(found_num_extras, expected_num_extras)
         self.assertEqual(found_num_singles, expected_num_singles)
@@ -73,10 +89,10 @@ class Test_get_httpresponse(TestCase):
         self.assertEqual(articles[0].index_text, test_index_text)
 
         url_map = dict()
-        extend_url_map(soup, "cmr-extras", CMR_Index_Categories.extra, url_map)
-        extend_url_map(soup, "cmr-singles", CMR_Index_Categories.single_ep, url_map)
-        extend_url_map(soup, "cmr-albums", CMR_Index_Categories.album, url_map)
-        extend_url_map(soup, "cmr-live", CMR_Index_Categories.live, url_map)
+        extend_url_map(soup, CMR_Index_Categories.extra, url_map)
+        extend_url_map(soup, CMR_Index_Categories.single_ep, url_map)
+        extend_url_map(soup, CMR_Index_Categories.album, url_map)
+        extend_url_map(soup, CMR_Index_Categories.live, url_map)
         
         self.assertEqual(url_map[test_url].url, test_url)
         self.assertEqual(url_map[test_url].index_text, test_index_text)

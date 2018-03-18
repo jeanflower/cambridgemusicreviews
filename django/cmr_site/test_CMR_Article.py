@@ -66,12 +66,15 @@ class Test_Article(unittest.TestCase):
         original_order_articles = list(articles)        
 
         sort_articles(articles)
+
+#        print("sorted "+str(articles))
         
-        expected_order = [4, 3, 2, 0, 5, 1]
+        expected_order = [0, 5, 1, 4, 3, 2]
         
         for i in range(0,len(articles)):
             this_article = articles[i]
             expected_article = original_order_articles[expected_order[i]]
+#            print("expecting "+expected_article.title+", got "+this_article.title)
             self.assertEqual(this_article.title,
                              expected_article.title)
             self.assertEqual(this_article.index_text,
