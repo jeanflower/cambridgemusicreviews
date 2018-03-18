@@ -28,7 +28,6 @@ def setup_articles():
 
 class Test_fill_in_missing_data(TestCase):
 
-
     def test_fill_in_missing_data_01(self):
         articles = setup_articles()
 
@@ -53,7 +52,7 @@ class Test_fill_in_missing_data(TestCase):
                      "16th", "17th", "18th", "19th", "20th", "21st", "22nd",
                      "23rd", "24th", "25th", "26th", "27th", "28th", "29th",
                      "30th", "31st"]
-        for i in range(1, 31):
+        for i in range(1, 32):
             sample_article = Article()
             sample_article.title = "ABC, Parker’s Piece, "+str(i)+" month-year"
             sample_article.url = "http://example_url_0.com"

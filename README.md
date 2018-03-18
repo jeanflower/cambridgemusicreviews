@@ -40,6 +40,8 @@ To run example code (and check it all still compiles!)
 ### Tests and quality
 There are python unit tests in the tests folder.  These should always pass.
 To run the unit tests:  
+```bash run_tests.s```  
+or, from django/cmr_site,  
 ```python manage.py test```
 
 To generate coverage data:  
