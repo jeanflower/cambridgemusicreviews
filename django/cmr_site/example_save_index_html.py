@@ -1,4 +1,3 @@
-#from cmr.cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
 from indexer.models import Article, CMR_Index_Categories
 from cmr_utilities import sort_articles
 
@@ -32,6 +31,7 @@ def example_save_index_html_two_articles():
     save_index_html(articles, "test_output_two_samples.html")
 
 def example_save_index_html():
+
     articles = get_wp_articles()
 
     fill_in_missing_data(articles)
