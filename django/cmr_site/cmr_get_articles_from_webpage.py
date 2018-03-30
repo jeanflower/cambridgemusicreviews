@@ -115,7 +115,27 @@ def get_index_anchors(soup, category):
     #pass the results back to the calling code
     return articles_found
 
-def extend_url_map(soup, category, url_map):
+# The url_map has
+# key = url of wordpress article
+# value = corresponding Article object
+# An html page can populate this map by interrogating the 
+# anchors of the html (beautiful-soup html parsing)
+def make_url_map_from_local_html_page():
+    # all indexes should be the same, look at page 1
+    web_page = get_local_cmr_page()
+
+    soup = web_page.soup
+
+    # Use URL as key in a map
+    url_map = dict()
+    
+    for section in categories:
+        _extend_url_map(soup, section, url_map)
+        
+    return url_map
+    
+
+def _extend_url_map(soup, category, url_map):
 #    print("extending url map for "+html_tags[category])
     articles = get_index_anchors(soup, category)
     for article in articles:
@@ -131,17 +151,8 @@ def _report_unexpected_category(article):
 # Given a set of found articles, look at the existing index
 # and fill in known index_title and category information
 def _add_existing_index_data(articles):
-    # all indexes should be the same, look at page 1
-    web_page = get_local_cmr_page()
-
-    soup = web_page.soup
-
-    # Use URL as key in a map
-    url_map = dict()
     
-    for section in categories:
-        extend_url_map(soup, section, url_map)
-
+    url_map = make_url_map_from_local_html_page();
     #print(url_map)
 
     for article in articles:
@@ -161,15 +172,10 @@ def _add_existing_index_data(articles):
         article.index_status = map_entry.index_status
 
 # From both articles and existing index, combined
-def _get_wp_articles(quick_test):
+def get_wp_articles():
+    quick_test = False
 #    print("get articles")
     articles = _get_all_cmr_articles_no_index(quick_test)
 #    print("got articles")
     _add_existing_index_data(articles)
     return articles
-
-def get_all_cmr_data_quick_test():
-    return _get_wp_articles(True)
-
-def get_wp_articles():
-    return _get_wp_articles(False)

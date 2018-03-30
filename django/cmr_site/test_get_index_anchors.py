@@ -4,25 +4,21 @@ import unittest
 
 from django.test import TestCase
 
-from indexer.models import CMR_Index_Categories, categories
-from cmr_get_articles_from_webpage import get_index_anchors, \
-           extend_url_map, get_local_cmr_page
+from indexer.models import CMR_Index_Categories
+from cmr_get_articles_from_webpage import make_url_map_from_local_html_page
 
 class Test_get_httpresponse(TestCase):
 
-    def test_get_index_anchors(self):
+    def test_make_url_map(self):
 
-        local_page = get_local_cmr_page()
-
-        html = local_page.html
-
-        #------- GET DATA out of the web page of interest
-        soup = local_page.soup
+        url_map = make_url_map_from_local_html_page()
 
         #Use a sequence of calls to get the anchors out of each div
         articles = []
-        for section in categories:
-            articles = articles + get_index_anchors(soup, section)
+        for article in url_map.values():
+            articles.append(article)
+            
+        #print(articles[0])
 
         found_num_extras = 0
         found_num_singles = 0
@@ -81,18 +77,14 @@ class Test_get_httpresponse(TestCase):
         for i in range(type_change_2, type_change_3):
             self.assertEqual(articles[i].category, CMR_Index_Categories.live)
 
+        # The first article for the first section in 
+        # indexer.models.categories (currently this is the first "extra")
         test_url = "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/"
         test_index_text = "12 Highlights from 2015"
 
         self.assertEqual(articles[0].title, "")
         self.assertEqual(articles[0].url, test_url)
         self.assertEqual(articles[0].index_text, test_index_text)
-
-        url_map = dict()
-        extend_url_map(soup, CMR_Index_Categories.extra, url_map)
-        extend_url_map(soup, CMR_Index_Categories.single_ep, url_map)
-        extend_url_map(soup, CMR_Index_Categories.album, url_map)
-        extend_url_map(soup, CMR_Index_Categories.live, url_map)
         
         self.assertEqual(url_map[test_url].url, test_url)
         self.assertEqual(url_map[test_url].index_text, test_index_text)
@@ -104,9 +96,6 @@ class Test_get_httpresponse(TestCase):
 #            print("--------- article number "+str(article_number)+" "+article.index_text)
 #        #    article.print_article_details()
 #        print("done")
-
-        html.close()
-
 
 if __name__ == '__main__':
     unittest.main()

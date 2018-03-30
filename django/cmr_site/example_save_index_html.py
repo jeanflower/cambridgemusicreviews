@@ -31,9 +31,7 @@ def example_save_index_html_two_articles():
     save_index_html(articles, "test_output_two_samples.html")
 
 def example_save_index_html():
-
     articles = get_wp_articles()
-
     fill_in_missing_data(articles)
 
     sort_articles(articles)
