@@ -34,9 +34,11 @@ def example_save_index_html():
     articles = get_wp_articles()
     fill_in_missing_data(articles)
 
-    sort_articles(articles)
-
     save_index_html(articles, "test_output_all_unsorted.html")
+    
+    sort_articles(articles)
+    
+    save_index_html(articles, "test_output_all_sorted.html")
 
 
 if __name__ == '__main__':

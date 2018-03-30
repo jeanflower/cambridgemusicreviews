@@ -16,6 +16,7 @@ categories = [CMR_Index_Categories.extra,
               CMR_Index_Categories.live,
               CMR_Index_Categories.undefined]
 
+# for tags in HTML output
 html_tags = {
     CMR_Index_Categories.extra :     "cmr-extras",
     CMR_Index_Categories.single_ep : "cmr-singles",
@@ -24,15 +25,29 @@ html_tags = {
     CMR_Index_Categories.undefined : "cmr-unclassified"    
     }
 
+# for headings in HTML output
+category_strings = {
+    CMR_Index_Categories.extra :     "Extras",
+    CMR_Index_Categories.single_ep : "Singles and EPs",
+    CMR_Index_Categories.album :     "Album reviews",
+    CMR_Index_Categories.live :      "Live Reviews",
+    CMR_Index_Categories.undefined : "Undefined"        
+    }
+
+# for forms.py
+INDEX_CATEGORY_STRINGS = [
+    category_strings[categories[0]],
+    category_strings[categories[1]],
+    category_strings[categories[2]],
+    category_strings[categories[3]],
+    category_strings[categories[4]]    
+    ]
 
 class CMR_Index_Status(IntEnum):
     from_html_index = 0 #"Derived from existing HTML index"
     from_code = 1       #"Guessed using code"
     from_enduser = 2    #"Set or confirmed by enduser"
     undefined = 3       #"Undefined"
-
-INDEX_CATEGORY_STRINGS = ["Extras", "Singles and EPs", "Album reviews",
-                          "Live Reviews", "Undefined"]
 
 max_index_text_length = 100
 
@@ -57,13 +72,13 @@ class Article(models.Model):
         print("title      is :\""+self.title+"\"")
         print("url        is :\""+self.url+"\"")
         print("index_text is :\""+self.index_text+"\"")
-        print("category   is :\""+INDEX_CATEGORY_STRINGS[self.category]+"\"")
+        print("category   is :\""+category_strings[self.category]+"\"")
 
     def __str__(self):
         result = "title      is :\""+self.title+"\"\n"+\
             "url        is :\""+self.url+"\"\n"+\
             "index_text is :\""+self.index_text+"\"\n"+\
-            "category   is :\""+INDEX_CATEGORY_STRINGS[self.category]+"\"\n"
+            "category   is :\""+category_strings[self.category]+"\"\n"
         return result
 
 class Tag(models.Model):

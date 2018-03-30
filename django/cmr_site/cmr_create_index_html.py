@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from indexer.models import INDEX_CATEGORY_STRINGS,\
-                           CMR_Index_Categories, CMR_Index_Status, html_tags
+from indexer.models import CMR_Index_Categories, CMR_Index_Status, \
+                           category_strings, html_tags
 
 def _get_html_link(article, highlight_guesses):
     html = ""
@@ -26,7 +26,7 @@ def _insert_section(articles, html, highlight_guesses,
                     category):
     class_text = html_tags[category]
     section = "<div class=\""+class_text+"\">\n"+\
-              "<h2>"+INDEX_CATEGORY_STRINGS[category]+"</h2>\n"+\
+              "<h2>"+category_strings[category]+"</h2>\n"+\
               "<p>\n"
     count = 0
     for article in articles:
