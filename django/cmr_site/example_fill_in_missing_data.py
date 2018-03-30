@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
-#from cmr_get_articles_from_webpage import get_all_cmr_data_quick_test
 from indexer.models import Article, CMR_Index_Categories
 from cmr_fill_in_data import fill_in_missing_data
 
 
 def example_fill_in_missing_data():
-    #articles = get_all_cmr_data_quick_test()
 
     sample_article_0 = Article()
     sample_article_0.title = "ABC, Parker’s Piece, 7 July 2017"
