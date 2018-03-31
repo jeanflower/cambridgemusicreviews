@@ -64,23 +64,23 @@ class Test_get_httpresponse(TestCase):
         self.assertEqual(found_num_albums, expected_num_albums)
         self.assertEqual(found_num_live, expected_num_live)
         
-        type_change_1 = found_num_extras + found_num_singles
-        type_change_2 = type_change_1 + found_num_albums
-        type_change_3 = type_change_2 + found_num_live        
+        type_change_1 = found_num_live + found_num_albums        
+        type_change_2 = type_change_1 + found_num_singles
+        type_change_3 = type_change_2 + found_num_extras
 
-        for i in range(0, found_num_extras):
-            self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
-        for i in range(found_num_extras, type_change_1):
-            self.assertEqual(articles[i].category, CMR_Index_Categories.single_ep)
-        for i in range(type_change_1, type_change_2):
-            self.assertEqual(articles[i].category, CMR_Index_Categories.album)
-        for i in range(type_change_2, type_change_3):
+        for i in range(0, found_num_live):
             self.assertEqual(articles[i].category, CMR_Index_Categories.live)
+        for i in range(found_num_live, type_change_1):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.album)
+        for i in range(type_change_1, type_change_2):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.single_ep)
+        for i in range(type_change_2, type_change_3):
+            self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
 
         # The first article for the first section in 
-        # indexer.models.categories (currently this is the first "extra")
-        test_url = "https://cambridgemusicreviews.net/2015/12/23/12-highlights-from-2015-a-sampler-of-the-year/"
-        test_index_text = "12 Highlights from 2015"
+        # indexer.models.categories (currently this is the first "live")
+        test_url = "https://cambridgemusicreviews.net/2017/11/07/a-new-routes-special-junction-j3-cambridge-5-november-2017/"
+        test_index_text = "‘A New Routes Special’, 5th November 2017"
 
         self.assertEqual(articles[0].title, "")
         self.assertEqual(articles[0].url, test_url)

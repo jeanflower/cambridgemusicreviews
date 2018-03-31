@@ -10,7 +10,9 @@ from cmr_fill_in_data import fill_in_missing_data
 from cmr_create_index_html import get_index_doc_html
 from cmr_utilities import sort_articles
 
-from indexer.models import Article, Tag, categories, html_tags
+from indexer.models import Article, Tag, categories, \
+                           django_keys, django_headings, category_strings, \
+                           django_show_categories
 
 def _make_sorted_html(articles):
     sort_articles(articles)
@@ -159,14 +161,16 @@ def display_db_articles( request, db_articles, title, raw_view ):
     #print("raw_view "+str(raw_view))
     #print("show raw html?"+str(show_raw_html))
 
-    template = loader.get_template('indexer/index.html')
     context = {
         'title'                    : title,
         'show_raw_html'            : show_raw_html}
     
     for category in categories:
-        context[html_tags[category]] = articles_by_type[category]
+        context[django_show_categories[category]] = len(articles_by_type[category]) > 0
+        context[django_keys[category]] = articles_by_type[category]
+        context[django_headings[category]] = category_strings[category]
     
+    template = loader.get_template('indexer/index.html')
     return HttpResponse(template.render(context, request))
 
 def display_tagged_db_index(request, tag_text, raw_view):

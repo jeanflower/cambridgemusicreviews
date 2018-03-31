@@ -12,43 +12,38 @@
 {% endif %}
 {% if article_list_live %}
 <p>
-<h2>Live Reviews</h2>
+<h2>{{ django_heading_live }}</h2>
 <div class="cmr-live">
-{% for article in cmr-live %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
+{% for article in cmrlive %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
 {% endfor %}</div>
-{% else %}
 {% endif %}
 {% if article_list_albums %}
 <p>
-<h2>Album Reviews</h2>
+<h2>{{ django_heading_album }}</h2>
 <div class="cmr-albums">
-{% for article in cmr-albums %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
+{% for article in cmralbums %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
 {% endfor %}</div>
-{% else %}
 {% endif %}
 {% if article_list_singles %}
 <p>
-<h2>Singles and EPs</h2>
+<h2>{{ django_heading_single }}</h2>
 <div class="cmr-singles">
-{% for article in cmr-singless %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
+{% for article in cmrsingles %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
 {% endfor %}</div>
-{% else %}
 {% endif %}
 {% if article_list_extras %}
 <p>
-<h2>Extras</h2>
+<h2>{{ django_heading_extra }}</h2>
 <div class="cmr-extras">
-{% for article in cmr-extras %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
+{% for article in cmrextras %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
 {% endfor %}</div>
-{% else %}
 {% endif %}
 {% if article_list_unclassified %}
 <p>
-<h2>Unclassified</h2>
+<h2>{{ django_heading_unclassified }}</h2>
 <div class="cmr-unclassified">
-{% for article in cmr-unclassified %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
+{% for article in cmrunclassified %}{% if not show_raw_html %}<a href="{% url 'get_index_text' article.pk%}">edit</a>&nbsp&nbsp{% endif %}{% if not show_raw_html and article.index_status > 0 %}<mark>{% endif %}<a href="{{ article.url }}">{{ article.index_text }}</a>{% if not show_raw_html and article.index_status > 0 %}</mark>{% endif %}<br>
 {% endfor %}</div>
-{% else %}
 {% endif %}
 {% if show_raw_html %}
 </xmp>
