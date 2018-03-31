@@ -8,7 +8,7 @@ from cmr_fill_in_data import fill_in_missing_data
 from cmr_create_index_html import save_index_html
 
 def example_save_index_html_two_articles():
-    
+
     sample_article_0 = Article()
     sample_article_0.title = "ABC, Parker’s Piece, 7 July 2017"
     sample_article_0.url = "http://example_url_0.com"
@@ -35,9 +35,9 @@ def example_save_index_html():
     fill_in_missing_data(articles)
 
     save_index_html(articles, "test_output_all_unsorted.html")
-    
+
     sort_articles(articles)
-    
+
     save_index_html(articles, "test_output_all_sorted.html")
 
 

@@ -22,7 +22,7 @@ html_tags = {
     CMR_Index_Categories.album :     "cmr-albums",
     CMR_Index_Categories.single_ep : "cmr-singles",
     CMR_Index_Categories.extra :     "cmr-extras",
-    CMR_Index_Categories.undefined : "cmr-unclassified"    
+    CMR_Index_Categories.undefined : "cmr-unclassified"
     }
 
 # for keys in django output
@@ -31,7 +31,7 @@ django_keys = {
     CMR_Index_Categories.album :     "cmralbums",
     CMR_Index_Categories.single_ep : "cmrsingles",
     CMR_Index_Categories.extra :     "cmrextras",
-    CMR_Index_Categories.undefined : "cmrunclassified"    
+    CMR_Index_Categories.undefined : "cmrunclassified"
     }
 
 # for keys in django output
@@ -40,7 +40,7 @@ django_headings = {
     CMR_Index_Categories.album :     "django_heading_album",
     CMR_Index_Categories.single_ep : "django_heading_single",
     CMR_Index_Categories.extra :     "django_heading_extra",
-    CMR_Index_Categories.undefined : "django_heading_unclassified"    
+    CMR_Index_Categories.undefined : "django_heading_unclassified"
     }
 
 # for keys in django output
@@ -49,7 +49,7 @@ django_show_categories = {
     CMR_Index_Categories.album :     "article_list_albums",
     CMR_Index_Categories.single_ep : "article_list_singles",
     CMR_Index_Categories.extra :     "article_list_extras",
-    CMR_Index_Categories.undefined : "article_list_unclassified"    
+    CMR_Index_Categories.undefined : "article_list_unclassified"
     }
 
 # for headings in HTML output
@@ -67,7 +67,7 @@ INDEX_CATEGORY_STRINGS = [
     category_strings[categories[1]],
     category_strings[categories[2]],
     category_strings[categories[3]],
-    category_strings[categories[4]]    
+    category_strings[categories[4]]
     ]
 
 class CMR_Index_Status(IntEnum):
@@ -114,3 +114,4 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.text
+

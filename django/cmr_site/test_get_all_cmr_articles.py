@@ -12,20 +12,20 @@ class Test_get_wp_articles(unittest.TestCase):
 
         articles = get_wp_articles()
 #        print("got articles...")
-        
+
         num_articles = len(articles)
-        
+
         if num_articles == 0:
 #            allow for no-connection error
             try:
                 ret = requests.get("http://www.googleapis.com/customsearch/v1?parameters")
                 returned_code = ret.status_code
                 print("returned value is "+str(ret.status_code))
-                
+
                 if returned_code != 200:
                     print("error from REST API request")
                     return
-            
+
             except requests.exceptions.ConnectionError as err:
                 print("no connection for REST API request")
                 return

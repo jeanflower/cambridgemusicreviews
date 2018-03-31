@@ -83,7 +83,7 @@ def _save_articles_to_db(articles):
 #        print("article id after save is "+str(a.id)) # has id now
         for t in article.tags:
             Tag.objects.create(article=a, text=t)
-            
+
 def refresh_from_wp(request):
     # Populate the db with the articles we obtained above
     Article.objects.all().delete()
@@ -94,12 +94,12 @@ def refresh_from_wp(request):
 
     #db_articles = Article.objects.all()
     #print(db_articles)
-    
+
     html = "<h1>Replaced content after updating from "+\
            "the WordPress site</h1>"+get_index_doc_html(articles)
-           
+
     return render(request, 'indexer/generic.html',
-                  {'html_content': html})     
+                  {'html_content': html})
 
 def update_from_wp(request):
     articles = get_wp_articles()
@@ -109,12 +109,12 @@ def update_from_wp(request):
         db_articles = Article.objects.filter(url=article.url)
         if len(db_articles) == 0:
             new_articles.append(article)
-            
+
     if len(new_articles) == 0:
         template = loader.get_template('indexer/no_new_articles.html')
         context = {}
         return HttpResponse(template.render(context, request))
-    
+
     _save_articles_to_db(new_articles)
 
     #db_articles = Article.objects.all()
@@ -122,10 +122,10 @@ def update_from_wp(request):
 
     html = "This is a view of new content after updating from "+\
            "the wordpress site<p>"+get_index_doc_html(new_articles)
-           
+
     return render(request, 'indexer/generic.html',
-                  {'html_content': html})           
-           
+                  {'html_content': html})
+
 def display_db_index(request):
     raw_view = "0"
     return display_tagged_db_index(request, "all", raw_view)
@@ -144,7 +144,7 @@ def display_db_articles( request, db_articles, title, raw_view ):
     articles_by_type = {}
     for category in categories:
         articles_by_type[category] = []
-    
+
     for db_article in db_articles:
         articles_by_type[db_article.category].append(db_article)
 
@@ -164,12 +164,12 @@ def display_db_articles( request, db_articles, title, raw_view ):
     context = {
         'title'                    : title,
         'show_raw_html'            : show_raw_html}
-    
+
     for category in categories:
         context[django_show_categories[category]] = len(articles_by_type[category]) > 0
         context[django_keys[category]] = articles_by_type[category]
         context[django_headings[category]] = category_strings[category]
-    
+
     template = loader.get_template('indexer/index.html')
     return HttpResponse(template.render(context, request))
 
@@ -228,7 +228,7 @@ def search(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             search_term = form.cleaned_data['search_term']
-            
+
             search_results = []
             search_locations = form.cleaned_data['location_choice']
             for location in search_locations:
@@ -243,9 +243,9 @@ def search(request):
                     search_results = search_results +\
                             list(Article.objects.filter(index_text__icontains=search_term))
 
-            return display_db_articles(request, 
-                                       set(search_results), 
-                                       "Search Results", 
+            return display_db_articles(request,
+                                       set(search_results),
+                                       "Search Results",
                                        "0")
 
     else:

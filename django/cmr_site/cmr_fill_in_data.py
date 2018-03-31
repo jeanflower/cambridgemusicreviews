@@ -19,7 +19,7 @@ def _append_th_to_number(num):
     else:
         date_appendage = "th"
     return num + date_appendage
-    
+
 
 def _guess_index_text(article):
     phrases = article.title.split(',')
@@ -48,7 +48,7 @@ def _guess_index_text(article):
     elif article.category == CMR_Index_Categories.album or \
          article.category == CMR_Index_Categories.single_ep:
         return phrases[0]
-    
+
     else:
         return article.title
 
@@ -130,7 +130,7 @@ def fill_in_missing_data(articles):
         has_index_text = _article_has_index_text(article)
         if has_category and has_index_text:
             continue
-        
+
         if _known_single_in_title(article):
             article.category = CMR_Index_Categories.single_ep
             article.index_text = _guess_index_text(article)

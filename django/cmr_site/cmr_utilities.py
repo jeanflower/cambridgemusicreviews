@@ -111,7 +111,7 @@ def sort_key(article):
     result = ""
 
 # It's not obvious how this ordering of categories affects things...
-# or whether we could reuse the enum value 
+# or whether we could reuse the enum value
     if article.category == CMR_Index_Categories.live:
         result += "0 "
     elif article.category == CMR_Index_Categories.album:
@@ -124,7 +124,7 @@ def sort_key(article):
         result += "4 "
 
     rest_of_result = article.index_text
-    for ignore_string in IGNORE_START_STRINGS:     
+    for ignore_string in IGNORE_START_STRINGS:
         len_string = len(ignore_string)
         start_of_index = article.index_text[:len_string]
 #        print("compare "+ignore_string+" and "+start_of_index)

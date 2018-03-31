@@ -25,38 +25,38 @@ def _get_all_cmr_articles_no_index(quick_test):
     for page_number in range(1, 1000):
         url = "https://public-api.wordpress.com/rest/v1.1/sites/"\
              +"cambridgemusicreviews.net/posts"
-             
+
         # influences the formatting of the results
         url+= "?context=\"display\""
 
         url+= "&page="+str(page_number)
-        
+
         if quick_test:
             # ask for 4 results only
             url+= "&number=4"
-        
+
         posts = []
-        
+
         try:
             ret = requests.get(url)
             returned_code = ret.status_code
             #print("returned value is "+str(ret.status_code))
-            
+
             if returned_code == 200:
                 posts = ret.json()["posts"]
             else:
                 print("error from REST API request")
                 break
-        
+
         except requests.exceptions.ConnectionError as err:
             print("no connection for REST API request")
             break
-            
+
         if len(posts) == 0:
             break
 
         #print("got "+str(len(posts))+" posts")
-        
+
         for post in posts:
             # build a CMR_Article
             this_article = Article()
@@ -85,11 +85,11 @@ def get_index_anchors(soup, category):
     #ask soup for a list of such headings
     tag = html_tags[category]
     my_div = soup.find("div", { "class" : tag })
-    
+
     if my_div == None:
         return articles_found;
 #    print(my_div)
-    
+
     anchors = my_div.findAll('a')
 #    anchors = my_div.findAll()
 
@@ -118,7 +118,7 @@ def get_index_anchors(soup, category):
 # The url_map has
 # key = url of wordpress article
 # value = corresponding Article object
-# An html page can populate this map by interrogating the 
+# An html page can populate this map by interrogating the
 # anchors of the html (beautiful-soup html parsing)
 def make_url_map_from_local_html_page():
     # all indexes should be the same, look at page 1
@@ -128,12 +128,12 @@ def make_url_map_from_local_html_page():
 
     # Use URL as key in a map
     url_map = dict()
-    
+
     for section in categories:
         _extend_url_map(soup, section, url_map)
-        
+
     return url_map
-    
+
 
 def _extend_url_map(soup, category, url_map):
 #    print("extending url map for "+html_tags[category])
@@ -151,7 +151,7 @@ def _report_unexpected_category(article):
 # Given a set of found articles, look at the existing index
 # and fill in known index_title and category information
 def _add_existing_index_data(articles):
-    
+
     url_map = make_url_map_from_local_html_page();
     #print(url_map)
 

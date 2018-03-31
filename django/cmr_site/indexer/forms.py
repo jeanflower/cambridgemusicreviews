@@ -16,13 +16,13 @@ class EditEntryForm(forms.Form):
     index_text = forms.CharField(label="Index link text",
                                  max_length=max_index_text_length,
                                 )
-    category_choice = forms.ChoiceField(label = '', 
-                                        widget=forms.RadioSelect, 
+    category_choice = forms.ChoiceField(label = '',
+                                        widget=forms.RadioSelect,
                                         choices=CATEGORY_CHOICES)
 class SearchForm(forms.Form):
     search_term = forms.CharField(label="Search for text",
                                   max_length=max_index_text_length,
                                  )
     location_choice = forms.MultipleChoiceField(
-                                        label = "Search in...", 
+                                        label = "Search in...",
                                         choices=SEARCH_LOCATION_CHOICES)

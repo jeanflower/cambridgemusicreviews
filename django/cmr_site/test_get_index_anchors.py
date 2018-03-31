@@ -17,14 +17,14 @@ class Test_get_httpresponse(TestCase):
         articles = []
         for article in url_map.values():
             articles.append(article)
-            
+
         #print(articles[0])
 
         found_num_extras = 0
         found_num_singles = 0
         found_num_albums = 0
         found_num_live = 0
-                
+
         for article in articles:
             if article.category == CMR_Index_Categories.extra:
                 found_num_extras = found_num_extras + 1
@@ -34,14 +34,14 @@ class Test_get_httpresponse(TestCase):
                 found_num_albums = found_num_albums + 1
             elif article.category == CMR_Index_Categories.live:
                 found_num_live = found_num_live + 1
-            
+
         #report back
-        
+
         expected_num_extras = 5
         expected_num_singles = 29
         expected_num_albums = 41
         expected_num_live = 103
-        
+
         report = ""
         print_report = False;
         if found_num_extras != expected_num_extras:
@@ -63,8 +63,8 @@ class Test_get_httpresponse(TestCase):
         self.assertEqual(found_num_singles, expected_num_singles)
         self.assertEqual(found_num_albums, expected_num_albums)
         self.assertEqual(found_num_live, expected_num_live)
-        
-        type_change_1 = found_num_live + found_num_albums        
+
+        type_change_1 = found_num_live + found_num_albums
         type_change_2 = type_change_1 + found_num_singles
         type_change_3 = type_change_2 + found_num_extras
 
@@ -77,7 +77,7 @@ class Test_get_httpresponse(TestCase):
         for i in range(type_change_2, type_change_3):
             self.assertEqual(articles[i].category, CMR_Index_Categories.extra)
 
-        # The first article for the first section in 
+        # The first article for the first section in
         # indexer.models.categories (currently this is the first "live")
         test_url = "https://cambridgemusicreviews.net/2017/11/07/a-new-routes-special-junction-j3-cambridge-5-november-2017/"
         test_index_text = "‘A New Routes Special’, 5th November 2017"
@@ -85,7 +85,7 @@ class Test_get_httpresponse(TestCase):
         self.assertEqual(articles[0].title, "")
         self.assertEqual(articles[0].url, test_url)
         self.assertEqual(articles[0].index_text, test_index_text)
-        
+
         self.assertEqual(url_map[test_url].url, test_url)
         self.assertEqual(url_map[test_url].index_text, test_index_text)
 

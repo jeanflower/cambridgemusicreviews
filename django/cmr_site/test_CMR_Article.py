@@ -60,17 +60,17 @@ class Test_Article(unittest.TestCase):
         sample_article_5.category = CMR_Index_Categories.live
 
         articles = [sample_article_0, sample_article_1,
-                    sample_article_2, sample_article_3, 
+                    sample_article_2, sample_article_3,
                     sample_article_4, sample_article_5]
 
-        original_order_articles = list(articles)        
+        original_order_articles = list(articles)
 
         sort_articles(articles)
 
 #        print("sorted "+str(articles))
-        
+
         expected_order = [0, 5, 1, 4, 3, 2]
-        
+
         for i in range(0,len(articles)):
             this_article = articles[i]
             expected_article = original_order_articles[expected_order[i]]
