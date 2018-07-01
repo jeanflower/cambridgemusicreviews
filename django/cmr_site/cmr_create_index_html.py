@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 from indexer.models import CMR_Index_Categories, CMR_Index_Status, \
                            category_strings, html_tags
@@ -41,7 +42,7 @@ def _insert_section(articles, html, highlight_guesses,
     return html
 
 def _make_index_html(articles, highlight_guesses):
-    html = "\n<!–– start copying for wordpress here -->\n"+\
+    html = "\n<!-- start copying for wordpress here -->\n"+\
            "<h2>About</h2>\n"+\
            "<p><a href=\"https://cambridgemusicreviews.net/about/\">About this site</a></p>\n"
     

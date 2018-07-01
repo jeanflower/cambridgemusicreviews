@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 from indexer.models import CMR_Index_Categories, CMR_Index_Status
 
