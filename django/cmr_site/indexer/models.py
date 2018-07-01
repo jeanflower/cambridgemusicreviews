@@ -80,7 +80,7 @@ max_index_text_length = 100
 
 class Article(models.Model):
     title = models.CharField(max_length=200, default="")
-    # e.g. "ABC, Parker’s Piece, Cambridge, 7 July\xa02017"
+    # e.g. "ABC, Parker’s Piece, Cambridge, 7 July 2017"
 
     url = models.CharField(max_length=400, default="")
     # e.g. "https://cambridgemusicreviews.net/2017/07/09/abc-cam-7-july-2017/"
