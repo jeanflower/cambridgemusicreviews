@@ -3,7 +3,7 @@
 import unittest
 import requests
 
-from cmr_get_articles_from_webpage import get_wp_articles
+from cmr_get_remote_data import get_wp_articles
 
 class Test_get_wp_articles(unittest.TestCase):
 
