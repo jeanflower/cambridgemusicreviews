@@ -88,7 +88,7 @@ def _known_album_in_title(article):
     return False
 
 def _known_venue_in_title(article):
-    venues = ["Junction", "Portland Arms", "Parker’s Piece",
+    venues = ["Junction", "Portland Arms", "Parker's Piece",
               "Corner House", "Rescue Rooms", "Corn Exchange",
               "Home Festival, Mundford", "Cambridge Folk Festival",
               "Thetford Forest", "Blue Moon", "Roundhouse"]
