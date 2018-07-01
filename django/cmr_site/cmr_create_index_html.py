@@ -57,7 +57,7 @@ def _make_index_html(articles, highlight_guesses):
         html = _insert_section(articles, html, highlight_guesses,\
                         section)
 
-    html = html + "<!–– stop copying for wordpress here -->\n"
+    html = html + "<!-- stop copying for wordpress here -->\n"
     return html
 
 def get_index_doc_html(articles):
@@ -73,6 +73,6 @@ def save_index_html(articles, filename):
     #TODO : save to a file called filename
     html = get_index_doc_html(articles)
     f = open(filename, 'w')
-    f.write(html)
+    f.write(html.encode("utf-8"))
     f.close()
 

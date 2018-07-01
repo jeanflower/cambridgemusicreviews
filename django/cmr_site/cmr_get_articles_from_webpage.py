@@ -56,7 +56,7 @@ def _get_index_anchors(soup, category):
 #            print(anchor)
             #stop processing this useless anchor
             continue
-        this_index_text = str(anchor.contents[0])
+        this_index_text = anchor.contents[0]
         this_url = str(anchor["href"])
 
         # build a CMR_Article
