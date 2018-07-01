@@ -5,7 +5,7 @@ from django.shortcuts import render
 from .forms import EditEntryForm, CATEGORY_CHOICES, \
                    SearchForm, SEARCH_LOCATION_CHOICES
 
-from cmr_get_articles_from_webpage import get_wp_articles
+from cmr_get_remote_data import get_wp_articles
 from cmr_fill_in_data import fill_in_missing_data
 from cmr_create_index_html import get_index_doc_html
 from cmr_utilities import sort_articles

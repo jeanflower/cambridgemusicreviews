@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cmr_utilities import save_cmr_page
+from cmr_get_remote_data import save_cmr_page
 
 # today, after the 21st page, we get an error
 max_page_number = 200
