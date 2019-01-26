@@ -4,6 +4,13 @@
 from indexer.models import CMR_Index_Categories, CMR_Index_Status
 
 def _append_th_to_number(num):
+    if num.endswith("th") or\
+      num.endswith("st") or\
+      num.endswith("rd") or\
+      num.endswith("nd"):
+      num = num[:-2]
+    else:
+      stub = num
     date_appendage = ""
     if num == '11':
         date_appendage = "th"
@@ -23,26 +30,32 @@ def _append_th_to_number(num):
 
 
 def _guess_index_text(article):
+    print(article.title)
     phrases = article.title.split(',')
 
     if article.category == CMR_Index_Categories.live:
         date = phrases[len(phrases)-1]
-        # print(date)
-        date_parts = str(date).split(" ")
-        #  print(date_parts)
-
-        number_part = date_parts[1]
-        # print(number_part)
-
-        month_part = date_parts[2]
-
+        number_part = ""
+        month_part = ""
         year_part = ""
-        if len(date_parts) > 3:
-            year_part = date_parts[3]
+        if article.title == "Elma, Portland Arms, Cambridge, 27 September, 2018":
+          number_part = "27"
+          month_part = "September"
+          year_part = "2018"
+        else:
+          # print(date)
+          date_parts = str(date).split(" ")
+          print(date_parts)
+          number_part = date_parts[1]
+          # print(number_part)
+          month_part = date_parts[2]
+          year_part = ""
+          if len(date_parts) > 3:
+              year_part = date_parts[3]
 
         result = phrases[0]+", "+_append_th_to_number(number_part ) +\
                                " "+month_part
-        if len(date_parts) > 3:
+        if len(year_part) > 0:
             result += " "+year_part
         return result
 
