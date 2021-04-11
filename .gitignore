@@ -3,3 +3,7 @@ coverage.xml
 test_output*
 **/.DS_Store
 __pycache__
+/javascript/node_modules
+/javascript/scraped_data
+
+
