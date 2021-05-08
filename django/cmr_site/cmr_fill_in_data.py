@@ -9,8 +9,6 @@ def _append_th_to_number(num):
       num.endswith("rd") or\
       num.endswith("nd"):
       num = num[:-2]
-    else:
-      stub = num
     date_appendage = ""
     if num == '11':
         date_appendage = "th"
